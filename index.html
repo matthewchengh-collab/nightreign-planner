@@ -111,6 +111,11 @@
   .stag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:12px}
   .stag.good{background:rgba(34,197,94,.16);color:#5fe08a}
   .stag.flat{background:rgba(154,163,178,.16);color:var(--muted)}
+  .branch{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px}
+  .branch button{background:transparent;color:var(--muted);border:0;padding:10px 18px;font-size:14px;cursor:pointer;font-weight:600}
+  .branch button.on{background:var(--green);color:#05210f}
+  .branch button#brB.on{background:var(--muted);color:#0f1115}
+  .dchip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.18);color:var(--amber)}
 
   footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
@@ -245,7 +250,11 @@
     <p class="src">FY26 results are demand-dated revenue from the "Sale Period Ranking" tab. Priority = our recommendation, not historical size alone.</p>
 
     <h2>Month-by-month — the actions</h2>
-    <p class="sub" style="margin-bottom:14px">Click any month. Each lists the play, the SKU to push, the prep deadline, and the owner.</p>
+    <p class="sub" style="margin-bottom:10px">Pick a branch. Months that change between scenarios are marked <span class="dchip">DIFFERS</span>. Most months are identical — the discount calendar is the foundation either way.</p>
+    <div class="branch">
+      <button id="brA" class="on" onclick="setBranch('a')">▶ If content ships (A)</button>
+      <button id="brB" onclick="setBranch('b')">▶ If no content (B)</button>
+    </div>
     <div id="amonths"></div>
 
     <h2>What we need from Bandai (the asks)</h2>
@@ -425,14 +434,24 @@ const MONTHS=[
   play:["Aug 28 Tarnished Edition (Switch 2) launches — huge awareness spike for the franchise.","Convert that attention into PC catalog key demand in CN/HK/TW. Time a light promo + storefront refresh around launch week.","Gamescom (Aug 19–23) is marketing-only — no discount, expect little direct lift (FY26: $80k, flat)."],
   sku:"Whole catalog visibility; Nightreign Std as the hero",
   dead:"Pre-load by Aug 20",owner:"Jeremy"},
- {cal:"SEP 2026",ttl:"Re-anchor the catalog",tag:"big",scenario:"This is the most likely landing month for a new DLC drop (Forsaken Hollows launched in autumn). If it ships → Scenario A; this month carries most of the +3–6% upside.",
-  play:["Mid-Autumn (Sep 6–8): CN festival, ran $104k in FY26 — worth a targeted promo.","PUSH BANDAI for a new Nightreign DLC drop (~Sep). Forsaken Hollows did $300k from a half-year — a fresh drop resets demand.","Steam Autumn Sale (Sep 29–Oct 6) is historically underused ($21k) — opportunity to do better."],
-  sku:"New DLC if landed; otherwise Deluxe + Std",
-  dead:"Pre-load by Sep 1",owner:"Matt"},
- {cal:"OCT 2026",ttl:"Quiet — hold fire",tag:"Low",
-  play:["Golden Week + Double 10 + Halloween all ran in FY26 but tiny ($1–17k each).","Don't burn discount budget here. Keep prices steady, let buyers anticipate Winter."],
-  sku:"No active push; baseline only",
-  dead:"—",owner:"Matt"},
+ {cal:"SEP 2026",
+  a:{ttl:"Launch the DLC — re-anchor the catalog",tag:"big",diff:true,
+     play:["★ NEW DLC DROPS this month — this is the Scenario A engine. Launch at full price; novelty carries it.","Stack Mid-Autumn (Sep 6–8, $104k FY26) promo on the base catalog alongside the DLC.","Run Steam Autumn Sale (Sep 29–Oct 6) to convert DLC attention into catalog key sales."],
+     sku:"New DLC (hero) + Deluxe + Std catalog",
+     dead:"DLC keys + pre-load by Sep 1",owner:"Matt"},
+  b:{ttl:"Re-anchor on festivals only",tag:"Med",diff:true,
+     play:["No new DLC — lean on what you've got. Mid-Autumn (Sep 6–8) targeted promo ($104k FY26).","Steam Autumn Sale (Sep 29–Oct 6) is historically underused ($21k) — push Deluxe harder to do better than last year.","Without a fresh drop, Sep is a maintenance month, not a growth one."],
+     sku:"Deluxe + Std (no DLC)",
+     dead:"Pre-load by Sep 1",owner:"Matt"}},
+ {cal:"OCT 2026",
+  a:{ttl:"Ride the DLC tail",tag:"Med",diff:true,
+     play:["DLC post-launch demand continues — keep it visible, light promo to extend the tail.","Golden Week + Double 10 + Halloween are all small ($1–17k FY26), but the DLC gives them something fresh to attach to."],
+     sku:"New DLC tail + Std",
+     dead:"—",owner:"Matt"},
+  b:{ttl:"Quiet — hold fire",tag:"Low",diff:true,
+     play:["No DLC tail to ride. Golden Week + Double 10 + Halloween all ran tiny in FY26 ($1–17k each).","Don't burn discount budget here. Keep prices steady, let buyers anticipate Winter."],
+     sku:"No active push; baseline only",
+     dead:"—",owner:"Matt"}},
  {cal:"NOV 2026",ttl:"Fix Double 11",tag:"Med",
   play:["Double 11 (Singles' Day) is the biggest CN shopping day but UNDERPERFORMED in FY26 ($126k vs the hype).","Design a Double-11-specific bundle/promo this year — this is the clearest 'do better than last year' lever.","Steam Black Friday (Nov 26–Dec 3) warms up Winter — moderate depth."],
   sku:"Deluxe bundle for Double 11; Std on Black Friday",
@@ -455,27 +474,44 @@ const MONTHS=[
   dead:"Pre-load by Mar 5",owner:"Matt"}
 ];
 const ATAG={big:"High priority",Med:"Medium",Low:"Low"};
-document.getElementById("amonths").innerHTML=MONTHS.map((m,i)=>`
-  <div class="amonth">
-    <div class="amh" onclick="ta(${i})">
-      <span class="cal">${m.cal}</span>
-      <span class="ttl">${m.ttl}</span>
-      ${m.scenario?'<span class="ptag" style="background:rgba(34,197,94,.16);color:#5fe08a">★ CONTENT DROP</span>':''}
-      <span class="ptag ${m.tag==='big'?'big':''}">${ATAG[m.tag]||m.tag}</span>
-      <span class="acaret">▶</span>
-    </div>
-    <div class="amb" id="amb${i}">
-      ${m.scenario?`<div style="background:rgba(34,197,94,.1);border-left:3px solid var(--green);border-radius:8px;padding:9px 12px;font-size:13px;margin:4px 0 10px"><b style="color:#5fe08a">Scenario A trigger:</b> ${m.scenario}</div>`:''}
-      <div class="lbl2">The play</div>
-      <ul>${m.play.map(p=>`<li>${p}</li>`).join("")}</ul>
-      <div class="lbl2">SKU to push</div><div>${m.sku}</div>
-      <div class="lbl2">Key pre-load</div><div>${m.dead} · owner <span class="owner">${m.owner}</span></div>
-    </div>
-  </div>`).join("");
+let branch="a";
+// resolve a month into the active branch's content (months without a/b are shared)
+function resolve(m){
+  if(m.a&&m.b){ const v=m[branch]; return {cal:m.cal,...v}; }
+  return m;
+}
+function renderMonths(){
+  document.getElementById("amonths").innerHTML=MONTHS.map((m,i)=>{
+    const r=resolve(m);
+    const differs=!!(m.a&&m.b);
+    return `<div class="amonth">
+      <div class="amh" onclick="ta(${i})">
+        <span class="cal">${r.cal}</span>
+        <span class="ttl">${r.ttl}</span>
+        ${differs?'<span class="dchip">DIFFERS</span>':''}
+        <span class="ptag ${r.tag==='big'?'big':''}">${ATAG[r.tag]||r.tag}</span>
+        <span class="acaret">▶</span>
+      </div>
+      <div class="amb" id="amb${i}">
+        <div class="lbl2">The play${differs?` <span style="color:${branch==='a'?'#5fe08a':'var(--muted)'}">(Scenario ${branch.toUpperCase()})</span>`:''}</div>
+        <ul>${r.play.map(p=>`<li>${p}</li>`).join("")}</ul>
+        <div class="lbl2">SKU to push</div><div>${r.sku}</div>
+        <div class="lbl2">Key pre-load</div><div>${r.dead} · owner <span class="owner">${r.owner}</span></div>
+      </div>
+    </div>`;
+  }).join("");
+}
 function ta(i){
   document.getElementById("amb"+i).classList.toggle("show");
   document.querySelectorAll("#amonths .amh")[i].classList.toggle("open");
 }
+function setBranch(b){
+  branch=b;
+  document.getElementById("brA").classList.toggle("on",b==="a");
+  document.getElementById("brB").classList.toggle("on",b==="b");
+  renderMonths();
+}
+renderMonths();
 </script>
 </body>
 </html>
