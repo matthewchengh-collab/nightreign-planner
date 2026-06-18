@@ -69,6 +69,7 @@
 
   <div class="tabs">
     <button id="tG" class="on" onclick="tab('g')">★ Big picture</button>
+    <button id="tH" onclick="tab('h')">4-year history</button>
     <button id="tA" onclick="tab('a')">Year at a glance</button>
     <button id="tE" onclick="tab('e')">vs SEGA (control)</button>
     <button id="tB" onclick="tab('b')">SKU mix</button>
@@ -98,6 +99,24 @@
       <div class="t" style="font-size:15px">The big picture</div>
       <div class="x" style="font-size:13px;color:var(--ink);line-height:1.6">
         China has a major shopping festival in <b>11 of 12 months</b> — but Elden Ring only ever activated on the <b>5</b> that happened to land on a Steam sale. Six China-native events (520, 8.8, 818, 9.9, Double 11, CNY) ran at <b>full price, no promo</b>. We've been running a Steam-only playbook in a market that shops year-round. SEGA &amp; Cyberpunk work these festivals every month; we never have. That's the gap — bigger than "Nov &amp; Feb," it's the whole CN-native calendar.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== H: 4-year history ===== -->
+  <div class="panel" id="ph">
+    <h2>How many clean years do we actually have? (per festival)</h2>
+    <p class="note">Data goes back to ER launch (Feb 2022). But some months are batch-invoice noise (one bulk order smeared across months) — those can't show real demand. Solid = clean reading. Faded = batch noise, unusable. This is what's really behind "2 years vs 4 years."</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--act)"></span>Clean monthly reading</span>
+      <span><span class="dot" style="background:var(--full)"></span>Batch-invoice noise (unusable)</span>
+      <span><span class="dot" style="background:var(--old)"></span>No data / SKU didn't exist yet</span>
+    </div>
+    <div class="chart" id="chartH" style="padding:14px 16px"></div>
+    <div class="ev strong" style="margin-top:16px;border-left-color:var(--amber)">
+      <div class="t" style="font-size:15px">What this means</div>
+      <div class="x" style="font-size:13px;color:var(--ink);line-height:1.6">
+        <b>CNY (Feb): only 2 clean years exist</b> — 2022 &amp; 2023 Februaries are batch-invoiced, so FY25 + FY26 is the whole usable record. <b>Aug &amp; Nov: 3 clean years</b> (2022 + FY25 + FY26) — and all show the same low-then-jump pattern. <b>Nightreign itself: 2 years max</b>, because it only launched May 2025. So "2 years" isn't a shortcut — for the months that matter, it's the ceiling of clean data.
       </div>
     </div>
   </div>
@@ -199,6 +218,39 @@ D.forEach(d=>d.tot=d.std+d.dx+d.old);
 const maxT=Math.max(...D.map(d=>d.tot));
 const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
 document.getElementById("kTot").textContent=D.reduce((s,d)=>s+d.tot,0).toLocaleString();
+
+// ===== 4-YEAR HISTORY by festival =====
+// status: clean number | "batch" (noise) | null (no data / SKU absent)
+const HIST=[
+ {fest:"CNY (Feb)", yrs:[{y:"2022",v:"batch"},{y:"2023",v:"batch"},{y:"2025",v:3790},{y:"2026",v:19347}]},
+ {fest:"8.8 (Aug)", yrs:[{y:"2022",v:6542},{y:"2023",v:null},{y:"2025",v:1951},{y:"2026",v:23932}]},
+ {fest:"Double 11 (Nov)", yrs:[{y:"2022",v:7360},{y:"2023",v:null},{y:"2025",v:1361},{y:"2026",v:13345}]},
+ {fest:"618 (Jun)", yrs:[{y:"2022",v:12052},{y:"2023",v:null},{y:"2025",v:125614},{y:"2026",v:51838}]},
+ {fest:"Double 12 (Dec)", yrs:[{y:"2022",v:6046},{y:"2023",v:null},{y:"2025",v:78612},{y:"2026",v:119664}]}
+];
+(function(){
+ const allv=HIST.flatMap(h=>h.yrs.map(y=>typeof y.v==="number"?y.v:0));
+ const mx=Math.max(...allv);
+ const kk=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
+ let html="";
+ HIST.forEach(h=>{
+  html+=`<div style="margin:14px 0 6px;font-size:13px;color:var(--ink);font-weight:600">${h.fest}</div>`;
+  h.yrs.forEach(y=>{
+   let color,label,w;
+   if(y.v==="batch"){color="var(--full)";label="batch noise";w=14;}
+   else if(y.v===null){color="var(--old)";label="no data";w=6;}
+   else{color="var(--act)";label=y.v.toLocaleString();w=Math.max(y.v/mx*100,1.5);}
+   html+=`<div style="display:flex;align-items:center;gap:10px;margin:4px 0">
+     <div style="width:46px;flex:0 0 46px;font-size:11px;color:var(--muted)">${y.y}</div>
+     <div style="flex:1;background:#12141a;border-radius:5px;height:20px;position:relative">
+       <div style="height:100%;border-radius:5px;background:${color};width:${w}%;opacity:${y.v==="batch"?0.5:1}"></div>
+       <span style="position:absolute;left:${Math.min(w+1,70)}%;top:0;height:100%;display:flex;align-items:center;font-size:10.5px;color:var(--muted);padding-left:6px">${label}</span>
+     </div>
+   </div>`;
+  });
+ });
+ document.getElementById("chartH").innerHTML=html;
+})();
 
 // ===== BIG PICTURE: festival x Steam x activation =====
 // fest = China festival(s) that month; steam = Steam sale present; act = ER ran a promo
@@ -311,7 +363,7 @@ te+="</tbody>";
 document.getElementById("tblE").innerHTML=te;
 
 function tab(t){
-  ["g","a","b","c","d","e"].forEach(x=>{
+  ["g","h","a","b","c","d","e"].forEach(x=>{
     document.getElementById("p"+x).classList.toggle("on",x===t);
     document.getElementById("t"+x.toUpperCase()).classList.toggle("on",x===t);
   });
