@@ -3,542 +3,199 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elden Ring CD Keys — FY26 Review & Action Plan</title>
+<title>Elden Ring China — FY26 Data View</title>
 <style>
   :root{
-    --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2;
-    --line:#2a2e38; --gold:#d4af37; --bar:#3b82f6;
-    --rel:#a855f7; --steam:#3b82f6; --cn:#ef4444; --other:#6b7280;
-    --amber:#f59e0b;
+    --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2; --line:#2a2e38;
+    --gold:#d4af37; --act:#1d9e75; --full:#b4b2a9; --std:#3b82f6; --dx:#a855f7; --old:#4b5563;
+    --amber:#f59e0b; --red:#ef4444;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.5;padding:24px 20px 70px}
-  .wrap{max-width:980px;margin:0 auto}
-  .hdr h1{font-size:25px;margin:0 0 4px}
-  .hdr .sub{color:var(--muted);font-size:14px;margin:0 0 4px}
-  .hdr .byline{color:var(--muted);font-size:12.5px;margin:0 0 18px;font-style:italic}
-
-  /* main tabs */
-  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+  .byline{color:var(--muted);font-size:12.5px;margin:0 0 18px;font-style:italic}
+  h2{font-size:17px;margin:30px 0 6px}
+  .note{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:20px;flex-wrap:wrap}
   .tabs button{background:transparent;color:var(--muted);border:0;border-bottom:2px solid transparent;
-    padding:11px 18px;font-size:15px;cursor:pointer;font-weight:600;margin-bottom:-1px}
+    padding:11px 16px;font-size:14px;cursor:pointer;font-weight:600;margin-bottom:-1px}
   .tabs button.on{color:var(--gold);border-bottom-color:var(--gold)}
-  .panel{display:none}
-  .panel.on{display:block}
-
-  /* shared */
-  .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
-  h2{font-size:17px;margin:30px 0 12px;border-bottom:1px solid var(--line);padding-bottom:7px}
-
-  /* ---- PAST tab ---- */
-  .toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
-  .toggle button{background:transparent;color:var(--muted);border:0;padding:9px 18px;font-size:14px;cursor:pointer}
-  .toggle button.on{background:var(--gold);color:#1a1300;font-weight:600}
-  .keylegend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 18px}
-  .keylegend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:6px}
-  .chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px}
-  .mrow{border-bottom:1px solid var(--line)}
-  .mrow:last-child{border-bottom:0}
-  .mhead{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer}
-  .mhead:hover{background:#20242d}
-  .caret{color:var(--muted);font-size:11px;width:12px;flex:0 0 12px;transition:transform .15s}
-  .mhead.open .caret{transform:rotate(90deg)}
-  .mlabel{width:90px;flex:0 0 90px;font-size:13px;color:var(--muted)}
-  .mlabel b{color:var(--ink);display:block;font-size:13px}
-  .tag{font-size:11px;color:var(--muted)}
-  .track{flex:1;background:#12141a;border-radius:7px;height:26px;position:relative;overflow:hidden}
-  .fill{height:100%;border-radius:7px;background:var(--bar);transition:width .5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
-  .fill.hot{background:linear-gradient(90deg,#b8932f,var(--gold))}
-  .val{font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
-  .rank{display:inline-block;color:var(--gold);font-weight:700;font-size:12px;margin-right:4px}
-  .why{display:none;padding:2px 14px 14px 118px}
-  .why.show{display:block}
-  .why .summary{font-size:12.5px;color:var(--muted);margin:0 0 8px;font-style:italic}
-  .drv{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:5px 0}
-  .badge{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap;flex:0 0 auto;margin-top:1px}
-  .b-rel{background:rgba(168,85,247,.18);color:#c98bff}
-  .b-steam{background:rgba(59,130,246,.18);color:#7eacff}
-  .b-cn{background:rgba(239,68,68,.18);color:#ff8b8b}
-  .b-other{background:rgba(107,114,128,.22);color:#aab1bd}
-  .takeaway{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
-    border-radius:12px;padding:16px 18px;margin-top:22px;font-size:14px}
-  .takeaway b{color:var(--gold)}
-  .expandbtn{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;margin:0 0 12px}
-
-  /* ---- ACTIONS tab ---- */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:8px}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .panel{display:none}.panel.on{display:block}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 12px}
+  .legend .dot{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:middle;margin-right:6px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0 4px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
   .kpi .l{font-size:12px;color:var(--muted)}
   .kpi .v{font-size:22px;font-weight:700;margin-top:3px}
   .kpi .d{font-size:12px;color:var(--muted);margin-top:3px}
-  .lead{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
-    border-radius:12px;padding:16px 18px;font-size:14px;margin-bottom:6px}
-  .lead b{color:var(--gold)}
+  /* bar chart */
+  .chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+  .brow{display:flex;align-items:center;gap:10px;margin:8px 0}
+  .blabel{width:38px;flex:0 0 38px;font-size:12px;color:var(--muted)}
+  .btrack{flex:1;background:#12141a;border-radius:6px;height:30px;position:relative;overflow:hidden;display:flex}
+  .bseg{height:100%;transition:width .5s}
+  .bval{position:absolute;right:8px;top:0;height:100%;display:flex;align-items:center;font-size:12px;font-weight:600;color:#fff}
+  .bev{width:150px;flex:0 0 150px;font-size:11.5px;color:var(--muted);text-align:left}
+  .badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .b-act{background:rgba(29,158,117,.2);color:#5fe0a8}
+  .b-full{background:rgba(180,178,169,.18);color:#cdd3dd}
   table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
-  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th,td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
   th{color:var(--muted);font-weight:600;font-size:12px}
   tr:hover td{background:#20242d}
-  .pri-h{color:#ff8b8b;font-weight:700}
-  .pri-m{color:var(--amber);font-weight:700}
-  .pri-l{color:var(--muted)}
-  .amonth{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
-  .amh{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
-  .amh:hover{background:#20242d}
-  .amh .cal{font-size:11px;color:var(--gold);font-weight:700;width:62px;flex:0 0 62px}
-  .amh .ttl{font-weight:600;flex:1}
-  .amh .ptag{font-size:11px;padding:2px 9px;border-radius:20px;background:#23272f;color:var(--muted)}
-  .amh .ptag.big{background:rgba(212,175,55,.18);color:var(--gold)}
-  .amh .acaret{color:var(--muted);transition:transform .15s}
-  .amh.open .acaret{transform:rotate(90deg)}
-  .amb{display:none;padding:4px 16px 16px;font-size:13.5px}
-  .amb.show{display:block}
-  .amb ul{margin:6px 0 10px;padding-left:18px}
-  .amb li{margin:4px 0}
-  .amb .lbl2{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px;margin:10px 0 2px;font-weight:600}
-  .owner{display:inline-block;background:#23272f;border-radius:6px;padding:1px 7px;font-size:12px;color:var(--ink)}
-  .flag{background:rgba(245,158,11,.12);border-left:3px solid var(--amber);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0}
-  .scen{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
-  @media(max-width:640px){.scen{grid-template-columns:1fr}}
-  .scard{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card);cursor:pointer;transition:transform .12s,border-color .12s,box-shadow .12s}
-  .scard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
-  .scard.sa{border-left:3px solid var(--green)}
-  .scard.sb{border-left:3px solid var(--muted)}
-  .scard.sa:hover,.scard.sa.active{border-color:var(--green)}
-  .scard.sb:hover,.scard.sb.active{border-color:#cdd3dd}
-  .scard.active{box-shadow:0 0 0 1px currentColor inset}
-  .sgo{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--gold)}
-  .scard.sa .sgo{color:#5fe08a}
-  .scard.sb .sgo{color:#cdd3dd}
-  .stitle{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:6px}
-  .snum{font-size:24px;font-weight:700}
-  .ssub{font-size:13px;color:var(--muted);margin-top:2px}
-  .sline{font-size:13px;margin-top:10px;line-height:1.5}
-  .stag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:12px}
-  .stag.good{background:rgba(34,197,94,.16);color:#5fe08a}
-  .stag.flat{background:rgba(154,163,178,.16);color:var(--muted)}
-  .branch{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px}
-  .branch button{background:transparent;color:var(--muted);border:0;padding:10px 18px;font-size:14px;cursor:pointer;font-weight:600}
-  .branch button.on{background:var(--green);color:#05210f}
-  .branch button#brB.on{background:var(--muted);color:#0f1115}
-  .dchip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.18);color:var(--amber)}
-  /* editable model */
-  .inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
-  .inputs label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:4px}
-  .inputs input{background:#12141a;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:8px 10px;font-size:14px}
-  .inputs input:focus{outline:none;border-color:var(--gold)}
-  .dlcbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-  .dlcbar label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:4px}
-  .dlcbar input[type=number],.dlcbar select{background:#12141a;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:7px 9px;font-size:14px}
-  .switch{flex-direction:row !important;align-items:center;gap:8px !important;font-size:14px !important;color:var(--ink) !important;cursor:pointer}
-  .switch input{width:18px;height:18px;accent-color:var(--green)}
-  .dlcland{font-size:13px;color:var(--muted)}
-  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
-  table.grid{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
-  table.grid th,table.grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-  table.grid th:first-child,table.grid td:first-child,table.grid td.evcell{text-align:left}
-  table.grid thead th{color:var(--muted);font-size:11.5px;font-weight:600;background:#15181f}
-  table.grid td.evcell{color:var(--muted);font-size:12px;white-space:normal;min-width:180px}
-  table.grid tfoot th{color:var(--ink);font-weight:700;background:#15181f;border-top:2px solid var(--line)}
-  .cin{width:56px;background:#12141a;border:1px solid var(--line);border-radius:6px;color:var(--gold);font-weight:600;padding:5px 6px;font-size:13px;text-align:right}
-  .cin:focus{outline:none;border-color:var(--gold)}
-  .totbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:16px}
-  .totcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;min-width:150px}
-  .totcard .l{font-size:12px;color:var(--muted)}
-  .totcard .v{font-size:22px;font-weight:700;margin-top:2px}
-  .xlsx{margin-left:auto;background:var(--green);color:#05210f;border:0;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:700;cursor:pointer}
-  .xlsx:hover{filter:brightness(1.08)}
-
+  .ev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .ev{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .ev.weak{border-left:3px solid var(--amber)}
+  .ev.strong{border-left:3px solid var(--act)}
+  .ev.skip{border-left:3px solid var(--old)}
+  .ev .m{font-size:12px;color:var(--gold);font-weight:700}
+  .ev .t{font-weight:600;margin:2px 0 6px}
+  .ev .u{font-size:20px;font-weight:700}
+  .ev .x{font-size:12px;color:var(--muted);margin-top:4px}
   footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
-  .src{color:var(--muted);font-size:11.5px;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="hdr">
-    <h1>Elden Ring CD Keys — FY26 Review & Action Plan</h1>
-    <p class="sub">China + Hong Kong + Taiwan digital keys (USD) · whole Elden Ring catalog · source: EldenRing_CDK_FY26_v3</p>
-    <p class="byline">For leadership review, then Bandai Namco Europe. Co-authored with Jeremy.</p>
-  </div>
+  <h1>Elden Ring China — FY26 Data View</h1>
+  <p class="sub">China only (SEA stripped) · Apr 2025 – Mar 2026 · units &amp; revenue by month, SKU, and event · source: EPICSOFT royalty master + Heybox</p>
+  <p class="byline">Just the data, laid out. No recommendation baked in — for you and Jeremy to read.</p>
 
   <div class="tabs">
-    <button id="tabPast" class="on" onclick="showTab('past')">What happened (FY26)</button>
-    <button id="tabMulti" onclick="showTab('multi')">Does it repeat? (2 yrs)</button>
-    <button id="tabAct" onclick="showTab('act')">Action plan (Jul → Mar)</button>
+    <button id="tA" class="on" onclick="tab('a')">Year at a glance</button>
+    <button id="tB" onclick="tab('b')">SKU mix</button>
+    <button id="tC" onclick="tab('c')">Events: traffic vs capture</button>
+    <button id="tD" onclick="tab('d')">Full table</button>
   </div>
 
-  <!-- ============== PAST PANEL ============== -->
-  <div class="panel on" id="panel-past">
-    <p class="sub">Which months sold most in FY26 (Apr 2025 – Mar 2026), and why.</p>
-
-    <div class="toggle">
-      <button id="bRev" class="on" onclick="setMode('rev')">Revenue (USD)</button>
-      <button id="bUnit" onclick="setMode('unit')">Units</button>
+  <!-- ===== A: year at a glance ===== -->
+  <div class="panel on" id="pa">
+    <div class="kpis">
+      <div class="kpi"><div class="l">FY26 China total</div><div class="v" id="kTot">—</div><div class="d">all SKUs, units</div></div>
+      <div class="kpi"><div class="l">Biggest month</div><div class="v">Dec</div><div class="d">119,664 units</div></div>
+      <div class="kpi"><div class="l">Weakest real month</div><div class="v">Nov</div><div class="d">13,345 — on Double 11</div></div>
+      <div class="kpi"><div class="l">Months run at full price</div><div class="v">7 of 12</div><div class="d">no promo / no activation</div></div>
     </div>
-
-    <div class="keylegend">
-      <span><span class="dot" style="background:var(--rel)"></span>New release / DLC</span>
-      <span><span class="dot" style="background:var(--steam)"></span>Steam sale</span>
-      <span><span class="dot" style="background:var(--cn)"></span>CN/Asia festival or shopping event</span>
-      <span><span class="dot" style="background:var(--other)"></span>Other</span>
+    <h2>Total units by month</h2>
+    <p class="note">Calendar order. Green = a promo or launch ran that month · grey = full price, no activation. Hover for detail.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--act)"></span>Activated (promo / launch)</span>
+      <span><span class="dot" style="background:var(--full)"></span>Full price, no activation</span>
     </div>
-
-    <button class="expandbtn" onclick="toggleAll()">Expand all months ▾</button>
-    <div class="chart" id="chart"></div>
-
-    <div class="takeaway">
-      <b>The pattern:</b> almost every spike is a <b>Steam discount sale</b>, usually stacked on top of a <b>Chinese shopping festival</b>.
-      The two exceptions are the <b>May 2025 Nightreign launch</b> (new release, full price) and <b>Dec 2025</b>, the biggest month, where Steam Winter + Double 12 + holiday gifting all land together.
-      Pure cultural festivals with <b>no discount mechanic</b> (Gamescom, Mid-Autumn, anniversary) barely move units — discount is the real driver.
-    </div>
-    <p class="src">Click any month to see its drivers. Demand-dated figures (reflects when demand happened, not when invoiced).</p>
+    <div class="chart" id="chartA"></div>
   </div>
 
-  <!-- ============== MULTI-YEAR PANEL ============== -->
-  <div class="panel" id="panel-multi">
-    <p class="sub">Two independent years of monthly data. The question that matters: do the seasonal spikes actually repeat, or was FY26 a one-off?</p>
-
-    <div class="takeaway" style="margin-top:0;margin-bottom:18px">
-      <b>Answer: yes, the pattern holds.</b> Across FY25 and FY26, <b>December (Winter Sale)</b> and <b>March (Spring Sale)</b> are top-2 months both years.
-      <b>August</b> is the dead zone both years (FY25's single lowest). <b>November / Double 11</b> underperforms both years.
-      The plan is built on a repeating pattern, not a single year's luck.
+  <!-- ===== B: SKU mix ===== -->
+  <div class="panel" id="pb">
+    <h2>Units by SKU each month</h2>
+    <p class="note">Nightreign Standard vs Nightreign Deluxe vs older SKUs (base ER / SOTE). Watch the Deluxe share — it climbs hard in discount months (Dec ~42%).</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--std)"></span>Nightreign Standard</span>
+      <span><span class="dot" style="background:var(--dx)"></span>Nightreign Deluxe</span>
+      <span><span class="dot" style="background:var(--old)"></span>Older SKUs (base ER / SOTE)</span>
     </div>
-
-    <div class="chart" id="mychart" style="padding:18px 16px"></div>
-
-    <table style="margin-top:18px">
-      <thead><tr><th>Pattern</th><th>FY25</th><th>FY26</th><th>Verdict</th></tr></thead>
-      <tbody>
-        <tr><td>Dec / Winter Sale is a top month</td><td>#3 (78.6k u)</td><td>#1 (119.7k u)</td><td class="pri-h">REPEATS</td></tr>
-        <tr><td>Mar / Spring Sale is a top month</td><td>#1 (107.4k u)</td><td>#2 (102.8k u)</td><td class="pri-h">REPEATS</td></tr>
-        <tr><td>Aug flatlines (no discount mechanic)</td><td>lowest (2.0k u)</td><td>low (23.9k u)</td><td class="pri-h">REPEATS</td></tr>
-        <tr><td>Nov / Double 11 underperforms the hype</td><td>near-lowest (1.4k u)</td><td>weak (9.1k u)</td><td class="pri-h">REPEATS</td></tr>
-      </tbody>
-    </table>
-    <div class="flag">
-      ⚠ <b>Scope note:</b> FY25 figures are China-only; FY26 is CN/HK/TW. HK/TW is a small slice, so this compares the <i>shape</i> of the year (which months spike), not exact unit levels. Older FY22–FY23 data exists but is order-dated (batch invoices cluster into single months), so it's not used for monthly seasonality.
-    </div>
+    <div class="chart" id="chartB"></div>
   </div>
 
-  <!-- ============== ACTIONS PANEL ============== -->
-  <div class="panel" id="panel-act">
-    <p class="sub">July 2026 → March 2027 — an editable forecast model. Key in the numbers; totals recalc live. Export to Excel when you want to work in a spreadsheet.</p>
-
-    <h2>Model inputs</h2>
-    <p class="sub" style="margin-bottom:10px">These drive every month. Change them and the table below updates instantly.</p>
-    <div class="inputs">
-      <label>Std baseline (units/mo)<input type="number" id="inStdBase" value="17000" oninput="recalc()"></label>
-      <label>Deluxe baseline (units/mo)<input type="number" id="inDxBase" value="3000" oninput="recalc()"></label>
-      <label>Std elasticity<input type="number" step="0.1" id="inStdElas" value="1.9" oninput="recalc()"></label>
-      <label>Deluxe elasticity<input type="number" step="0.1" id="inDxElas" value="3.4" oninput="recalc()"></label>
-      <label>Std list price ($)<input type="number" step="0.01" id="inStdPrice" value="19.99" oninput="recalc()"></label>
-      <label>Deluxe list price ($)<input type="number" step="0.01" id="inDxPrice" value="24.99" oninput="recalc()"></label>
-    </div>
-    <div class="flag" style="margin-top:6px">
-      ⚠ List prices are placeholders ($19.99 / $24.99) — replace with the real CN/HK/TW Steam prices. Model: <code>units = baseline × (1 + elasticity × discount%)</code>. It's a planning what-if, not a guaranteed forecast — deep discounts may overstate.
-    </div>
-
-    <h2>DLC upside (Scenario A vs B)</h2>
-    <div class="dlcbar">
-      <label class="switch"><input type="checkbox" id="inDlcOn" onchange="recalc()"> <span>New content drop ships (Scenario A)</span></label>
-      <label>DLC adds (units, one-off)<input type="number" id="inDlcUnits" value="15633" oninput="recalc()"></label>
-      <label>DLC avg price ($)<input type="number" step="0.01" id="inDlcPrice" value="19.21" oninput="recalc()"></label>
-      <span class="dlcland">lands in: <select id="inDlcMonth" onchange="recalc()"></select></span>
-    </div>
-    <p class="src">Default DLC = one Forsaken Hollows (15,633 units @ $19.21). Toggle off for Scenario B. Half it for a conservative drop.</p>
-
-    <h2>Editable forecast — key in a discount % per month</h2>
-    <div class="gridwrap">
-      <table class="grid" id="modelGrid">
-        <thead><tr>
-          <th>Month</th><th>Event</th>
-          <th>Std disc %</th><th>Dx disc %</th>
-          <th>Std units</th><th>Dx units</th>
-          <th>Revenue (USD)</th>
-        </tr></thead>
-        <tbody id="gridBody"></tbody>
-        <tfoot><tr>
-          <th colspan="4" style="text-align:right">YEAR TOTAL</th>
-          <th id="totStdU">—</th><th id="totDxU">—</th><th id="totRev">—</th>
-        </tr></tfoot>
-      </table>
-    </div>
-
-    <div class="totbar">
-      <div class="totcard"><div class="l">Total units</div><div class="v" id="bigUnits">—</div></div>
-      <div class="totcard"><div class="l">Total revenue</div><div class="v" id="bigRev">—</div></div>
-      <div class="totcard"><div class="l">vs Scenario B floor</div><div class="v" id="bigDelta">—</div></div>
-      <button class="xlsx" onclick="exportXlsx()">⬇ Export to Excel (live formulas)</button>
-    </div>
-    <p class="src">Type any discount %, change baselines/prices/elasticity above, toggle the DLC. The Excel export contains the same formulas, so it recalculates in Excel/Sheets too.</p>
+  <!-- ===== C: events traffic vs capture ===== -->
+  <div class="panel" id="pc">
+    <h2>Every shopping event — did we capture it?</h2>
+    <p class="note">Each card = a month's event, the CN shopping traffic it carried, whether we activated, and what we captured. Border: green = worked &amp; strong · amber = real event, not worked · grey = low-intent, accept.</p>
+    <div class="ev-grid" id="evGrid"></div>
   </div>
 
-  <footer>
-    Sources: EldenRing_CDK_FY26_v3 (FY26, demand-dated, CN/HK/TW) + Elden Ring Purchase &amp; Sales Summary FY25 (FY25 monthly, China). FY22–23 transaction history reviewed for launch context.
-    Switch 2 Tarnished Edition: Aug 28 2026, $79.99, Game Key Card. · <a href="calculator.html">Open the Summer Sale calculator →</a>
-  </footer>
+  <!-- ===== D: full table ===== -->
+  <div class="panel" id="pd">
+    <h2>Full monthly data (China)</h2>
+    <p class="note">Std + Deluxe = Nightreign. Old = base ER / SOTE catalog. Rev = CNY millions, partner revenue. Promo = any discount ran.</p>
+    <table id="tbl"></table>
+    <p class="note" style="margin-top:10px">Note: SEA regions (TH/VN/PH/ID) removed — tiny volumes + currency-unit errors in the source. China channels only.</p>
+  </div>
+
+  <footer id="ft">Source: EPICSOFT_ELDEN RING royalty master (China, demand by month) + Heybox sales reports. Discounts ran only in Steam-sale months (Jun, Jul, Dec, Jan, Mar); all other months full price.</footer>
 </div>
 
 <script>
-/* ===== main tab switch ===== */
-function showTab(t){
-  document.getElementById("panel-past").classList.toggle("on",t==="past");
-  document.getElementById("panel-multi").classList.toggle("on",t==="multi");
-  document.getElementById("panel-act").classList.toggle("on",t==="act");
-  document.getElementById("tabPast").classList.toggle("on",t==="past");
-  document.getElementById("tabMulti").classList.toggle("on",t==="multi");
-  document.getElementById("tabAct").classList.toggle("on",t==="act");
+const D=[
+ {m:"Apr",std:0,dx:0,old:3920,rev:0.83,promo:false,ev:"pre-launch",intent:"low"},
+ {m:"May",std:40884,dx:14823,old:3683,rev:11.35,promo:false,ev:"NIGHTREIGN LAUNCH",intent:"launch"},
+ {m:"Jun",std:32929,dx:4921,old:13988,rev:9.25,promo:true,ev:"618 + Steam Summer",intent:"high"},
+ {m:"Jul",std:10528,dx:1646,old:16491,rev:5.09,promo:true,ev:"Summer tail",intent:"mid"},
+ {m:"Aug",std:15451,dx:2858,old:5623,rev:4.49,promo:false,ev:"Qixi (minor)",intent:"mid"},
+ {m:"Sep",std:8768,dx:1719,old:4771,rev:2.84,promo:false,ev:"Mid-Autumn + FH DLC",intent:"mid"},
+ {m:"Oct",std:7604,dx:1481,old:6299,rev:2.91,promo:false,ev:"Golden Week = TRAVEL",intent:"low"},
+ {m:"Nov",std:6353,dx:3083,old:3909,rev:2.75,promo:false,ev:"Double 11 (biggest CN day)",intent:"high"},
+ {m:"Dec",std:44099,dx:31860,old:43705,rev:19.58,promo:true,ev:"Double 12 + Steam Winter",intent:"high"},
+ {m:"Jan",std:11518,dx:3229,old:13539,rev:5.19,promo:true,ev:"Winter tail / pre-CNY",intent:"mid"},
+ {m:"Feb",std:9313,dx:2498,old:7536,rev:3.48,promo:false,ev:"CNY + Steam LNY",intent:"high"},
+ {m:"Mar",std:32345,dx:15252,old:55157,rev:16.64,promo:true,ev:"3.8 + Steam Spring",intent:"high"}
+];
+D.forEach(d=>d.tot=d.std+d.dx+d.old);
+const maxT=Math.max(...D.map(d=>d.tot));
+const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
+document.getElementById("kTot").textContent=D.reduce((s,d)=>s+d.tot,0).toLocaleString();
+
+// chart A: total, colored by activation
+document.getElementById("chartA").innerHTML=D.map(d=>{
+  const act=d.promo||d.intent==="launch";
+  const w=Math.max(d.tot/maxT*100,1.5);
+  return `<div class="brow" title="${d.m}: ${d.tot.toLocaleString()} units — ${d.ev}${act?' (activated)':' (full price)'}">
+    <div class="blabel">${d.m}</div>
+    <div class="btrack"><div class="bseg" style="width:${w}%;background:${act?'var(--act)':'var(--full)'}"></div>
+      <div class="bval">${d.tot.toLocaleString()}</div></div>
+    <div class="bev">${d.ev}</div>
+  </div>`;
+}).join("");
+
+// chart B: stacked SKU
+document.getElementById("chartB").innerHTML=D.map(d=>{
+  const ws=d.std/maxT*100, wd=d.dx/maxT*100, wo=d.old/maxT*100;
+  const dxpct=d.std+d.dx>0?Math.round(d.dx/(d.std+d.dx)*100):0;
+  return `<div class="brow" title="${d.m}: Std ${d.std.toLocaleString()} · Deluxe ${d.dx.toLocaleString()} (${dxpct}% of NR) · Old ${d.old.toLocaleString()}">
+    <div class="blabel">${d.m}</div>
+    <div class="btrack">
+      <div class="bseg" style="width:${ws}%;background:var(--std)"></div>
+      <div class="bseg" style="width:${wd}%;background:var(--dx)"></div>
+      <div class="bseg" style="width:${wo}%;background:var(--old)"></div>
+    </div>
+    <div class="bev">Deluxe ${dxpct}% of NR</div>
+  </div>`;
+}).join("");
+
+// panel C: event cards
+const cls={high:(d)=>d.promo||d.intent==="launch"?"strong":"weak", launch:()=>"strong", mid:(d)=>d.promo?"strong":"skip", low:()=>"skip"};
+document.getElementById("evGrid").innerHTML=D.filter(d=>d.m!=="Apr").map(d=>{
+  let c = d.intent==="low"?"skip" : (d.promo||d.intent==="launch")?"strong" : d.intent==="high"?"weak":"skip";
+  const act=d.promo||d.intent==="launch";
+  const tagtxt = act?"activated":"full price, not worked";
+  return `<div class="ev ${c}">
+    <div class="m">${d.m} 2025/26</div>
+    <div class="t">${d.ev}</div>
+    <div class="u">${d.tot.toLocaleString()} <span style="font-size:12px;color:var(--muted)">units</span></div>
+    <div class="x"><span class="badge ${act?'b-act':'b-full'}">${tagtxt}</span></div>
+    <div class="x">¥${d.rev}M partner rev</div>
+  </div>`;
+}).join("");
+
+// panel D: table
+let html=`<thead><tr><th>Month</th><th>Std</th><th>Deluxe</th><th>Old SKUs</th><th>Total</th><th>Rev ¥M</th><th>Promo</th><th>Event</th></tr></thead><tbody>`;
+D.forEach(d=>{html+=`<tr><td><b>${d.m}</b></td><td>${d.std.toLocaleString()}</td><td>${d.dx.toLocaleString()}</td><td>${d.old.toLocaleString()}</td><td><b>${d.tot.toLocaleString()}</b></td><td>${d.rev}</td><td>${d.promo?'<span class="badge b-act">yes</span>':'<span class="badge b-full">—</span>'}</td><td style="text-align:left;color:var(--muted);font-size:12px">${d.ev}</td></tr>`;});
+html+="</tbody>";
+document.getElementById("tbl").innerHTML=html;
+
+function tab(t){
+  ["a","b","c","d"].forEach(x=>{
+    document.getElementById("p"+x).classList.toggle("on",x===t);
+    document.getElementById("t"+x.toUpperCase()).classList.toggle("on",x===t);
+  });
   window.scrollTo(0,0);
 }
-
-/* ===== PAST: best-months chart ===== */
-const DATA=[
- {m:"2025-04",lbl:"Apr 25",rev:77676,unit:3920,tag:"Quiet",
-  sum:"No major promo. Pre-Nightreign channel quiet.",
-  drv:[{t:"cn",x:"Easter (Apr 20) — minor"}]},
- {m:"2025-05",lbl:"May 25",rev:1101717,unit:59277,tag:"🚀 Launch",
-  sum:"Nightreign launches at full price May 30. Demand all from the new release, not a discount.",
-  drv:[{t:"rel",x:"Nightreign launch (May 30) — full price"},{t:"cn",x:"5.20 promo (CN) — minor pulse"}]},
- {m:"2025-06",lbl:"Jun 25",rev:900396,unit:51819,tag:"🔥 Hot",
-  sum:"618 + Steam Summer + Nightreign launch tail all stack. This is the proposed Summer Sale window.",
-  drv:[{t:"cn",x:"618 Festival (Jun 1–18) — major CN shopping event"},{t:"steam",x:"Steam Summer Sale (Jun 26–Jul 10)"},{t:"rel",x:"Nightreign launch tail"},{t:"cn",x:"Dragon Boat Festival (Jun 9)"}]},
- {m:"2025-07",lbl:"Jul 25",rev:487100,unit:28645,tag:"Mild",
-  sum:"Summer Sale tail + continued post-launch sell-through.",
-  drv:[{t:"steam",x:"Steam Summer Sale tail (ends Jul 10)"},{t:"rel",x:"Nightreign post-launch demand"}]},
- {m:"2025-08",lbl:"Aug 25",rev:436429,unit:23913,tag:"Mild",
-  sum:"Marketing pulse only — no discount mechanic, so units stay flat.",
-  drv:[{t:"other",x:"Gamescom (Aug 19–23) — marketing, no discount"},{t:"cn",x:"Qixi Festival (Aug 19)"}]},
- {m:"2025-09",lbl:"Sep 25",rev:277110,unit:15258,tag:"Quiet",
-  sum:"Multi-driver month, but each driver is small.",
-  drv:[{t:"cn",x:"Mid-Autumn Festival (Sep 6)"},{t:"rel",x:"Forsaken Hollows DLC launch (Sep 15)"},{t:"steam",x:"Steam Autumn Sale (Sep 29–Oct 6)"}]},
- {m:"2025-10",lbl:"Oct 25",rev:283986,unit:15381,tag:"Quiet",
-  sum:"Triple-stacked festivals + Halloween sale, but on a tired catalog.",
-  drv:[{t:"steam",x:"Steam Autumn Sale tail + Halloween Sale (Oct 27–Nov 3)"},{t:"cn",x:"CN Golden Week (Oct 1–7)"},{t:"cn",x:"TW Double 10"}]},
- {m:"2025-11",lbl:"Nov 25",rev:270638,unit:9146,tag:"Quiet",
-  sum:"Lowest unit month — buyers hold out for the deeper Winter sale weeks away.",
-  drv:[{t:"cn",x:"Double 11 / Singles' Day — biggest CN shopping event"},{t:"steam",x:"Steam Black Friday (Nov 26–Dec 3)"}]},
- {m:"2025-12",lbl:"Dec 25",rev:1935621,unit:119660,tag:"🔥 BIGGEST",
-  sum:"Biggest month of the year. Deepest, longest Steam sale + Double 12 + gifting all land together.",
-  drv:[{t:"steam",x:"Steam Winter Sale (Dec 18–Jan 5) — deepest & longest"},{t:"cn",x:"Double 12 shopping event"},{t:"other",x:"Christmas / year-end gifting"}]},
- {m:"2026-01",lbl:"Jan 26",rev:514050,unit:28283,tag:"Mild",
-  sum:"Winter tail + Lunar New Year pre-load + partner reconciliation timing.",
-  drv:[{t:"steam",x:"Steam Winter Sale tail"},{t:"cn",x:"Pre-Lunar-New-Year channel fill"},{t:"other",x:"Q4 partner reconciliation invoicing"}]},
- {m:"2026-02",lbl:"Feb 26",rev:351174,unit:19347,tag:"Mild",
-  sum:"Steam LNY sale + cultural CNY + anniversary. Strategic CN-side month.",
-  drv:[{t:"steam",x:"Steam Lunar New Year Sale"},{t:"cn",x:"Spring Festival / CNY"},{t:"other",x:"ER 4th anniversary (Feb 25)"}]},
- {m:"2026-03",lbl:"Mar 26",rev:1658722,unit:102753,tag:"🔥 Hot",
-  sum:"2nd biggest month. Steam Spring sale + 3.8 + White Day close the year strong.",
-  drv:[{t:"steam",x:"Steam Spring Sale (Mar 12–19)"},{t:"cn",x:"3.8 Women's Day"},{t:"cn",x:"White Day (Mar 14)"}]}
-];
-const BADGE={rel:["b-rel","NEW RELEASE"],steam:["b-steam","STEAM SALE"],cn:["b-cn","CN FESTIVAL"],other:["b-other","OTHER"]};
-let mode="rev", allOpen=false;
-function fmt(v){return mode==="rev" ? "$"+(v/1e6).toFixed(2)+"M" : v.toLocaleString();}
-function render(){
-  const max=Math.max(...DATA.map(d=>d[mode]));
-  const sorted=[...DATA].sort((a,b)=>b[mode]-a[mode]);
-  const topMonth=sorted[0].m;
-  document.getElementById("chart").innerHTML=DATA.map((d,i)=>{
-    const w=Math.max((d[mode]/max)*100,2);
-    const hot=d.m===topMonth;
-    const rank=sorted.findIndex(x=>x.m===d.m)+1;
-    const drv=d.drv.map(r=>{const[c,t]=BADGE[r.t];
-      return `<div class="drv"><span class="badge ${c}">${t}</span><span>${r.x}</span></div>`;}).join("");
-    return `<div class="mrow">
-      <div class="mhead ${allOpen?'open':''}" onclick="toggle(${i})">
-        <span class="caret">▶</span>
-        <div class="mlabel"><b>${d.lbl}</b><span class="tag">${d.tag}</span></div>
-        <div class="track"><div class="fill ${hot?'hot':''}" style="width:${w}%">
-          <span class="val">${rank<=3?'<span class=rank>#'+rank+'</span>':''}${fmt(d[mode])}</span>
-        </div></div>
-      </div>
-      <div class="why ${allOpen?'show':''}" id="why${i}">
-        <p class="summary">${d.sum}</p>${drv}
-      </div>
-    </div>`;
-  }).join("");
-}
-function toggle(i){
-  document.getElementById("why"+i).classList.toggle("show");
-  document.querySelectorAll("#chart .mhead")[i].classList.toggle("open");
-}
-function toggleAll(){
-  allOpen=!allOpen;
-  document.querySelector(".expandbtn").textContent=allOpen?"Collapse all months ▴":"Expand all months ▾";
-  render();
-}
-function setMode(m){
-  mode=m;
-  document.getElementById("bRev").classList.toggle("on",m==="rev");
-  document.getElementById("bUnit").classList.toggle("on",m==="unit");
-  render();
-}
-render();
-
-/* ===== MULTI-YEAR: FY25 vs FY26 by calendar month (units) ===== */
-const MY=[
- {m:"Apr",fy25:null,fy26:3920},
- {m:"May",fy25:null,fy26:59277},
- {m:"Jun",fy25:125614,fy26:51819},
- {m:"Jul",fy25:58236,fy26:28645},
- {m:"Aug",fy25:1951,fy26:23913},
- {m:"Sep",fy25:19939,fy26:15258},
- {m:"Oct",fy25:1812,fy26:15381},
- {m:"Nov",fy25:1361,fy26:9146},
- {m:"Dec",fy25:78612,fy26:119660},
- {m:"Jan",fy25:24534,fy26:28283},
- {m:"Feb",fy25:3790,fy26:19347},
- {m:"Mar",fy25:107355,fy26:102753}
-];
-(function(){
- const max=Math.max(...MY.flatMap(d=>[d.fy25||0,d.fy26||0]));
- const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
- document.getElementById("mychart").innerHTML=
-  `<div style="display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin-bottom:14px">
-     <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#6b7280;vertical-align:middle;margin-right:6px"></span>FY25 (China)</span>
-     <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--gold);vertical-align:middle;margin-right:6px"></span>FY26 (CN/HK/TW)</span>
-   </div>`+
-  MY.map(d=>{
-    const w25=d.fy25?Math.max(d.fy25/max*100,1):0;
-    const w26=d.fy26?Math.max(d.fy26/max*100,1):0;
-    return `<div style="display:flex;align-items:center;gap:10px;margin:7px 0">
-      <div style="width:40px;flex:0 0 40px;font-size:12px;color:var(--muted)">${d.m}</div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:6px;height:14px;margin-bottom:3px">
-          <div style="height:100%;border-radius:4px;background:#6b7280;width:${w25}%"></div>
-          <span style="font-size:10.5px;color:var(--muted)">${d.fy25!=null?k(d.fy25):"no data"}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;height:14px">
-          <div style="height:100%;border-radius:4px;background:var(--gold);width:${w26}%"></div>
-          <span style="font-size:10.5px;color:var(--muted)">${k(d.fy26)}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join("");
-})();
-
-/* ===== ACTIONS: editable forecast model ===== */
-// each month: default Std/Deluxe discount % (editable), + the event label for context
-const MM=[
- {m:"Jul 2026",ev:"Steam Summer tail",std:20,dx:20},
- {m:"Aug 2026",ev:"Switch 2 launch / Gamescom (no discount)",std:0,dx:0},
- {m:"Sep 2026",ev:"Mid-Autumn + Autumn Sale (+DLC if A)",std:15,dx:20},
- {m:"Oct 2026",ev:"Quiet (Golden Week / Halloween)",std:0,dx:0},
- {m:"Nov 2026",ev:"Double 11 + Black Friday",std:20,dx:25},
- {m:"Dec 2026",ev:"Steam Winter + Double 12 (biggest)",std:33,dx:50},
- {m:"Jan 2027",ev:"Winter tail + LNY pre-load",std:15,dx:15},
- {m:"Feb 2027",ev:"Steam LNY + Spring Festival",std:20,dx:25},
- {m:"Mar 2027",ev:"Steam Spring + 3.8",std:25,dx:30}
-];
-const FLOOR_REV=4824356; // Scenario B FY26 actual floor for the delta card
-
-function readInputs(){
-  return {
-    stdBase:+document.getElementById("inStdBase").value||0,
-    dxBase:+document.getElementById("inDxBase").value||0,
-    stdElas:+document.getElementById("inStdElas").value||0,
-    dxElas:+document.getElementById("inDxElas").value||0,
-    stdPrice:+document.getElementById("inStdPrice").value||0,
-    dxPrice:+document.getElementById("inDxPrice").value||0,
-    dlcOn:document.getElementById("inDlcOn").checked,
-    dlcUnits:+document.getElementById("inDlcUnits").value||0,
-    dlcPrice:+document.getElementById("inDlcPrice").value||0,
-    dlcMonth:+document.getElementById("inDlcMonth").value||0
-  };
-}
-const fmt0=v=>Math.round(v).toLocaleString();
-const fmtM=v=>"$"+(v/1e6).toFixed(2)+"M";
-
-function buildGrid(){
-  document.getElementById("inDlcMonth").innerHTML=MM.map((x,i)=>`<option value="${i}">${x.m}</option>`).join("");
-  document.getElementById("inDlcMonth").value=2; // Sep default
-  document.getElementById("gridBody").innerHTML=MM.map((x,i)=>`
-    <tr>
-      <td><b>${x.m}</b></td>
-      <td class="evcell">${x.ev}</td>
-      <td><input type="number" class="cin" id="sd${i}" value="${x.std}" oninput="recalc()">%</td>
-      <td><input type="number" class="cin" id="dd${i}" value="${x.dx}" oninput="recalc()">%</td>
-      <td id="su${i}">—</td><td id="du${i}">—</td><td id="rv${i}">—</td>
-    </tr>`).join("");
-}
-function recalc(){
-  const p=readInputs();
-  let tStdU=0,tDxU=0,tRev=0;
-  MM.forEach((x,i)=>{
-    const sd=(+document.getElementById("sd"+i).value||0)/100;
-    const dd=(+document.getElementById("dd"+i).value||0)/100;
-    let su=p.stdBase*(1+p.stdElas*sd);
-    let du=p.dxBase*(1+p.dxElas*dd);
-    if(su<0)su=0; if(du<0)du=0;
-    let rev=su*p.stdPrice*(1-sd)+du*p.dxPrice*(1-dd);
-    // DLC one-off lands in chosen month if toggled on
-    if(p.dlcOn && i===p.dlcMonth){ rev+=p.dlcUnits*p.dlcPrice; }
-    document.getElementById("su"+i).textContent=fmt0(su);
-    document.getElementById("du"+i).textContent=fmt0(du);
-    document.getElementById("rv"+i).textContent="$"+fmt0(rev);
-    tStdU+=su; tDxU+=du; tRev+=rev;
-  });
-  let totU=tStdU+tDxU+(p.dlcOn?p.dlcUnits:0);
-  document.getElementById("totStdU").textContent=fmt0(tStdU);
-  document.getElementById("totDxU").textContent=fmt0(tDxU);
-  document.getElementById("totRev").textContent="$"+fmt0(tRev);
-  document.getElementById("bigUnits").textContent=fmt0(totU);
-  document.getElementById("bigRev").textContent=fmtM(tRev);
-  const d=tRev-FLOOR_REV, pct=(d/FLOOR_REV*100);
-  document.getElementById("bigDelta").textContent=(d>=0?"+":"")+fmtM(d)+" ("+(d>=0?"+":"")+pct.toFixed(1)+"%)";
-  document.getElementById("bigDelta").style.color=d>=0?"var(--green)":"#ff8b8b";
-}
-
-// Export a real .xlsx with LIVE formulas (SheetJS)
-function exportXlsx(){
-  const p=readInputs();
-  function go(){
-    const wb=XLSX.utils.book_new();
-    const rows=[
-      ["Elden Ring CD Keys — Action Plan model (Jul 2026 → Mar 2027)"],
-      ["Model: units = baseline x (1 + elasticity x discount%). What-if planning, not a guaranteed forecast."],
-      [],
-      ["INPUTS (edit the yellow values; the table recalculates)"],
-      ["Std baseline",p.stdBase,"","Deluxe baseline",p.dxBase],   // B5 / E5
-      ["Std elasticity",p.stdElas,"","Deluxe elasticity",p.dxElas], // B6 / E6
-      ["Std list price",p.stdPrice,"","Deluxe list price",p.dxPrice], // B7 / E7
-      ["DLC on (1/0)",p.dlcOn?1:0,"DLC units",p.dlcUnits,"DLC price",p.dlcPrice,"DLC month #",p.dlcMonth+1], // B8 D8 F8 H8
-      [],
-      ["Month","Event","Std disc%","Dx disc%","Std units","Dx units","Revenue (USD)"]
-    ];
-    const first=rows.length+1; // excel row (1-based) of first month
-    MM.forEach(x=>rows.push([x.m,x.ev,x.std/100,x.dx/100,null,null,null]));
-    const ws=XLSX.utils.aoa_to_sheet(rows);
-    // fixed absolute input refs
-    const SB="$B$5",DB="$E$5",SE="$B$6",DE="$E$6",SP="$B$7",DP="$E$7",ON="$B$8",DU="$D$8",DP2="$F$8",DM="$H$8";
-    MM.forEach((x,i)=>{
-      const r=first+i;
-      ws["E"+r]={t:"n",f:`MAX(0,${SB}*(1+${SE}*C${r}))`};
-      ws["F"+r]={t:"n",f:`MAX(0,${DB}*(1+${DE}*D${r}))`};
-      ws["G"+r]={t:"n",f:`E${r}*${SP}*(1-C${r})+F${r}*${DP}*(1-D${r})+IF(AND(${ON}=1,${DM}=${i+1}),${DU}*${DP2},0)`};
-    });
-    const tot=first+MM.length;
-    ws["A"+tot]={t:"s",v:"YEAR TOTAL"};
-    ws["E"+tot]={t:"n",f:`SUM(E${first}:E${tot-1})`};
-    ws["F"+tot]={t:"n",f:`SUM(F${first}:F${tot-1})`};
-    ws["G"+tot]={t:"n",f:`SUM(G${first}:G${tot-1})`};
-    MM.forEach((x,i)=>{const r=first+i;if(ws["C"+r])ws["C"+r].z="0%";if(ws["D"+r])ws["D"+r].z="0%";});
-    ws["!cols"]=[{wch:10},{wch:36},{wch:9},{wch:9},{wch:11},{wch:11},{wch:15}];
-    ws["!ref"]=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:tot-1,c:7}});
-    XLSX.utils.book_append_sheet(wb,ws,"Action Plan Model");
-    XLSX.writeFile(wb,"Nightreign_Action_Plan_Model.xlsx");
-  }
-  if(window.XLSX){go();}
-  else{
-    const s=document.createElement("script");
-    s.src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
-    s.onload=go; s.onerror=()=>alert("Could not load the Excel library (offline?). Try again online.");
-    document.head.appendChild(s);
-  }
-}
-buildGrid();
-recalc();
 </script>
 </body>
 </html>
