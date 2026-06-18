@@ -101,9 +101,16 @@
   .flag{background:rgba(245,158,11,.12);border-left:3px solid var(--amber);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0}
   .scen{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
   @media(max-width:640px){.scen{grid-template-columns:1fr}}
-  .scard{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card)}
+  .scard{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card);cursor:pointer;transition:transform .12s,border-color .12s,box-shadow .12s}
+  .scard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
   .scard.sa{border-left:3px solid var(--green)}
   .scard.sb{border-left:3px solid var(--muted)}
+  .scard.sa:hover,.scard.sa.active{border-color:var(--green)}
+  .scard.sb:hover,.scard.sb.active{border-color:#cdd3dd}
+  .scard.active{box-shadow:0 0 0 1px currentColor inset}
+  .sgo{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--gold)}
+  .scard.sa .sgo{color:#5fe08a}
+  .scard.sb .sgo{color:#cdd3dd}
   .stitle{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:6px}
   .snum{font-size:24px;font-weight:700}
   .ssub{font-size:13px;color:var(--muted);margin-top:2px}
@@ -195,20 +202,23 @@
 
     <h2>Two scenarios: with new content vs without</h2>
     <p class="sub" style="margin-bottom:14px">Same proven discount calendar both ways. The only difference is whether a new Nightreign content drop lands in the window. <b>Good news:</b> FromSoftware/Kadokawa have signalled another Nightreign drop is targeted before March 2027 — so Scenario A is a real possibility, not a wish.</p>
+    <p class="sub" style="margin:-6px 0 12px;font-size:13px">👇 Click a scenario to jump straight to its action plan.</p>
     <div class="scen">
-      <div class="scard sa">
+      <div class="scard sa" id="scardA" onclick="pickScenario('a')">
         <div class="stitle">Scenario A — new content ships</div>
         <div class="snum">$4.97M – $5.12M</div>
         <div class="ssub">~275k – 283k units</div>
         <div class="sline">FY26 discount calendar <b>+</b> a new Nightreign DLC drop. Range = half a Forsaken Hollows (low) to a full FH repeat (high).</div>
         <div class="stag good">+3% to +6% vs Scenario B</div>
+        <div class="sgo">See the Scenario A plan →</div>
       </div>
-      <div class="scard sb">
+      <div class="scard sb" id="scardB" onclick="pickScenario('b')">
         <div class="stitle">Scenario B — no new content</div>
         <div class="snum">~$4.82M</div>
         <div class="ssub">~267k units</div>
         <div class="sline">Repeat the proven Winter + Spring discount stacks on the existing catalog. This is the floor — and it's a solid floor, backed by two years.</div>
         <div class="stag flat">baseline (FY26 actual)</div>
+        <div class="sgo">See the Scenario B plan →</div>
       </div>
     </div>
     <div class="flag">
@@ -249,8 +259,8 @@
     </table>
     <p class="src">FY26 results are demand-dated revenue from the "Sale Period Ranking" tab. Priority = our recommendation, not historical size alone.</p>
 
-    <h2>Month-by-month — the actions</h2>
-    <p class="sub" style="margin-bottom:10px">Pick a branch. Months that change between scenarios are marked <span class="dchip">DIFFERS</span>. Most months are identical — the discount calendar is the foundation either way.</p>
+    <h2 id="treeAnchor">Month-by-month — the actions</h2>
+    <p class="sub" style="margin-bottom:10px">Pick a branch (or click a scenario card above). Months that change between scenarios are marked <span class="dchip">DIFFERS</span>. Most months are identical — the discount calendar is the foundation either way.</p>
     <div class="branch">
       <button id="brA" class="on" onclick="setBranch('a')">▶ If content ships (A)</button>
       <button id="brB" onclick="setBranch('b')">▶ If no content (B)</button>
@@ -509,7 +519,16 @@ function setBranch(b){
   branch=b;
   document.getElementById("brA").classList.toggle("on",b==="a");
   document.getElementById("brB").classList.toggle("on",b==="b");
+  var sa=document.getElementById("scardA"), sb=document.getElementById("scardB");
+  if(sa) sa.classList.toggle("active",b==="a");
+  if(sb) sb.classList.toggle("active",b==="b");
   renderMonths();
+}
+// click a scenario card -> set that branch and scroll to the month tree
+function pickScenario(b){
+  setBranch(b);
+  var anchor=document.getElementById("treeAnchor");
+  if(anchor) anchor.scrollIntoView({behavior:"smooth",block:"start"});
 }
 renderMonths();
 </script>
