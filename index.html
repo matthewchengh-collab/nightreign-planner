@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elden Ring CD Keys — Best Months (FY26)</title>
+<title>Elden Ring CD Keys — FY26 Review & Action Plan</title>
 <style>
   :root{
     --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2;
     --line:#2a2e38; --gold:#d4af37; --bar:#3b82f6;
     --rel:#a855f7; --steam:#3b82f6; --cn:#ef4444; --other:#6b7280;
+    --amber:#f59e0b;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.5;padding:28px 20px 60px}
-  .wrap{max-width:960px;margin:0 auto}
-  h1{font-size:24px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+    line-height:1.5;padding:24px 20px 70px}
+  .wrap{max-width:980px;margin:0 auto}
+  .hdr h1{font-size:25px;margin:0 0 4px}
+  .hdr .sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+  .hdr .byline{color:var(--muted);font-size:12.5px;margin:0 0 18px;font-style:italic}
+
+  /* main tabs */
+  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .tabs button{background:transparent;color:var(--muted);border:0;border-bottom:2px solid transparent;
+    padding:11px 18px;font-size:15px;cursor:pointer;font-weight:600;margin-bottom:-1px}
+  .tabs button.on{color:var(--gold);border-bottom-color:var(--gold)}
+  .panel{display:none}
+  .panel.on{display:block}
+
+  /* shared */
+  .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+  h2{font-size:17px;margin:30px 0 12px;border-bottom:1px solid var(--line);padding-bottom:7px}
+
+  /* ---- PAST tab ---- */
   .toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
   .toggle button{background:transparent;color:var(--muted);border:0;padding:9px 18px;font-size:14px;cursor:pointer}
   .toggle button.on{background:var(--gold);color:#1a1300;font-weight:600}
@@ -50,42 +66,168 @@
     border-radius:12px;padding:16px 18px;margin-top:22px;font-size:14px}
   .takeaway b{color:var(--gold)}
   .expandbtn{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;margin:0 0 12px}
-  footer{color:var(--muted);font-size:12px;margin-top:24px}
+
+  /* ---- ACTIONS tab ---- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:8px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .l{font-size:12px;color:var(--muted)}
+  .kpi .v{font-size:22px;font-weight:700;margin-top:3px}
+  .kpi .d{font-size:12px;color:var(--muted);margin-top:3px}
+  .lead{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:12px;padding:16px 18px;font-size:14px;margin-bottom:6px}
+  .lead b{color:var(--gold)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px}
+  tr:hover td{background:#20242d}
+  .pri-h{color:#ff8b8b;font-weight:700}
+  .pri-m{color:var(--amber);font-weight:700}
+  .pri-l{color:var(--muted)}
+  .amonth{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .amh{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
+  .amh:hover{background:#20242d}
+  .amh .cal{font-size:11px;color:var(--gold);font-weight:700;width:62px;flex:0 0 62px}
+  .amh .ttl{font-weight:600;flex:1}
+  .amh .ptag{font-size:11px;padding:2px 9px;border-radius:20px;background:#23272f;color:var(--muted)}
+  .amh .ptag.big{background:rgba(212,175,55,.18);color:var(--gold)}
+  .amh .acaret{color:var(--muted);transition:transform .15s}
+  .amh.open .acaret{transform:rotate(90deg)}
+  .amb{display:none;padding:4px 16px 16px;font-size:13.5px}
+  .amb.show{display:block}
+  .amb ul{margin:6px 0 10px;padding-left:18px}
+  .amb li{margin:4px 0}
+  .amb .lbl2{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px;margin:10px 0 2px;font-weight:600}
+  .owner{display:inline-block;background:#23272f;border-radius:6px;padding:1px 7px;font-size:12px;color:var(--ink)}
+  .flag{background:rgba(245,158,11,.12);border-left:3px solid var(--amber);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0}
+
+  footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
+  .src{color:var(--muted);font-size:11.5px;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Elden Ring CD Keys — Which Months Sell Most & Why</h1>
-  <p class="sub">FY26 (Apr 2025 – Mar 2026) · China + Hong Kong + Taiwan · all editions · source: EldenRing_CDK_FY26_v3</p>
-
-  <div class="toggle">
-    <button id="bRev" class="on" onclick="setMode('rev')">Revenue (USD)</button>
-    <button id="bUnit" onclick="setMode('unit')">Units</button>
+  <div class="hdr">
+    <h1>Elden Ring CD Keys — FY26 Review & Action Plan</h1>
+    <p class="sub">China + Hong Kong + Taiwan digital keys (USD) · whole Elden Ring catalog · source: EldenRing_CDK_FY26_v3</p>
+    <p class="byline">For leadership review, then Bandai Namco Europe. Co-authored with Jeremy.</p>
   </div>
 
-  <div class="keylegend">
-    <span><span class="dot" style="background:var(--rel)"></span>New release / DLC</span>
-    <span><span class="dot" style="background:var(--steam)"></span>Steam sale</span>
-    <span><span class="dot" style="background:var(--cn)"></span>CN/Asia festival or shopping event</span>
-    <span><span class="dot" style="background:var(--other)"></span>Other</span>
+  <div class="tabs">
+    <button id="tabPast" class="on" onclick="showTab('past')">What happened (FY26)</button>
+    <button id="tabAct" onclick="showTab('act')">Action plan (Jul → Mar)</button>
   </div>
 
-  <button class="expandbtn" onclick="toggleAll()">Expand all months ▾</button>
-  <div class="chart" id="chart"></div>
+  <!-- ============== PAST PANEL ============== -->
+  <div class="panel on" id="panel-past">
+    <p class="sub">Which months sold most in FY26 (Apr 2025 – Mar 2026), and why.</p>
 
-  <div class="takeaway">
-    <b>The pattern:</b> almost every spike is a <b>Steam discount sale</b>, usually stacked on top of a <b>Chinese shopping festival</b>.
-    The two exceptions are the <b>May 2025 Nightreign launch</b> (new release, full price) and <b>Dec 2025</b>, the biggest month, where Steam Winter + Double 12 + holiday gifting all land together.
-    Pure cultural festivals with <b>no discount mechanic</b> (Gamescom, Mid-Autumn, anniversary) barely move units — discount is the real driver.
+    <div class="toggle">
+      <button id="bRev" class="on" onclick="setMode('rev')">Revenue (USD)</button>
+      <button id="bUnit" onclick="setMode('unit')">Units</button>
+    </div>
+
+    <div class="keylegend">
+      <span><span class="dot" style="background:var(--rel)"></span>New release / DLC</span>
+      <span><span class="dot" style="background:var(--steam)"></span>Steam sale</span>
+      <span><span class="dot" style="background:var(--cn)"></span>CN/Asia festival or shopping event</span>
+      <span><span class="dot" style="background:var(--other)"></span>Other</span>
+    </div>
+
+    <button class="expandbtn" onclick="toggleAll()">Expand all months ▾</button>
+    <div class="chart" id="chart"></div>
+
+    <div class="takeaway">
+      <b>The pattern:</b> almost every spike is a <b>Steam discount sale</b>, usually stacked on top of a <b>Chinese shopping festival</b>.
+      The two exceptions are the <b>May 2025 Nightreign launch</b> (new release, full price) and <b>Dec 2025</b>, the biggest month, where Steam Winter + Double 12 + holiday gifting all land together.
+      Pure cultural festivals with <b>no discount mechanic</b> (Gamescom, Mid-Autumn, anniversary) barely move units — discount is the real driver.
+    </div>
+    <p class="src">Click any month to see its drivers. Demand-dated figures (reflects when demand happened, not when invoiced).</p>
   </div>
 
-  <footer>Click any month to see its drivers. Demand-dated figures (reflects when demand happened, not when invoiced). · <a href="actions.html">Action plan Jul→Mar →</a> · <a href="calculator.html">Summer Sale calculator →</a></footer>
+  <!-- ============== ACTIONS PANEL ============== -->
+  <div class="panel" id="panel-act">
+    <p class="sub">July 2026 → March 2027 — what to do each month, the asks to Bandai, and the prep deadlines.</p>
+
+    <h2>The one-slide version</h2>
+    <div class="cards">
+      <div class="kpi"><div class="l">FY26 actual (full year)</div><div class="v">$4.82M</div><div class="d">267k units · CN/HK/TW</div></div>
+      <div class="kpi"><div class="l">Nightreign group share</div><div class="v">80%</div><div class="d">the engine; base ER tail is thin</div></div>
+      <div class="kpi"><div class="l">Biggest lever</div><div class="v">Steam sales</div><div class="d">7 events = $1.32M, stacked on CN festivals</div></div>
+      <div class="kpi"><div class="l">New variable this window</div><div class="v">Switch 2</div><div class="d">Tarnished Ed. launches Aug 28</div></div>
+    </div>
+    <div class="lead">
+      <b>The plan in one sentence:</b> pre-load keys ahead of the four discount stacks that drove FY26
+      (<b>Summer/618</b>, <b>Mid-Autumn/Autumn</b>, <b>Winter/Double-12</b>, <b>LNY/Spring</b>), push <b>Nightreign Deluxe</b>
+      on the deep ones because it's the most discount-elastic SKU, and treat the <b>Aug 28 Switch 2 Tarnished Edition</b>
+      launch as a marketing tailwind for the PC catalog — not a competitor to it.
+    </div>
+
+    <h2>Promo calendar — what to hit, Jul → Mar</h2>
+    <table>
+      <thead><tr><th>Window</th><th>Event</th><th>Type</th><th>FY26 result</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td>Jul 1–10</td><td>Steam Summer Sale tail</td><td><span class="badge b-steam">STEAM</span></td><td>part of $385k Summer</td><td class="pri-m">MED</td></tr>
+        <tr><td>Aug 19–23</td><td>Gamescom (marketing only)</td><td><span class="badge b-rel">EVENT</span></td><td>$80k — no discount</td><td class="pri-l">LOW</td></tr>
+        <tr><td>Aug 28</td><td>Switch 2 Tarnished Edition launch</td><td><span class="badge b-rel">RELEASE</span></td><td>new — not in FY26</td><td class="pri-h">HIGH</td></tr>
+        <tr><td>Sep 6–8</td><td>Mid-Autumn Festival</td><td><span class="badge b-cn">CN FEST</span></td><td>$104k</td><td class="pri-m">MED</td></tr>
+        <tr><td>Sep 15</td><td>New DLC drop? (push BNE)</td><td><span class="badge b-rel">RELEASE</span></td><td>Forsaken Hollows did $300k</td><td class="pri-h">HIGH</td></tr>
+        <tr><td>Sep 29–Oct 6</td><td>Steam Autumn Sale</td><td><span class="badge b-steam">STEAM</span></td><td>$21k (underused)</td><td class="pri-m">MED</td></tr>
+        <tr><td>Nov 1–11</td><td>Double 11 / Singles' Day</td><td><span class="badge b-cn">CN E-COMM</span></td><td>$126k — underperforms vs hype</td><td class="pri-m">MED</td></tr>
+        <tr><td>Nov 26–Dec 3</td><td>Steam Black Friday</td><td><span class="badge b-steam">STEAM</span></td><td>$108k</td><td class="pri-m">MED</td></tr>
+        <tr><td>Dec 18–Jan 5</td><td>Steam Winter Sale + Double 12</td><td><span class="badge b-steam">STEAM</span></td><td>$672k — biggest sale of year</td><td class="pri-h">HIGH</td></tr>
+        <tr><td>Jan 29–Feb 5</td><td>Steam Lunar New Year Sale</td><td><span class="badge b-steam">STEAM</span></td><td>$85k</td><td class="pri-m">MED</td></tr>
+        <tr><td>Feb 17–25</td><td>Spring Festival + ER anniversary</td><td><span class="badge b-cn">CN FEST</span></td><td>$124k combined</td><td class="pri-m">MED</td></tr>
+        <tr><td>Mar 12–19</td><td>Steam Spring Sale + 3.8</td><td><span class="badge b-steam">STEAM</span></td><td>$81k combined</td><td class="pri-m">MED</td></tr>
+      </tbody>
+    </table>
+    <p class="src">FY26 results are demand-dated revenue from the "Sale Period Ranking" tab. Priority = our recommendation, not historical size alone.</p>
+
+    <h2>Month-by-month — the actions</h2>
+    <p class="sub" style="margin-bottom:14px">Click any month. Each lists the play, the SKU to push, the prep deadline, and the owner.</p>
+    <div id="amonths"></div>
+
+    <h2>What we need from Bandai (the asks)</h2>
+    <div class="lead" style="border-left-color:var(--cn)">
+      <b>Ask 1 — Approve a year-long discount ladder.</b> Standard up to ~33% on deep Steam sales (Winter, Summer), Deluxe up to ~50% (it's 10× more discount-elastic — proven in Dec data). One approval, not twelve.<br><br>
+      <b>Ask 2 — Land a new Nightreign DLC drop in this window.</b> Forsaken Hollows alone delivered ~12% of FY26 from a half-year run. A fresh drop around Sep would re-anchor the whole catalog.<br><br>
+      <b>Ask 3 — Co-market the Switch 2 launch into PC keys.</b> The Aug 28 Tarnished Edition is a giant awareness moment. We want assets/timing to convert that attention into discounted PC catalog keys in CN/HK/TW.
+    </div>
+
+    <h2>Team execution — key-allocation deadlines</h2>
+    <p class="sub" style="margin-bottom:8px">Keys must be pre-loaded BEFORE the stack opens, or we miss the spike. These are the hard dates.</p>
+    <table>
+      <thead><tr><th>Pre-load by</th><th>For this stack</th><th>Owner</th></tr></thead>
+      <tbody>
+        <tr><td class="pri-h">Aug 20</td><td>Switch 2 launch co-marketing window</td><td><span class="owner">Jeremy</span></td></tr>
+        <tr><td class="pri-h">Sep 1</td><td>Mid-Autumn + new DLC + Autumn Sale</td><td><span class="owner">Matt</span></td></tr>
+        <tr><td class="pri-h">Dec 10</td><td>Winter Sale + Double 12 + gifting (biggest)</td><td><span class="owner">Matt</span></td></tr>
+        <tr><td class="pri-m">Jan 22</td><td>LNY + Spring Festival</td><td><span class="owner">Jeremy</span></td></tr>
+        <tr><td class="pri-m">Mar 5</td><td>Spring Sale + 3.8</td><td><span class="owner">Matt</span></td></tr>
+      </tbody>
+    </table>
+    <div class="flag">
+      ⚠ <b>Owners are placeholders.</b> Confirm who owns each window before this goes to Bandai. Dates assume the FY27 Steam calendar mirrors FY26 — verify against Steam's published 2026–27 sale dates when they're out.
+    </div>
+  </div>
+
+  <footer>
+    Source: EldenRing_CDK_FY26_v3 (Monthly Trend + Sale Period Ranking, demand-dated, CN/HK/TW, USD).
+    Switch 2 Tarnished Edition: Aug 28 2026, $79.99, Game Key Card. · <a href="calculator.html">Open the Summer Sale calculator →</a>
+  </footer>
 </div>
 
 <script>
-// Real figures + drivers from EldenRing_CDK_FY26_v3 "Monthly Trend" promo calendar.
-// type: rel = new release/DLC, steam = Steam sale, cn = CN/Asia festival or shopping event, other
+/* ===== main tab switch ===== */
+function showTab(t){
+  document.getElementById("panel-past").classList.toggle("on",t==="past");
+  document.getElementById("panel-act").classList.toggle("on",t==="act");
+  document.getElementById("tabPast").classList.toggle("on",t==="past");
+  document.getElementById("tabAct").classList.toggle("on",t==="act");
+  window.scrollTo(0,0);
+}
+
+/* ===== PAST: best-months chart ===== */
 const DATA=[
  {m:"2025-04",lbl:"Apr 25",rev:77676,unit:3920,tag:"Quiet",
   sum:"No major promo. Pre-Nightreign channel quiet.",
@@ -124,11 +266,9 @@ const DATA=[
   sum:"2nd biggest month. Steam Spring sale + 3.8 + White Day close the year strong.",
   drv:[{t:"steam",x:"Steam Spring Sale (Mar 12–19)"},{t:"cn",x:"3.8 Women's Day"},{t:"cn",x:"White Day (Mar 14)"}]}
 ];
-
 const BADGE={rel:["b-rel","NEW RELEASE"],steam:["b-steam","STEAM SALE"],cn:["b-cn","CN FESTIVAL"],other:["b-other","OTHER"]};
 let mode="rev", allOpen=false;
 function fmt(v){return mode==="rev" ? "$"+(v/1e6).toFixed(2)+"M" : v.toLocaleString();}
-
 function render(){
   const max=Math.max(...DATA.map(d=>d[mode]));
   const sorted=[...DATA].sort((a,b)=>b[mode]-a[mode]);
@@ -155,7 +295,7 @@ function render(){
 }
 function toggle(i){
   document.getElementById("why"+i).classList.toggle("show");
-  document.querySelectorAll(".mhead")[i].classList.toggle("open");
+  document.querySelectorAll("#chart .mhead")[i].classList.toggle("open");
 }
 function toggleAll(){
   allOpen=!allOpen;
@@ -169,6 +309,66 @@ function setMode(m){
   render();
 }
 render();
+
+/* ===== ACTIONS: month accordion ===== */
+const MONTHS=[
+ {cal:"JUL 2026",ttl:"Close out the Summer tail",tag:"Med",
+  play:["Run the Steam Summer Sale tail (ends ~Jul 10) at Conservative depth — Std 20%, Deluxe 20%.","Don't over-discount: launch novelty is gone, this is a clean catalog sale, so protect margin."],
+  sku:"Nightreign Standard (volume); Deluxe at modest depth",
+  dead:"Keys already loaded from Jun pre-load",owner:"Matt"},
+ {cal:"AUG 2026",ttl:"Switch 2 launch = free marketing",tag:"big",
+  play:["Aug 28 Tarnished Edition (Switch 2) launches — huge awareness spike for the franchise.","Convert that attention into PC catalog key demand in CN/HK/TW. Time a light promo + storefront refresh around launch week.","Gamescom (Aug 19–23) is marketing-only — no discount, expect little direct lift (FY26: $80k, flat)."],
+  sku:"Whole catalog visibility; Nightreign Std as the hero",
+  dead:"Pre-load by Aug 20",owner:"Jeremy"},
+ {cal:"SEP 2026",ttl:"Re-anchor the catalog",tag:"big",
+  play:["Mid-Autumn (Sep 6–8): CN festival, ran $104k in FY26 — worth a targeted promo.","PUSH BANDAI for a new Nightreign DLC drop (~Sep). Forsaken Hollows did $300k from a half-year — a fresh drop resets demand.","Steam Autumn Sale (Sep 29–Oct 6) is historically underused ($21k) — opportunity to do better."],
+  sku:"New DLC if landed; otherwise Deluxe + Std",
+  dead:"Pre-load by Sep 1",owner:"Matt"},
+ {cal:"OCT 2026",ttl:"Quiet — hold fire",tag:"Low",
+  play:["Golden Week + Double 10 + Halloween all ran in FY26 but tiny ($1–17k each).","Don't burn discount budget here. Keep prices steady, let buyers anticipate Winter."],
+  sku:"No active push; baseline only",
+  dead:"—",owner:"Matt"},
+ {cal:"NOV 2026",ttl:"Fix Double 11",tag:"Med",
+  play:["Double 11 (Singles' Day) is the biggest CN shopping day but UNDERPERFORMED in FY26 ($126k vs the hype).","Design a Double-11-specific bundle/promo this year — this is the clearest 'do better than last year' lever.","Steam Black Friday (Nov 26–Dec 3) warms up Winter — moderate depth."],
+  sku:"Deluxe bundle for Double 11; Std on Black Friday",
+  dead:"Pre-load by Oct 28",owner:"Jeremy"},
+ {cal:"DEC 2026",ttl:"The big one — go deep",tag:"big",
+  play:["Steam Winter Sale (Dec 18–Jan 5) is the deepest, longest sale + Double 12 + holiday gifting. FY26: $672k, the #2 driver of the whole year.","Go to Deep depth — Std up to 33%, Deluxe up to 50%. Deluxe spiked ~10× on discount in Dec FY26 — this is where elasticity pays.","This single window can outperform the Summer Sale ~2×. If forced to pick one bet for the year, it's this."],
+  sku:"Deluxe HARD (most elastic) + Std volume",
+  dead:"Pre-load by Dec 10 (hard deadline)",owner:"Matt"},
+ {cal:"JAN 2027",ttl:"Winter tail + LNY pre-load",tag:"Med",
+  play:["Steam Winter tail runs into early Jan — keep it live.","Begin pre-loading for Lunar New Year (late Jan). Watch partner reconciliation timing so demand isn't mis-dated."],
+  sku:"Std on tail; prep Deluxe for LNY",
+  dead:"Pre-load LNY by Jan 22",owner:"Jeremy"},
+ {cal:"FEB 2027",ttl:"LNY + anniversary, CN-side",tag:"Med",
+  play:["Steam Lunar New Year Sale (late Jan–early Feb): $85k FY26.","Spring Festival/CNY + ER anniversary (Feb 22–25) combined ~$124k — culturally strong, lean CN/HK/TW.","Anniversary is a marketing hook even without deep discount."],
+  sku:"Deluxe + Std; anniversary-framed bundle",
+  dead:"Covered by Jan 22 pre-load",owner:"Jeremy"},
+ {cal:"MAR 2027",ttl:"Close the year strong",tag:"Med",
+  play:["Steam Spring Sale (Mar 12–19) + 3.8 Women's Day + White Day — combined ~$81k, and Mar was the #2 revenue MONTH in FY26.","Final discount push before FY27 closes. Med-to-deep depth to clear the year's number.","Capture Mar demand early — some invoices slip into Apr (next FY)."],
+  sku:"Std volume + Deluxe at depth",
+  dead:"Pre-load by Mar 5",owner:"Matt"}
+];
+const ATAG={big:"High priority",Med:"Medium",Low:"Low"};
+document.getElementById("amonths").innerHTML=MONTHS.map((m,i)=>`
+  <div class="amonth">
+    <div class="amh" onclick="ta(${i})">
+      <span class="cal">${m.cal}</span>
+      <span class="ttl">${m.ttl}</span>
+      <span class="ptag ${m.tag==='big'?'big':''}">${ATAG[m.tag]||m.tag}</span>
+      <span class="acaret">▶</span>
+    </div>
+    <div class="amb" id="amb${i}">
+      <div class="lbl2">The play</div>
+      <ul>${m.play.map(p=>`<li>${p}</li>`).join("")}</ul>
+      <div class="lbl2">SKU to push</div><div>${m.sku}</div>
+      <div class="lbl2">Key pre-load</div><div>${m.dead} · owner <span class="owner">${m.owner}</span></div>
+    </div>
+  </div>`).join("");
+function ta(i){
+  document.getElementById("amb"+i).classList.toggle("show");
+  document.querySelectorAll("#amonths .amh")[i].classList.toggle("open");
+}
 </script>
 </body>
 </html>
