@@ -68,15 +68,42 @@
   <p class="byline">Just the data, laid out. No recommendation baked in — for you and Jeremy to read.</p>
 
   <div class="tabs">
-    <button id="tA" class="on" onclick="tab('a')">Year at a glance</button>
+    <button id="tG" class="on" onclick="tab('g')">★ Big picture</button>
+    <button id="tA" onclick="tab('a')">Year at a glance</button>
     <button id="tE" onclick="tab('e')">vs SEGA (control)</button>
     <button id="tB" onclick="tab('b')">SKU mix</button>
     <button id="tC" onclick="tab('c')">Events: traffic vs capture</button>
     <button id="tD" onclick="tab('d')">Full table</button>
   </div>
 
+  <!-- ===== G: big picture ===== -->
+  <div class="panel on" id="pg">
+    <div class="kpis">
+      <div class="kpi"><div class="l">CN festivals in the year</div><div class="v">11 of 12</div><div class="d">only Oct is empty (Golden Week travel)</div></div>
+      <div class="kpi"><div class="l">Festivals ER activated on</div><div class="v">5</div><div class="d">every one coincided with a Steam sale</div></div>
+      <div class="kpi"><div class="l">CN-native events ignored</div><div class="v">6</div><div class="d">520·8.8·818·9.9·Double 11·CNY</div></div>
+      <div class="kpi"><div class="l">CN promo without Steam, ever</div><div class="v">0</div><div class="d">in 2 full years of data</div></div>
+    </div>
+
+    <h2>The whole year, one view</h2>
+    <p class="note">Each row: ER units that month, the China shopping festival(s) in it, whether Steam also ran a sale, and whether we activated. The blind spot: we only ever fire when Steam fires.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--act)"></span>Activated (we ran a promo)</span>
+      <span><span class="dot" style="background:var(--full)"></span>Full price — festival ignored</span>
+      <span><span class="dot" style="background:var(--old)"></span>No festival (truly quiet)</span>
+    </div>
+    <div class="chart" id="chartG"></div>
+
+    <div class="ev strong" style="margin-top:16px;border-left-color:var(--amber)">
+      <div class="t" style="font-size:15px">The big picture</div>
+      <div class="x" style="font-size:13px;color:var(--ink);line-height:1.6">
+        China has a major shopping festival in <b>11 of 12 months</b> — but Elden Ring only ever activated on the <b>5</b> that happened to land on a Steam sale. Six China-native events (520, 8.8, 818, 9.9, Double 11, CNY) ran at <b>full price, no promo</b>. We've been running a Steam-only playbook in a market that shops year-round. SEGA &amp; Cyberpunk work these festivals every month; we never have. That's the gap — bigger than "Nov &amp; Feb," it's the whole CN-native calendar.
+      </div>
+    </div>
+  </div>
+
   <!-- ===== A: year at a glance ===== -->
-  <div class="panel on" id="pa">
+  <div class="panel" id="pa">
     <div class="kpis">
       <div class="kpi"><div class="l">FY26 China total</div><div class="v" id="kTot">—</div><div class="d">all SKUs, units</div></div>
       <div class="kpi"><div class="l">Biggest month</div><div class="v">Dec</div><div class="d">119,664 units</div></div>
@@ -173,6 +200,37 @@ const maxT=Math.max(...D.map(d=>d.tot));
 const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
 document.getElementById("kTot").textContent=D.reduce((s,d)=>s+d.tot,0).toLocaleString();
 
+// ===== BIG PICTURE: festival x Steam x activation =====
+// fest = China festival(s) that month; steam = Steam sale present; act = ER ran a promo
+const BP=[
+ {m:"Apr",fest:"—",steam:false,act:false},
+ {m:"May",fest:"520 (Valentine's) + LAUNCH",steam:false,act:false,launch:true},
+ {m:"Jun",fest:"618",steam:true,act:true},
+ {m:"Jul",fest:"(618 tail)",steam:true,act:true},
+ {m:"Aug",fest:"8.8 Super Brand + 818 + Qixi",steam:false,act:false},
+ {m:"Sep",fest:"9.9 + Mid-Autumn (+DLC)",steam:false,act:false},
+ {m:"Oct",fest:"— (Golden Week = travel)",steam:false,act:false,empty:true},
+ {m:"Nov",fest:"Double 11",steam:false,act:false},
+ {m:"Dec",fest:"Double 12",steam:true,act:true},
+ {m:"Jan",fest:"(pre-CNY)",steam:true,act:true},
+ {m:"Feb",fest:"CNY / Lunar New Year",steam:true,act:false},
+ {m:"Mar",fest:"Goddess Day 3.8",steam:true,act:true}
+];
+const byM=Object.fromEntries(D.map(d=>[d.m,d.tot]));
+document.getElementById("chartG").innerHTML=BP.map(b=>{
+  const tot=byM[b.m]||0;
+  const w=Math.max(tot/maxT*100,1.5);
+  let color=b.empty?"var(--old)":(b.act||b.launch)?"var(--act)":"var(--full)";
+  const steamTag=b.steam?'<span class="badge b-act" style="background:rgba(59,130,246,.2);color:#7eacff">Steam</span>':'';
+  const missTag=(!b.act && !b.launch && !b.empty && b.fest!=="—")?'<span class="badge b-full">✗ ignored</span>':'';
+  return `<div class="brow" title="${b.m}: ${tot.toLocaleString()} units — ${b.fest}">
+    <div class="blabel">${b.m}</div>
+    <div class="btrack"><div class="bseg" style="width:${w}%;background:${color}"></div>
+      <div class="bval">${tot.toLocaleString()}</div></div>
+    <div class="bev" style="width:230px;flex:0 0 230px">${b.fest} ${steamTag} ${missTag}</div>
+  </div>`;
+}).join("");
+
 // chart A: total, colored by activation
 document.getElementById("chartA").innerHTML=D.map(d=>{
   const act=d.promo||d.intent==="launch";
@@ -253,7 +311,7 @@ te+="</tbody>";
 document.getElementById("tblE").innerHTML=te;
 
 function tab(t){
-  ["a","b","c","d","e"].forEach(x=>{
+  ["g","a","b","c","d","e"].forEach(x=>{
     document.getElementById("p"+x).classList.toggle("on",x===t);
     document.getElementById("t"+x.toUpperCase()).classList.toggle("on",x===t);
   });
