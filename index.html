@@ -115,6 +115,7 @@
 
   <div class="tabs">
     <button id="tabPast" class="on" onclick="showTab('past')">What happened (FY26)</button>
+    <button id="tabMulti" onclick="showTab('multi')">Does it repeat? (2 yrs)</button>
     <button id="tabAct" onclick="showTab('act')">Action plan (Jul → Mar)</button>
   </div>
 
@@ -145,6 +146,32 @@
     <p class="src">Click any month to see its drivers. Demand-dated figures (reflects when demand happened, not when invoiced).</p>
   </div>
 
+  <!-- ============== MULTI-YEAR PANEL ============== -->
+  <div class="panel" id="panel-multi">
+    <p class="sub">Two independent years of monthly data. The question that matters: do the seasonal spikes actually repeat, or was FY26 a one-off?</p>
+
+    <div class="takeaway" style="margin-top:0;margin-bottom:18px">
+      <b>Answer: yes, the pattern holds.</b> Across FY25 and FY26, <b>December (Winter Sale)</b> and <b>March (Spring Sale)</b> are top-2 months both years.
+      <b>August</b> is the dead zone both years (FY25's single lowest). <b>November / Double 11</b> underperforms both years.
+      The plan is built on a repeating pattern, not a single year's luck.
+    </div>
+
+    <div class="chart" id="mychart" style="padding:18px 16px"></div>
+
+    <table style="margin-top:18px">
+      <thead><tr><th>Pattern</th><th>FY25</th><th>FY26</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Dec / Winter Sale is a top month</td><td>#3 (78.6k u)</td><td>#1 (119.7k u)</td><td class="pri-h">REPEATS</td></tr>
+        <tr><td>Mar / Spring Sale is a top month</td><td>#1 (107.4k u)</td><td>#2 (102.8k u)</td><td class="pri-h">REPEATS</td></tr>
+        <tr><td>Aug flatlines (no discount mechanic)</td><td>lowest (2.0k u)</td><td>low (23.9k u)</td><td class="pri-h">REPEATS</td></tr>
+        <tr><td>Nov / Double 11 underperforms the hype</td><td>near-lowest (1.4k u)</td><td>weak (9.1k u)</td><td class="pri-h">REPEATS</td></tr>
+      </tbody>
+    </table>
+    <div class="flag">
+      ⚠ <b>Scope note:</b> FY25 figures are China-only; FY26 is CN/HK/TW. HK/TW is a small slice, so this compares the <i>shape</i> of the year (which months spike), not exact unit levels. Older FY22–FY23 data exists but is order-dated (batch invoices cluster into single months), so it's not used for monthly seasonality.
+    </div>
+  </div>
+
   <!-- ============== ACTIONS PANEL ============== -->
   <div class="panel" id="panel-act">
     <p class="sub">July 2026 → March 2027 — what to do each month, the asks to Bandai, and the prep deadlines.</p>
@@ -153,14 +180,14 @@
     <div class="cards">
       <div class="kpi"><div class="l">FY26 actual (full year)</div><div class="v">$4.82M</div><div class="d">267k units · CN/HK/TW</div></div>
       <div class="kpi"><div class="l">Nightreign group share</div><div class="v">80%</div><div class="d">the engine; base ER tail is thin</div></div>
-      <div class="kpi"><div class="l">Biggest lever</div><div class="v">Steam sales</div><div class="d">7 events = $1.32M, stacked on CN festivals</div></div>
+      <div class="kpi"><div class="l">Pattern confidence</div><div class="v">2 years</div><div class="d">Dec & Mar top both yrs — see "Does it repeat?"</div></div>
       <div class="kpi"><div class="l">New variable this window</div><div class="v">Switch 2</div><div class="d">Tarnished Ed. launches Aug 28</div></div>
     </div>
     <div class="lead">
-      <b>The plan in one sentence:</b> pre-load keys ahead of the four discount stacks that drove FY26
-      (<b>Summer/618</b>, <b>Mid-Autumn/Autumn</b>, <b>Winter/Double-12</b>, <b>LNY/Spring</b>), push <b>Nightreign Deluxe</b>
-      on the deep ones because it's the most discount-elastic SKU, and treat the <b>Aug 28 Switch 2 Tarnished Edition</b>
-      launch as a marketing tailwind for the PC catalog — not a competitor to it.
+      <b>The plan in one sentence:</b> pre-load keys ahead of the discount stacks that drove sales <b>two years running</b>
+      (<b>Winter/Double-12</b> and <b>Spring</b> are the proven bets; <b>Summer/618</b> and <b>LNY</b> are secondary), push <b>Nightreign Deluxe</b>
+      on the deep ones because it's the most discount-elastic SKU, fix the <b>Double 11 underperformance</b> that recurs every year,
+      and bet on the <b>Aug 28 Switch 2 Tarnished Edition</b> launch as the one genuinely new upside this window.
     </div>
 
     <h2>Promo calendar — what to hit, Jul → Mar</h2>
@@ -212,7 +239,7 @@
   </div>
 
   <footer>
-    Source: EldenRing_CDK_FY26_v3 (Monthly Trend + Sale Period Ranking, demand-dated, CN/HK/TW, USD).
+    Sources: EldenRing_CDK_FY26_v3 (FY26, demand-dated, CN/HK/TW) + Elden Ring Purchase &amp; Sales Summary FY25 (FY25 monthly, China). FY22–23 transaction history reviewed for launch context.
     Switch 2 Tarnished Edition: Aug 28 2026, $79.99, Game Key Card. · <a href="calculator.html">Open the Summer Sale calculator →</a>
   </footer>
 </div>
@@ -221,8 +248,10 @@
 /* ===== main tab switch ===== */
 function showTab(t){
   document.getElementById("panel-past").classList.toggle("on",t==="past");
+  document.getElementById("panel-multi").classList.toggle("on",t==="multi");
   document.getElementById("panel-act").classList.toggle("on",t==="act");
   document.getElementById("tabPast").classList.toggle("on",t==="past");
+  document.getElementById("tabMulti").classList.toggle("on",t==="multi");
   document.getElementById("tabAct").classList.toggle("on",t==="act");
   window.scrollTo(0,0);
 }
@@ -309,6 +338,48 @@ function setMode(m){
   render();
 }
 render();
+
+/* ===== MULTI-YEAR: FY25 vs FY26 by calendar month (units) ===== */
+const MY=[
+ {m:"Apr",fy25:null,fy26:3920},
+ {m:"May",fy25:null,fy26:59277},
+ {m:"Jun",fy25:125614,fy26:51819},
+ {m:"Jul",fy25:58236,fy26:28645},
+ {m:"Aug",fy25:1951,fy26:23913},
+ {m:"Sep",fy25:19939,fy26:15258},
+ {m:"Oct",fy25:1812,fy26:15381},
+ {m:"Nov",fy25:1361,fy26:9146},
+ {m:"Dec",fy25:78612,fy26:119660},
+ {m:"Jan",fy25:24534,fy26:28283},
+ {m:"Feb",fy25:3790,fy26:19347},
+ {m:"Mar",fy25:107355,fy26:102753}
+];
+(function(){
+ const max=Math.max(...MY.flatMap(d=>[d.fy25||0,d.fy26||0]));
+ const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
+ document.getElementById("mychart").innerHTML=
+  `<div style="display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin-bottom:14px">
+     <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#6b7280;vertical-align:middle;margin-right:6px"></span>FY25 (China)</span>
+     <span><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--gold);vertical-align:middle;margin-right:6px"></span>FY26 (CN/HK/TW)</span>
+   </div>`+
+  MY.map(d=>{
+    const w25=d.fy25?Math.max(d.fy25/max*100,1):0;
+    const w26=d.fy26?Math.max(d.fy26/max*100,1):0;
+    return `<div style="display:flex;align-items:center;gap:10px;margin:7px 0">
+      <div style="width:40px;flex:0 0 40px;font-size:12px;color:var(--muted)">${d.m}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;height:14px;margin-bottom:3px">
+          <div style="height:100%;border-radius:4px;background:#6b7280;width:${w25}%"></div>
+          <span style="font-size:10.5px;color:var(--muted)">${d.fy25!=null?k(d.fy25):"no data"}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;height:14px">
+          <div style="height:100%;border-radius:4px;background:var(--gold);width:${w26}%"></div>
+          <span style="font-size:10.5px;color:var(--muted)">${k(d.fy26)}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+})();
 
 /* ===== ACTIONS: month accordion ===== */
 const MONTHS=[
