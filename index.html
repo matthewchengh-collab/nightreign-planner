@@ -64,11 +64,12 @@
 <body>
 <div class="wrap">
   <h1>Elden Ring China — FY26 Data View</h1>
-  <p class="sub">China only (SEA stripped) · Apr 2025 – Mar 2026 · units &amp; revenue by month, SKU, and event · source: EPICSOFT royalty master + Heybox</p>
-  <p class="byline">Just the data, laid out. No recommendation baked in — for you and Jeremy to read.</p>
+  <p class="sub">China only · Apr 2025 – Mar 2026 · <b style="color:var(--amber)">CONSIGNMENT business — these numbers are redemptions, not demand.</b></p>
+  <p class="byline">Jeremy's challenge changed the read: the channel (Funbox) holds a finite code pile and redeems only on discount months. Start at the "Consignment reality" tab.</p>
 
   <div class="tabs">
-    <button id="tG" class="on" onclick="tab('g')">★ Big picture</button>
+    <button id="tR" class="on" onclick="tab('r')">★ Consignment reality</button>
+    <button id="tG" onclick="tab('g')">Big picture (old read)</button>
     <button id="tH" onclick="tab('h')">4-year history</button>
     <button id="tA" onclick="tab('a')">Year at a glance</button>
     <button id="tE" onclick="tab('e')">vs SEGA (control)</button>
@@ -77,8 +78,52 @@
     <button id="tD" onclick="tab('d')">Full table</button>
   </div>
 
+  <!-- ===== R: consignment reality ===== -->
+  <div class="panel on" id="pr">
+    <div class="ev strong" style="margin:0 0 18px;border-left-color:var(--amber)">
+      <div class="t" style="font-size:16px;color:var(--amber)">Jeremy's challenge — the data means something different than we thought</div>
+      <div class="x" style="font-size:13.5px;color:var(--ink);line-height:1.6;margin-top:6px">
+        This is a <b>consignment</b> business. Funbox (the channel) already holds a large pile of ER codes. EPICSOFT books revenue only when a code is <b>redeemed</b> — and Funbox redeems almost only in <b>discount months</b>. No discount → they report <b>0</b>. So the monthly "sales" we charted are <b>redemption timing of a finite pile</b>, not customer demand.
+      </div>
+    </div>
+
+    <h2>What this breaks vs what survives</h2>
+    <div class="ev-grid" style="margin-bottom:8px">
+      <div class="ev skip" style="border-left-color:var(--red)">
+        <div class="t" style="color:#ff8b8b">✗ Breaks</div>
+        <div class="x" style="color:var(--ink);font-size:12.5px;line-height:1.55">
+          "Spikes = demand" — circular: redemptions only fire on discounts.<br><br>
+          "Dead months are weak" — no, they're months with no discount, so Funbox redeems 0.<br><br>
+          "6 festivals = growth" — likely just drains the same finite pile sooner.
+        </div>
+      </div>
+      <div class="ev strong">
+        <div class="t" style="color:#5fe0a8">✓ Survives</div>
+        <div class="x" style="color:var(--ink);font-size:12.5px;line-height:1.55">
+          Revenue books on redemption → redemption timing genuinely is EPICSOFT revenue timing.<br><br>
+          Discounts ARE the redemption trigger — they're a revenue-release valve.<br><br>
+          The pile is real and large (see below).
+        </div>
+      </div>
+    </div>
+
+    <h2>The unredeemed pile (FY25, China)</h2>
+    <p class="note">Codes allocated to the channel vs actually redeemed. The gap = stranded stock that only converts to revenue on a discount.</p>
+    <div class="chart" id="chartPile" style="padding:16px"></div>
+
+    <h2>The spacing effect (base ER, FY25)</h2>
+    <p class="note">Why promos can't be too close: each discount draws down the pile. Back-to-back sales drain it, then the next month collapses to 0. Spaced sales hit fresh stock.</p>
+    <div class="chart" id="chartSpace" style="padding:16px"></div>
+    <div class="ev strong" style="margin-top:14px;border-left-color:var(--gold)">
+      <div class="t" style="font-size:15px">The real question now</div>
+      <div class="x" style="font-size:13px;color:var(--ink);line-height:1.6">
+        Not "how many festivals can we hit" — but <b>how far apart must promos be</b> so each one converts fresh stock instead of double-discounting the same pile. Jun→Jul fired back-to-back, then Aug collapsed to 0. The biggest dump (Mar, 100k) came after a gap. Spacing is the lever.
+      </div>
+    </div>
+  </div>
+
   <!-- ===== G: big picture ===== -->
-  <div class="panel on" id="pg">
+  <div class="panel" id="pg">
     <div class="kpis">
       <div class="kpi"><div class="l">CN festivals in the year</div><div class="v">11 of 12</div><div class="d">only Oct is empty (Golden Week travel)</div></div>
       <div class="kpi"><div class="l">Festivals ER activated on</div><div class="v">5</div><div class="d">every one coincided with a Steam sale</div></div>
@@ -218,6 +263,49 @@ D.forEach(d=>d.tot=d.std+d.dx+d.old);
 const maxT=Math.max(...D.map(d=>d.tot));
 const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
 document.getElementById("kTot").textContent=D.reduce((s,d)=>s+d.tot,0).toLocaleString();
+
+// ===== CONSIGNMENT: unredeemed pile + spacing =====
+(function(){
+ const pile=[
+  {sku:"SOTE Edition",alloc:50000,red:28761},
+  {sku:"SOTE Deluxe",alloc:20000,red:2924},
+  {sku:"SOTE DLC",alloc:150000,red:99375},
+  {sku:"SOTE Premium DLC",alloc:30000,red:25937}
+ ];
+ const mx=Math.max(...pile.map(p=>p.alloc));
+ const k=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
+ let h=`<div style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-bottom:12px">
+   <span><span style="display:inline-block;width:11px;height:11px;background:var(--act);border-radius:2px;vertical-align:middle;margin-right:5px"></span>redeemed (booked)</span>
+   <span><span style="display:inline-block;width:11px;height:11px;background:var(--amber);border-radius:2px;vertical-align:middle;margin-right:5px"></span>unredeemed (stranded in channel)</span></div>`;
+ let totU=0;
+ pile.forEach(p=>{
+  const un=p.alloc-p.red; totU+=un;
+  const wr=p.red/mx*100, wu=un/mx*100;
+  h+=`<div style="margin:9px 0"><div style="font-size:12px;color:var(--ink);margin-bottom:3px">${p.sku} — ${k(un)} stranded</div>
+   <div style="display:flex;height:22px;background:#12141a;border-radius:5px;overflow:hidden;width:${wr+wu}%;min-width:40px">
+     <div style="background:var(--act);width:${wr/(wr+wu)*100}%"></div>
+     <div style="background:var(--amber);width:${wu/(wr+wu)*100}%"></div>
+   </div></div>`;
+ });
+ h+=`<div style="margin-top:12px;font-size:14px;color:var(--amber);font-weight:600">~${totU.toLocaleString()} SOTE-family codes stranded in China (FY25). Nightreign pile not yet sized.</div>`;
+ document.getElementById("chartPile").innerHTML=h;
+
+ // spacing
+ const sp=[["Jun",41268,1],["Jul",38909,1],["Aug",0,0],["Sep",17515,1],["Oct",0,0],["Nov",0,0],["Dec",69509,1],["Jan",20880,1],["Feb",0,0],["Mar",100000,1]];
+ const smx=Math.max(...sp.map(x=>x[1]));
+ let s2="";
+ sp.forEach(([m,v,disc])=>{
+  const w=Math.max(v/smx*100,0.8);
+  const col=v===0?"var(--old)":"var(--act)";
+  s2+=`<div style="display:flex;align-items:center;gap:10px;margin:5px 0">
+    <div style="width:42px;font-size:11px;color:var(--muted)">${m}</div>
+    <div style="flex:1;background:#12141a;border-radius:5px;height:22px;position:relative">
+      <div style="height:100%;border-radius:5px;background:${col};width:${w}%"></div>
+      <span style="position:absolute;left:${Math.min(w+1,80)}%;top:0;height:100%;display:flex;align-items:center;font-size:10.5px;color:var(--muted);padding-left:6px">${v===0?'0 — no discount':v.toLocaleString()}</span>
+    </div></div>`;
+ });
+ document.getElementById("chartSpace").innerHTML=s2;
+})();
 
 // ===== 4-YEAR HISTORY by festival =====
 // status: clean number | "batch" (noise) | null (no data / SKU absent)
@@ -363,7 +451,7 @@ te+="</tbody>";
 document.getElementById("tblE").innerHTML=te;
 
 function tab(t){
-  ["g","h","a","b","c","d","e"].forEach(x=>{
+  ["r","g","h","a","b","c","d","e"].forEach(x=>{
     document.getElementById("p"+x).classList.toggle("on",x===t);
     document.getElementById("t"+x.toUpperCase()).classList.toggle("on",x===t);
   });
