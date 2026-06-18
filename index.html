@@ -69,6 +69,7 @@
 
   <div class="tabs">
     <button id="tA" class="on" onclick="tab('a')">Year at a glance</button>
+    <button id="tE" onclick="tab('e')">vs SEGA (control)</button>
     <button id="tB" onclick="tab('b')">SKU mix</button>
     <button id="tC" onclick="tab('c')">Events: traffic vs capture</button>
     <button id="tD" onclick="tab('d')">Full table</button>
@@ -108,6 +109,37 @@
     <h2>Every shopping event — did we capture it?</h2>
     <p class="note">Each card = a month's event, the CN shopping traffic it carried, whether we activated, and what we captured. Border: green = worked &amp; strong · amber = real event, not worked · grey = low-intent, accept.</p>
     <div class="ev-grid" id="evGrid"></div>
+  </div>
+
+  <!-- ===== E: vs SEGA control group ===== -->
+  <div class="panel" id="pe">
+    <h2>Elden Ring vs SEGA — same channel, opposite strategy</h2>
+    <p class="note">SEGA sells through the same Heybox channel. We reverse-engineered their promo behavior from SRP vs actual sale price. The control test: are the "weak" ER months weak for everyone, or just us?</p>
+
+    <div class="kpis">
+      <div class="kpi"><div class="l">SEGA months on discount</div><div class="v">12 of 12</div><div class="d">85–97% of units, all year</div></div>
+      <div class="kpi"><div class="l">ER months on discount</div><div class="v">5 of 12</div><div class="d">only Steam-sale months</div></div>
+      <div class="kpi"><div class="l">Months ER out-earned SEGA</div><div class="v">9 of 10</div><div class="d">at full price</div></div>
+      <div class="kpi"><div class="l">Only month SEGA won</div><div class="v">Feb</div><div class="d">CNY — they ran 80% off</div></div>
+    </div>
+
+    <h2 style="margin-top:24px">Heybox revenue: ER (full price) vs SEGA (deep discount)</h2>
+    <p class="note">¥ = net units × actual sale price. Bars to scale. ER wins almost every month <i>despite</i> never discounting — except February.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--act)"></span>Elden Ring (full price)</span>
+      <span><span class="dot" style="background:var(--amber)"></span>SEGA (discount-everything)</span>
+    </div>
+    <div class="chart" id="chartE"></div>
+
+    <h2 style="margin-top:24px">SEGA's promo calendar (reverse-engineered)</h2>
+    <p class="note">They're permanently on sale — there's no on/off calendar, the whole year is one rolling discount. ER's column is the contrast.</p>
+    <table id="tblE"></table>
+    <div class="ev strong" style="margin-top:16px;border-left-color:var(--act)">
+      <div class="t" style="font-size:15px">The finding</div>
+      <div class="x" style="font-size:13px;color:var(--ink);line-height:1.6">
+        ER's full-price strategy beats SEGA's discount-everything strategy almost every month, often 4–9×. <b>November isn't actually weak in revenue</b> (ER ¥2.08M vs SEGA ¥1.21M) — it only looked weak in units because ER sells fewer keys at much higher prices. <b>February is the one genuine soft spot</b> — the single month a discounting competitor out-earned us (SEGA ¥2.25M vs ER ¥1.91M), because CNY + Steam LNY is when China buyers are most discount-hungry. That's the one window where testing a controlled ER promo might be worth it.
+      </div>
+    </div>
   </div>
 
   <!-- ===== D: full table ===== -->
@@ -189,8 +221,39 @@ D.forEach(d=>{html+=`<tr><td><b>${d.m}</b></td><td>${d.std.toLocaleString()}</td
 html+="</tbody>";
 document.getElementById("tbl").innerHTML=html;
 
+// ===== control group: ER vs SEGA (Heybox) =====
+const CG=[
+ {m:"Aug",er:3824776,sega:721234,segaDisc:92,segaMax:75},
+ {m:"Sep",er:2196756,sega:670173,segaDisc:94,segaMax:60},
+ {m:"Oct",er:1901836,sega:678001,segaDisc:92,segaMax:60},
+ {m:"Nov",er:2084138,sega:1207289,segaDisc:90,segaMax:70},
+ {m:"Dec",er:13094738,sega:1383830,segaDisc:97,segaMax:85},
+ {m:"Jan",er:2074215,sega:562509,segaDisc:85,segaMax:85},
+ {m:"Feb",er:1913758,sega:2254250,segaDisc:93,segaMax:80},
+ {m:"Mar",er:7874139,sega:1791717,segaDisc:96,segaMax:80}
+];
+const maxCG=Math.max(...CG.flatMap(d=>[d.er,d.sega]));
+const M=v=>"¥"+(v/1e6).toFixed(2)+"M";
+document.getElementById("chartE").innerHTML=CG.map(d=>{
+  const we=d.er/maxCG*100, ws=d.sega/maxCG*100;
+  const segaWon=d.sega>d.er;
+  return `<div style="margin:10px 0" title="${d.m}: ER ${M(d.er)} vs SEGA ${M(d.sega)}">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:3px">${d.m}${segaWon?' &nbsp;<span style="color:var(--amber)">← SEGA wins</span>':''}</div>
+    <div style="display:flex;align-items:center;gap:6px;height:15px;margin-bottom:3px">
+      <div style="height:100%;border-radius:4px;background:var(--act);width:${we}%"></div>
+      <span style="font-size:10.5px;color:var(--muted)">${M(d.er)}</span></div>
+    <div style="display:flex;align-items:center;gap:6px;height:15px">
+      <div style="height:100%;border-radius:4px;background:var(--amber);width:${ws}%"></div>
+      <span style="font-size:10.5px;color:var(--muted)">${M(d.sega)}</span></div>
+  </div>`;
+}).join("");
+let te=`<thead><tr><th>Month</th><th>SEGA % units on sale</th><th>SEGA max % off</th><th>ER promo?</th></tr></thead><tbody>`;
+CG.forEach(d=>{te+=`<tr><td><b>${d.m}</b></td><td>${d.segaDisc}%</td><td>${d.segaMax}% off</td><td><span class="badge b-full">full price</span></td></tr>`;});
+te+="</tbody>";
+document.getElementById("tblE").innerHTML=te;
+
 function tab(t){
-  ["a","b","c","d"].forEach(x=>{
+  ["a","b","c","d","e"].forEach(x=>{
     document.getElementById("p"+x).classList.toggle("on",x===t);
     document.getElementById("t"+x.toUpperCase()).classList.toggle("on",x===t);
   });
