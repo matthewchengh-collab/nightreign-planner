@@ -7,40 +7,56 @@
 <style>
   :root{
     --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2;
-    --line:#2a2e38; --gold:#d4af37; --bar:#3b82f6; --barhot:#d4af37;
-    --good:#22c55e;
+    --line:#2a2e38; --gold:#d4af37; --bar:#3b82f6;
+    --rel:#a855f7; --steam:#3b82f6; --cn:#ef4444; --other:#6b7280;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.5;padding:28px 20px 60px}
-  .wrap{max-width:920px;margin:0 auto}
+  .wrap{max-width:960px;margin:0 auto}
   h1{font-size:24px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 22px}
-  .toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:20px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+  .toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
   .toggle button{background:transparent;color:var(--muted);border:0;padding:9px 18px;font-size:14px;cursor:pointer}
   .toggle button.on{background:var(--gold);color:#1a1300;font-weight:600}
-  .chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
-  .row{display:flex;align-items:center;gap:12px;margin:10px 0;cursor:default}
-  .mlabel{width:96px;flex:0 0 96px;font-size:13px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+  .keylegend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 18px}
+  .keylegend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:6px}
+  .chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px}
+  .mrow{border-bottom:1px solid var(--line)}
+  .mrow:last-child{border-bottom:0}
+  .mhead{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer}
+  .mhead:hover{background:#20242d}
+  .caret{color:var(--muted);font-size:11px;width:12px;flex:0 0 12px;transition:transform .15s}
+  .mhead.open .caret{transform:rotate(90deg)}
+  .mlabel{width:90px;flex:0 0 90px;font-size:13px;color:var(--muted)}
   .mlabel b{color:var(--ink);display:block;font-size:13px}
-  .track{flex:1;background:#12141a;border-radius:7px;height:30px;position:relative;overflow:hidden}
+  .tag{font-size:11px;color:var(--muted)}
+  .track{flex:1;background:#12141a;border-radius:7px;height:26px;position:relative;overflow:hidden}
   .fill{height:100%;border-radius:7px;background:var(--bar);transition:width .5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
   .fill.hot{background:linear-gradient(90deg,#b8932f,var(--gold))}
   .val{font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
-  .tag{font-size:11px;color:var(--muted);margin-left:2px}
-  .legend{margin-top:18px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
-  .dot{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:middle;margin-right:6px}
+  .rank{display:inline-block;color:var(--gold);font-weight:700;font-size:12px;margin-right:4px}
+  .why{display:none;padding:2px 14px 14px 118px}
+  .why.show{display:block}
+  .why .summary{font-size:12.5px;color:var(--muted);margin:0 0 8px;font-style:italic}
+  .drv{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:5px 0}
+  .badge{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap;flex:0 0 auto;margin-top:1px}
+  .b-rel{background:rgba(168,85,247,.18);color:#c98bff}
+  .b-steam{background:rgba(59,130,246,.18);color:#7eacff}
+  .b-cn{background:rgba(239,68,68,.18);color:#ff8b8b}
+  .b-other{background:rgba(107,114,128,.22);color:#aab1bd}
   .takeaway{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
     border-radius:12px;padding:16px 18px;margin-top:22px;font-size:14px}
   .takeaway b{color:var(--gold)}
+  .expandbtn{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;margin:0 0 12px}
   footer{color:var(--muted);font-size:12px;margin-top:24px}
-  .rank{display:inline-block;width:18px;color:var(--gold);font-weight:700;font-size:12px}
+  footer a{color:var(--gold)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Elden Ring CD Keys — Which Months Sell Most</h1>
+  <h1>Elden Ring CD Keys — Which Months Sell Most & Why</h1>
   <p class="sub">FY26 (Apr 2025 – Mar 2026) · China + Hong Kong + Taiwan · all editions · source: EldenRing_CDK_FY26_v3</p>
 
   <div class="toggle">
@@ -48,60 +64,103 @@
     <button id="bUnit" onclick="setMode('unit')">Units</button>
   </div>
 
+  <div class="keylegend">
+    <span><span class="dot" style="background:var(--rel)"></span>New release / DLC</span>
+    <span><span class="dot" style="background:var(--steam)"></span>Steam sale</span>
+    <span><span class="dot" style="background:var(--cn)"></span>CN/Asia festival or shopping event</span>
+    <span><span class="dot" style="background:var(--other)"></span>Other</span>
+  </div>
+
+  <button class="expandbtn" onclick="toggleAll()">Expand all months ▾</button>
   <div class="chart" id="chart"></div>
 
-  <div class="legend">
-    <span><span class="dot" style="background:var(--gold)"></span>Top discount-driven month</span>
-    <span><span class="dot" style="background:var(--bar)"></span>Other months</span>
-  </div>
-
   <div class="takeaway">
-    <b>The pattern:</b> sales spike when Steam runs a deep discount sale.
-    The three biggest are <b>Winter (Dec)</b> &gt; <b>Spring (Mar)</b> &gt; <b>Summer (Jun–Jul)</b>.
-    December wins because it's the deepest, longest sale (Steam Winter, Dec 18–Jan 5) stacked with Double 12 and holiday gifting.
-    The proposed <b>Summer Sale (Jun 26–Jul 10)</b> is only the #4 month — Winter sells roughly 2× more.
+    <b>The pattern:</b> almost every spike is a <b>Steam discount sale</b>, usually stacked on top of a <b>Chinese shopping festival</b>.
+    The two exceptions are the <b>May 2025 Nightreign launch</b> (new release, full price) and <b>Dec 2025</b>, the biggest month, where Steam Winter + Double 12 + holiday gifting all land together.
+    Pure cultural festivals with <b>no discount mechanic</b> (Gamescom, Mid-Autumn, anniversary) barely move units — discount is the real driver.
   </div>
 
-  <footer>Hover a bar for the promo events that drove that month. Demand-dated figures (reflects when demand happened, not when invoiced). · <a href="calculator.html" style="color:var(--gold)">Open the Summer Sale calculator →</a></footer>
+  <footer>Click any month to see its drivers. Demand-dated figures (reflects when demand happened, not when invoiced). · <a href="calculator.html">Open the Summer Sale calculator →</a></footer>
 </div>
 
 <script>
-// Real figures from EldenRing_CDK_FY26_v3 "Monthly Trend" tab
+// Real figures + drivers from EldenRing_CDK_FY26_v3 "Monthly Trend" promo calendar.
+// type: rel = new release/DLC, steam = Steam sale, cn = CN/Asia festival or shopping event, other
 const DATA=[
- {m:"2025-04",lbl:"Apr 25",rev:77676,unit:3920,tag:"Quiet",ev:"No major promo. Pre-Nightreign channel quiet."},
- {m:"2025-05",lbl:"May 25",rev:1101717,unit:59277,tag:"🚀 Launch",ev:"Nightreign launch (May 30) + CN 5.20 promo."},
- {m:"2025-06",lbl:"Jun 25",rev:900396,unit:51819,tag:"🔥 Hot",ev:"618 Festival + Steam Summer Sale + Nightreign launch tail."},
- {m:"2025-07",lbl:"Jul 25",rev:487100,unit:28645,tag:"Mild",ev:"Steam Summer Sale tail + post-launch demand."},
- {m:"2025-08",lbl:"Aug 25",rev:436429,unit:23913,tag:"Mild",ev:"Gamescom marketing pulse. No discount mechanic."},
- {m:"2025-09",lbl:"Sep 25",rev:277110,unit:15258,tag:"Quiet",ev:"Mid-Autumn + Forsaken Hollows DLC launch + Steam Autumn."},
- {m:"2025-10",lbl:"Oct 25",rev:283986,unit:15381,tag:"Quiet",ev:"Golden Week + Double 10 + Steam Halloween."},
- {m:"2025-11",lbl:"Nov 25",rev:270638,unit:9146,tag:"Quiet",ev:"Double 11 + Steam Black Friday."},
- {m:"2025-12",lbl:"Dec 25",rev:1935621,unit:119660,tag:"🔥 BIGGEST",ev:"Double 12 + Steam Winter Sale + holiday gifting. Biggest month of the year."},
- {m:"2026-01",lbl:"Jan 26",rev:514050,unit:28283,tag:"Mild",ev:"Steam Winter tail + Lunar New Year pre-load."},
- {m:"2026-02",lbl:"Feb 26",rev:351174,unit:19347,tag:"Mild",ev:"Steam LNY Sale + CNY + ER 4th anniversary."},
- {m:"2026-03",lbl:"Mar 26",rev:1658722,unit:102753,tag:"🔥 Hot",ev:"Steam Spring Sale + 3.8 Women's Day + White Day."}
+ {m:"2025-04",lbl:"Apr 25",rev:77676,unit:3920,tag:"Quiet",
+  sum:"No major promo. Pre-Nightreign channel quiet.",
+  drv:[{t:"cn",x:"Easter (Apr 20) — minor"}]},
+ {m:"2025-05",lbl:"May 25",rev:1101717,unit:59277,tag:"🚀 Launch",
+  sum:"Nightreign launches at full price May 30. Demand all from the new release, not a discount.",
+  drv:[{t:"rel",x:"Nightreign launch (May 30) — full price"},{t:"cn",x:"5.20 promo (CN) — minor pulse"}]},
+ {m:"2025-06",lbl:"Jun 25",rev:900396,unit:51819,tag:"🔥 Hot",
+  sum:"618 + Steam Summer + Nightreign launch tail all stack. This is the proposed Summer Sale window.",
+  drv:[{t:"cn",x:"618 Festival (Jun 1–18) — major CN shopping event"},{t:"steam",x:"Steam Summer Sale (Jun 26–Jul 10)"},{t:"rel",x:"Nightreign launch tail"},{t:"cn",x:"Dragon Boat Festival (Jun 9)"}]},
+ {m:"2025-07",lbl:"Jul 25",rev:487100,unit:28645,tag:"Mild",
+  sum:"Summer Sale tail + continued post-launch sell-through.",
+  drv:[{t:"steam",x:"Steam Summer Sale tail (ends Jul 10)"},{t:"rel",x:"Nightreign post-launch demand"}]},
+ {m:"2025-08",lbl:"Aug 25",rev:436429,unit:23913,tag:"Mild",
+  sum:"Marketing pulse only — no discount mechanic, so units stay flat.",
+  drv:[{t:"other",x:"Gamescom (Aug 19–23) — marketing, no discount"},{t:"cn",x:"Qixi Festival (Aug 19)"}]},
+ {m:"2025-09",lbl:"Sep 25",rev:277110,unit:15258,tag:"Quiet",
+  sum:"Multi-driver month, but each driver is small.",
+  drv:[{t:"cn",x:"Mid-Autumn Festival (Sep 6)"},{t:"rel",x:"Forsaken Hollows DLC launch (Sep 15)"},{t:"steam",x:"Steam Autumn Sale (Sep 29–Oct 6)"}]},
+ {m:"2025-10",lbl:"Oct 25",rev:283986,unit:15381,tag:"Quiet",
+  sum:"Triple-stacked festivals + Halloween sale, but on a tired catalog.",
+  drv:[{t:"steam",x:"Steam Autumn Sale tail + Halloween Sale (Oct 27–Nov 3)"},{t:"cn",x:"CN Golden Week (Oct 1–7)"},{t:"cn",x:"TW Double 10"}]},
+ {m:"2025-11",lbl:"Nov 25",rev:270638,unit:9146,tag:"Quiet",
+  sum:"Lowest unit month — buyers hold out for the deeper Winter sale weeks away.",
+  drv:[{t:"cn",x:"Double 11 / Singles' Day — biggest CN shopping event"},{t:"steam",x:"Steam Black Friday (Nov 26–Dec 3)"}]},
+ {m:"2025-12",lbl:"Dec 25",rev:1935621,unit:119660,tag:"🔥 BIGGEST",
+  sum:"Biggest month of the year. Deepest, longest Steam sale + Double 12 + gifting all land together.",
+  drv:[{t:"steam",x:"Steam Winter Sale (Dec 18–Jan 5) — deepest & longest"},{t:"cn",x:"Double 12 shopping event"},{t:"other",x:"Christmas / year-end gifting"}]},
+ {m:"2026-01",lbl:"Jan 26",rev:514050,unit:28283,tag:"Mild",
+  sum:"Winter tail + Lunar New Year pre-load + partner reconciliation timing.",
+  drv:[{t:"steam",x:"Steam Winter Sale tail"},{t:"cn",x:"Pre-Lunar-New-Year channel fill"},{t:"other",x:"Q4 partner reconciliation invoicing"}]},
+ {m:"2026-02",lbl:"Feb 26",rev:351174,unit:19347,tag:"Mild",
+  sum:"Steam LNY sale + cultural CNY + anniversary. Strategic CN-side month.",
+  drv:[{t:"steam",x:"Steam Lunar New Year Sale"},{t:"cn",x:"Spring Festival / CNY"},{t:"other",x:"ER 4th anniversary (Feb 25)"}]},
+ {m:"2026-03",lbl:"Mar 26",rev:1658722,unit:102753,tag:"🔥 Hot",
+  sum:"2nd biggest month. Steam Spring sale + 3.8 + White Day close the year strong.",
+  drv:[{t:"steam",x:"Steam Spring Sale (Mar 12–19)"},{t:"cn",x:"3.8 Women's Day"},{t:"cn",x:"White Day (Mar 14)"}]}
 ];
 
-let mode="rev";
+const BADGE={rel:["b-rel","NEW RELEASE"],steam:["b-steam","STEAM SALE"],cn:["b-cn","CN FESTIVAL"],other:["b-other","OTHER"]};
+let mode="rev", allOpen=false;
 function fmt(v){return mode==="rev" ? "$"+(v/1e6).toFixed(2)+"M" : v.toLocaleString();}
 
 function render(){
   const max=Math.max(...DATA.map(d=>d[mode]));
-  // rank for highlight
   const sorted=[...DATA].sort((a,b)=>b[mode]-a[mode]);
   const topMonth=sorted[0].m;
-  const c=document.getElementById("chart");
-  c.innerHTML=DATA.map(d=>{
+  document.getElementById("chart").innerHTML=DATA.map((d,i)=>{
     const w=Math.max((d[mode]/max)*100,2);
     const hot=d.m===topMonth;
     const rank=sorted.findIndex(x=>x.m===d.m)+1;
-    return `<div class="row" title="${d.lbl} — ${d.tag}\n${d.ev}">
-      <div class="mlabel"><b>${d.lbl}</b><span class="tag">${d.tag}</span></div>
-      <div class="track"><div class="fill ${hot?'hot':''}" style="width:${w}%">
-        <span class="val">${rank<=3?'<span class=rank>#'+rank+'</span>':''}${fmt(d[mode])}</span>
-      </div></div>
+    const drv=d.drv.map(r=>{const[c,t]=BADGE[r.t];
+      return `<div class="drv"><span class="badge ${c}">${t}</span><span>${r.x}</span></div>`;}).join("");
+    return `<div class="mrow">
+      <div class="mhead ${allOpen?'open':''}" onclick="toggle(${i})">
+        <span class="caret">▶</span>
+        <div class="mlabel"><b>${d.lbl}</b><span class="tag">${d.tag}</span></div>
+        <div class="track"><div class="fill ${hot?'hot':''}" style="width:${w}%">
+          <span class="val">${rank<=3?'<span class=rank>#'+rank+'</span>':''}${fmt(d[mode])}</span>
+        </div></div>
+      </div>
+      <div class="why ${allOpen?'show':''}" id="why${i}">
+        <p class="summary">${d.sum}</p>${drv}
+      </div>
     </div>`;
   }).join("");
+}
+function toggle(i){
+  document.getElementById("why"+i).classList.toggle("show");
+  document.querySelectorAll(".mhead")[i].classList.toggle("open");
+}
+function toggleAll(){
+  allOpen=!allOpen;
+  document.querySelector(".expandbtn").textContent=allOpen?"Collapse all months ▴":"Expand all months ▾";
+  render();
 }
 function setMode(m){
   mode=m;
