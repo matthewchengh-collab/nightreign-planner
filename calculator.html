@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elden Ring: Nightreign — Summer Sale Planner</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#faf9f6;color:#1d1d1b;padding:24px;max-width:960px;margin:0 auto;line-height:1.6}
+h1{font-size:22px;font-weight:500;margin-bottom:4px}
+.sub{color:#5f5e5a;font-size:13px;margin-bottom:20px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:20px}
+button{background:#fff;border:1px solid #d3d1c7;color:#1d1d1b;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+button:hover{background:#f1efe8}
+button.on{background:#1d1d1b;color:#fff;border-color:#1d1d1b}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.card{background:#fff;border:1px solid #e8e6df;border-radius:10px;padding:16px}
+.card .l{font-size:13px;color:#5f5e5a}
+.card .v{font-size:24px;font-weight:500;margin-top:4px}
+.sku{background:#fff;border:1px solid #e8e6df;border-radius:12px;padding:16px 20px;margin-bottom:12px}
+.sku .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sku .nm{font-weight:500}
+.sku .note{font-size:13px;color:#5f5e5a}
+.row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.row label{font-size:13px;color:#5f5e5a;min-width:70px}
+input[type=range]{flex:1;accent-color:#BA7517}
+.out{font-size:14px;font-weight:500;min-width:64px;text-align:right}
+.stats{display:flex;gap:18px;font-size:13px;color:#5f5e5a}
+.stats b{color:#1d1d1b}
+.chartwrap{position:relative;width:100%;height:260px;margin:8px 0 12px}
+.legend{font-size:13px;color:#5f5e5a;line-height:1.8}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px}
+.sectlbl{font-size:13px;color:#5f5e5a;margin-bottom:6px;margin-top:8px}
+.method{font-size:12px;color:#888780;margin-top:20px;border-top:1px solid #e8e6df;padding-top:12px}
+</style>
+</head>
+<body>
+<div style="font-family:sans-serif;padding:8px 14px;background:#1a1d24;color:#d4af37;font-size:13px"><a href="index.html" style="color:#d4af37">← Back to best-months overview</a></div>
+<h1>Elden Ring: Nightreign — Summer Sale Planner</h1>
+<div class="sub">Steam Summer Sale · Jun 26 – Jul 10, 2026 · Nightreign + Deluxe · CN/HK/TW digital · forecast off FY26 demand-dated history · Switch 2 Tarnished Ed. launches Aug 28 (base/SOTE physical shift to cart, no clash)</div>
+
+<div class="btnrow">
+  <span style="font-size:13px;color:#5f5e5a;">Scenario:</span>
+  <button onclick="preset('base',this)" class="on">Conservative (Summer '25 comp)</button>
+  <button onclick="preset('deep',this)">Deep (Winter-depth)</button>
+  <button onclick="preset('push',this)">Deluxe push</button>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="l">Forecast units</div><div class="v" id="m-units">—</div></div>
+  <div class="card"><div class="l">Forecast revenue</div><div class="v" id="m-rev">—</div></div>
+  <div class="card"><div class="l">Blended $/unit</div><div class="v" id="m-ppu">—</div></div>
+  <div class="card"><div class="l">vs Summer '25</div><div class="v" id="m-delta">—</div></div>
+</div>
+
+<div class="sku">
+  <div class="top"><span class="nm">Nightreign — Standard</span><span class="note">base list $19.99 · ~17k/mo baseline · elasticity 1.9</span></div>
+  <div class="row"><label>Discount</label><input type="range" id="d-std" min="0" max="60" value="20" step="5"><span class="out" id="d-std-out">20%</span></div>
+  <div class="stats"><span>price <b id="p-std">—</b></span><span>units <b id="u-std">—</b></span><span>rev <b id="r-std">—</b></span></div>
+</div>
+
+<div class="sku">
+  <div class="top"><span class="nm">Nightreign — Deluxe</span><span class="note">base list $24.99 · most discount-elastic · elasticity 3.4</span></div>
+  <div class="row"><label>Discount</label><input type="range" id="d-dx" min="0" max="60" value="20" step="5"><span class="out" id="d-dx-out">20%</span></div>
+  <div class="stats"><span>price <b id="p-dx">—</b></span><span>units <b id="u-dx">—</b></span><span>rev <b id="r-dx">—</b></span></div>
+</div>
+
+<div class="sectlbl">FY26 monthly Nightreign units (CN/HK/TW) — spikes track deep Steam sales</div>
+<div class="chartwrap"><canvas id="trend" role="img" aria-label="Monthly Nightreign units: launch spike May, hot June, biggest spike December Winter Sale, March Spring Sale spike">Nightreign units peak at launch (May), December Winter Sale, March Spring Sale.</canvas></div>
+
+<div class="legend">
+  <i style="background:#BA7517"></i> Steam Summer Sale (your window, Jun 26–Jul 10) &nbsp;·&nbsp;
+  <i style="background:#185FA5"></i> Deep Steam sale (Winter/Spring) &nbsp;·&nbsp;
+  <i style="background:#534AB7"></i> Nightreign launch &nbsp;·&nbsp;
+  <i style="background:#1D9E75"></i> Deluxe
+</div>
+
+<div class="method">
+Method: forecast = baseline monthly units × (1 + elasticity × discount%). Elasticity derived from FY26 $/unit→volume relationship (Std ~1.9, Deluxe ~3.4 — Deluxe spiked ~10× in the Winter sale). Baselines and list prices are placeholders pending confirmed CN/HK/TW list prices. Comp window: Steam Summer Sale 2025 = 20,322 units / $384,877. Source: EldenRing_CDK_FY26_v3.xlsx (demand-dated). Switch 2 Tarnished Edition (base + SOTE) launches Aug 28, 2026 — base ER & SOTE physical not in scope as the cart version supersedes them.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<script>
+const LIST={std:19.99,dx:24.99};
+const BASE={std:17000,dx:3000};
+const E={std:1.9,dx:3.4};
+const SUMMER25={units:20322,rev:384877};
+function calc(sku,disc){
+  const price=LIST[sku]*(1-disc/100);
+  const units=Math.round(BASE[sku]*(1+E[sku]*(disc/100)));
+  return {price,units,rev:Math.round(units*price)};
+}
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+function update(){
+  const ds=+document.getElementById('d-std').value, dd=+document.getElementById('d-dx').value;
+  document.getElementById('d-std-out').textContent=ds+'%';
+  document.getElementById('d-dx-out').textContent=dd+'%';
+  const s=calc('std',ds), x=calc('dx',dd);
+  document.getElementById('p-std').textContent='$'+s.price.toFixed(2);
+  document.getElementById('u-std').textContent=s.units.toLocaleString();
+  document.getElementById('r-std').textContent=fmt(s.rev);
+  document.getElementById('p-dx').textContent='$'+x.price.toFixed(2);
+  document.getElementById('u-dx').textContent=x.units.toLocaleString();
+  document.getElementById('r-dx').textContent=fmt(x.rev);
+  const tu=s.units+x.units, tr=s.rev+x.rev;
+  document.getElementById('m-units').textContent=tu.toLocaleString();
+  document.getElementById('m-rev').textContent=fmt(tr);
+  document.getElementById('m-ppu').textContent='$'+(tr/tu).toFixed(2);
+  const d=Math.round((tr/SUMMER25.rev-1)*100);
+  document.getElementById('m-delta').textContent=(d>=0?'+':'')+d+'%';
+}
+function preset(p,btn){
+  const map={base:[20,20],deep:[33,33],push:[25,50]};
+  document.getElementById('d-std').value=map[p][0];
+  document.getElementById('d-dx').value=map[p][1];
+  document.querySelectorAll('.btnrow button').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  update();
+}
+document.getElementById('d-std').addEventListener('input',()=>{document.querySelectorAll('.btnrow button').forEach(b=>b.classList.remove('on'));update();});
+document.getElementById('d-dx').addEventListener('input',()=>{document.querySelectorAll('.btnrow button').forEach(b=>b.classList.remove('on'));update();});
+update();
+new Chart(document.getElementById('trend'),{
+  type:'bar',
+  data:{labels:['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+    datasets:[
+      {label:'Nightreign Std',data:[0,40813,32912,10515,15450,8768,7602,3909,36099,4415,4628,27130],
+        backgroundColor:['#888780','#534AB7','#BA7517','#BA7517','#888780','#888780','#888780','#888780','#185FA5','#888780','#888780','#185FA5']},
+      {label:'Nightreign Deluxe',data:[0,14781,4919,1639,2857,1719,1480,1328,31856,3229,2498,15252],
+        backgroundColor:'#1D9E75'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{x:{stacked:true,ticks:{autoSkip:false}},y:{stacked:true,ticks:{callback:v=>(v/1000)+'k'}}},
+    plugins:{legend:{display:false}}}
+});
+</script>
+</body>
+</html>
