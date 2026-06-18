@@ -123,6 +123,32 @@
   .branch button.on{background:var(--green);color:#05210f}
   .branch button#brB.on{background:var(--muted);color:#0f1115}
   .dchip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.18);color:var(--amber)}
+  /* editable model */
+  .inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .inputs label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:4px}
+  .inputs input{background:#12141a;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:8px 10px;font-size:14px}
+  .inputs input:focus{outline:none;border-color:var(--gold)}
+  .dlcbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .dlcbar label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);gap:4px}
+  .dlcbar input[type=number],.dlcbar select{background:#12141a;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:7px 9px;font-size:14px}
+  .switch{flex-direction:row !important;align-items:center;gap:8px !important;font-size:14px !important;color:var(--ink) !important;cursor:pointer}
+  .switch input{width:18px;height:18px;accent-color:var(--green)}
+  .dlcland{font-size:13px;color:var(--muted)}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  table.grid{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+  table.grid th,table.grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+  table.grid th:first-child,table.grid td:first-child,table.grid td.evcell{text-align:left}
+  table.grid thead th{color:var(--muted);font-size:11.5px;font-weight:600;background:#15181f}
+  table.grid td.evcell{color:var(--muted);font-size:12px;white-space:normal;min-width:180px}
+  table.grid tfoot th{color:var(--ink);font-weight:700;background:#15181f;border-top:2px solid var(--line)}
+  .cin{width:56px;background:#12141a;border:1px solid var(--line);border-radius:6px;color:var(--gold);font-weight:600;padding:5px 6px;font-size:13px;text-align:right}
+  .cin:focus{outline:none;border-color:var(--gold)}
+  .totbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:16px}
+  .totcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;min-width:150px}
+  .totcard .l{font-size:12px;color:var(--muted)}
+  .totcard .v{font-size:22px;font-weight:700;margin-top:2px}
+  .xlsx{margin-left:auto;background:var(--green);color:#05210f;border:0;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:700;cursor:pointer}
+  .xlsx:hover{filter:brightness(1.08)}
 
   footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
@@ -198,97 +224,55 @@
 
   <!-- ============== ACTIONS PANEL ============== -->
   <div class="panel" id="panel-act">
-    <p class="sub">July 2026 → March 2027 — what to do each month, the asks to Bandai, and the prep deadlines.</p>
+    <p class="sub">July 2026 → March 2027 — an editable forecast model. Key in the numbers; totals recalc live. Export to Excel when you want to work in a spreadsheet.</p>
 
-    <h2>Two scenarios: with new content vs without</h2>
-    <p class="sub" style="margin-bottom:14px">Same proven discount calendar both ways. The only difference is whether a new Nightreign content drop lands in the window. <b>Good news:</b> FromSoftware/Kadokawa have signalled another Nightreign drop is targeted before March 2027 — so Scenario A is a real possibility, not a wish.</p>
-    <p class="sub" style="margin:-6px 0 12px;font-size:13px">👇 Click a scenario to jump straight to its action plan.</p>
-    <div class="scen">
-      <div class="scard sa" id="scardA" onclick="pickScenario('a')">
-        <div class="stitle">Scenario A — new content ships</div>
-        <div class="snum">$4.97M – $5.12M</div>
-        <div class="ssub">~275k – 283k units</div>
-        <div class="sline">FY26 discount calendar <b>+</b> a new Nightreign DLC drop. Range = half a Forsaken Hollows (low) to a full FH repeat (high).</div>
-        <div class="stag good">+3% to +6% vs Scenario B</div>
-        <div class="sgo">See the Scenario A plan →</div>
-      </div>
-      <div class="scard sb" id="scardB" onclick="pickScenario('b')">
-        <div class="stitle">Scenario B — no new content</div>
-        <div class="snum">~$4.82M</div>
-        <div class="ssub">~267k units</div>
-        <div class="sline">Repeat the proven Winter + Spring discount stacks on the existing catalog. This is the floor — and it's a solid floor, backed by two years.</div>
-        <div class="stag flat">baseline (FY26 actual)</div>
-        <div class="sgo">See the Scenario B plan →</div>
-      </div>
+    <h2>Model inputs</h2>
+    <p class="sub" style="margin-bottom:10px">These drive every month. Change them and the table below updates instantly.</p>
+    <div class="inputs">
+      <label>Std baseline (units/mo)<input type="number" id="inStdBase" value="17000" oninput="recalc()"></label>
+      <label>Deluxe baseline (units/mo)<input type="number" id="inDxBase" value="3000" oninput="recalc()"></label>
+      <label>Std elasticity<input type="number" step="0.1" id="inStdElas" value="1.9" oninput="recalc()"></label>
+      <label>Deluxe elasticity<input type="number" step="0.1" id="inDxElas" value="3.4" oninput="recalc()"></label>
+      <label>Std list price ($)<input type="number" step="0.01" id="inStdPrice" value="19.99" oninput="recalc()"></label>
+      <label>Deluxe list price ($)<input type="number" step="0.01" id="inDxPrice" value="24.99" oninput="recalc()"></label>
     </div>
-    <div class="flag">
-      <b>Honest read:</b> a DLC drop adds a meaningful but modest <b>+3–6%</b> ($150k–$300k). The blockbuster years came from a full <i>game</i> launch (Nightreign itself did $1.1M), not a DLC — and FromSoftware has said this is likely the <i>last</i> Nightreign expansion. So treat Scenario A's content as upside to lock in, not the foundation. The foundation in <b>both</b> scenarios is the discount calendar below.
+    <div class="flag" style="margin-top:6px">
+      ⚠ List prices are placeholders ($19.99 / $24.99) — replace with the real CN/HK/TW Steam prices. Model: <code>units = baseline × (1 + elasticity × discount%)</code>. It's a planning what-if, not a guaranteed forecast — deep discounts may overstate.
     </div>
 
-    <h2>The one-slide version</h2>
-    <div class="cards">
-      <div class="kpi"><div class="l">FY26 actual (full year)</div><div class="v">$4.82M</div><div class="d">267k units · CN/HK/TW</div></div>
-      <div class="kpi"><div class="l">Nightreign group share</div><div class="v">80%</div><div class="d">the engine; base ER tail is thin</div></div>
-      <div class="kpi"><div class="l">Pattern confidence</div><div class="v">2 years</div><div class="d">Dec & Mar top both yrs — see "Does it repeat?"</div></div>
-      <div class="kpi"><div class="l">New variable this window</div><div class="v">Switch 2</div><div class="d">Tarnished Ed. launches Aug 28</div></div>
+    <h2>DLC upside (Scenario A vs B)</h2>
+    <div class="dlcbar">
+      <label class="switch"><input type="checkbox" id="inDlcOn" onchange="recalc()"> <span>New content drop ships (Scenario A)</span></label>
+      <label>DLC adds (units, one-off)<input type="number" id="inDlcUnits" value="15633" oninput="recalc()"></label>
+      <label>DLC avg price ($)<input type="number" step="0.01" id="inDlcPrice" value="19.21" oninput="recalc()"></label>
+      <span class="dlcland">lands in: <select id="inDlcMonth" onchange="recalc()"></select></span>
     </div>
-    <div class="lead">
-      <b>The plan in one sentence:</b> pre-load keys ahead of the discount stacks that drove sales <b>two years running</b>
-      (<b>Winter/Double-12</b> and <b>Spring</b> are the proven bets; <b>Summer/618</b> and <b>LNY</b> are secondary), push <b>Nightreign Deluxe</b>
-      on the deep ones because it's the most discount-elastic SKU, fix the <b>Double 11 underperformance</b> that recurs every year,
-      and bet on the <b>Aug 28 Switch 2 Tarnished Edition</b> launch as the one genuinely new upside this window.
+    <p class="src">Default DLC = one Forsaken Hollows (15,633 units @ $19.21). Toggle off for Scenario B. Half it for a conservative drop.</p>
+
+    <h2>Editable forecast — key in a discount % per month</h2>
+    <div class="gridwrap">
+      <table class="grid" id="modelGrid">
+        <thead><tr>
+          <th>Month</th><th>Event</th>
+          <th>Std disc %</th><th>Dx disc %</th>
+          <th>Std units</th><th>Dx units</th>
+          <th>Revenue (USD)</th>
+        </tr></thead>
+        <tbody id="gridBody"></tbody>
+        <tfoot><tr>
+          <th colspan="4" style="text-align:right">YEAR TOTAL</th>
+          <th id="totStdU">—</th><th id="totDxU">—</th><th id="totRev">—</th>
+        </tr></tfoot>
+      </table>
     </div>
 
-    <h2>Promo calendar — what to hit, Jul → Mar</h2>
-    <table>
-      <thead><tr><th>Window</th><th>Event</th><th>Type</th><th>FY26 result</th><th>Priority</th></tr></thead>
-      <tbody>
-        <tr><td>Jul 1–10</td><td>Steam Summer Sale tail</td><td><span class="badge b-steam">STEAM</span></td><td>part of $385k Summer</td><td class="pri-m">MED</td></tr>
-        <tr><td>Aug 19–23</td><td>Gamescom (marketing only)</td><td><span class="badge b-rel">EVENT</span></td><td>$80k — no discount</td><td class="pri-l">LOW</td></tr>
-        <tr><td>Aug 28</td><td>Switch 2 Tarnished Edition launch</td><td><span class="badge b-rel">RELEASE</span></td><td>new — not in FY26</td><td class="pri-h">HIGH</td></tr>
-        <tr><td>Sep 6–8</td><td>Mid-Autumn Festival</td><td><span class="badge b-cn">CN FEST</span></td><td>$104k</td><td class="pri-m">MED</td></tr>
-        <tr><td>Sep 15</td><td>New DLC drop? (push BNE)</td><td><span class="badge b-rel">RELEASE</span></td><td>Forsaken Hollows did $300k</td><td class="pri-h">HIGH</td></tr>
-        <tr><td>Sep 29–Oct 6</td><td>Steam Autumn Sale</td><td><span class="badge b-steam">STEAM</span></td><td>$21k (underused)</td><td class="pri-m">MED</td></tr>
-        <tr><td>Nov 1–11</td><td>Double 11 / Singles' Day</td><td><span class="badge b-cn">CN E-COMM</span></td><td>$126k — underperforms vs hype</td><td class="pri-m">MED</td></tr>
-        <tr><td>Nov 26–Dec 3</td><td>Steam Black Friday</td><td><span class="badge b-steam">STEAM</span></td><td>$108k</td><td class="pri-m">MED</td></tr>
-        <tr><td>Dec 18–Jan 5</td><td>Steam Winter Sale + Double 12</td><td><span class="badge b-steam">STEAM</span></td><td>$672k — biggest sale of year</td><td class="pri-h">HIGH</td></tr>
-        <tr><td>Jan 29–Feb 5</td><td>Steam Lunar New Year Sale</td><td><span class="badge b-steam">STEAM</span></td><td>$85k</td><td class="pri-m">MED</td></tr>
-        <tr><td>Feb 17–25</td><td>Spring Festival + ER anniversary</td><td><span class="badge b-cn">CN FEST</span></td><td>$124k combined</td><td class="pri-m">MED</td></tr>
-        <tr><td>Mar 12–19</td><td>Steam Spring Sale + 3.8</td><td><span class="badge b-steam">STEAM</span></td><td>$81k combined</td><td class="pri-m">MED</td></tr>
-      </tbody>
-    </table>
-    <p class="src">FY26 results are demand-dated revenue from the "Sale Period Ranking" tab. Priority = our recommendation, not historical size alone.</p>
-
-    <h2 id="treeAnchor">Month-by-month — the actions</h2>
-    <p class="sub" style="margin-bottom:10px">Pick a branch (or click a scenario card above). Months that change between scenarios are marked <span class="dchip">DIFFERS</span>. Most months are identical — the discount calendar is the foundation either way.</p>
-    <div class="branch">
-      <button id="brA" class="on" onclick="setBranch('a')">▶ If content ships (A)</button>
-      <button id="brB" onclick="setBranch('b')">▶ If no content (B)</button>
+    <div class="totbar">
+      <div class="totcard"><div class="l">Total units</div><div class="v" id="bigUnits">—</div></div>
+      <div class="totcard"><div class="l">Total revenue</div><div class="v" id="bigRev">—</div></div>
+      <div class="totcard"><div class="l">vs Scenario B floor</div><div class="v" id="bigDelta">—</div></div>
+      <button class="xlsx" onclick="exportXlsx()">⬇ Export to Excel (live formulas)</button>
     </div>
-    <div id="amonths"></div>
-
-    <h2>What we need from Bandai (the asks)</h2>
-    <div class="lead" style="border-left-color:var(--cn)">
-      <b>Ask 1 — Approve a year-long discount ladder.</b> Standard up to ~33% on deep Steam sales (Winter, Spring), Deluxe up to ~50% (it's 10× more discount-elastic — proven in Dec data). One approval, not twelve. This is the foundation — it delivers the ~$4.82M floor (Scenario B) on its own.<br><br>
-      <b>Ask 2 — Lock in the planned Nightreign content drop (the Scenario A upside).</b> Kadokawa has already signalled another Nightreign drop before March 2027. Landing it in this window adds an estimated <b>+3–6% (~$150k–$300k)</b>, most of it in Sep. It's likely the last Nightreign expansion, so timing it to our calendar matters.<br><br>
-      <b>Ask 3 — Co-market the Switch 2 launch into PC keys.</b> The Aug 28 Tarnished Edition is a giant awareness moment. We want assets/timing to convert that attention into discounted PC catalog keys in CN/HK/TW. <i>(Note: August has historically been the year's weakest month, so this is a speculative bet, not a proven lever.)</i>
-    </div>
-
-    <h2>Team execution — key-allocation deadlines</h2>
-    <p class="sub" style="margin-bottom:8px">Keys must be pre-loaded BEFORE the stack opens, or we miss the spike. These are the hard dates.</p>
-    <table>
-      <thead><tr><th>Pre-load by</th><th>For this stack</th><th>Owner</th></tr></thead>
-      <tbody>
-        <tr><td class="pri-h">Aug 20</td><td>Switch 2 launch co-marketing window</td><td><span class="owner">Jeremy</span></td></tr>
-        <tr><td class="pri-h">Sep 1</td><td>Mid-Autumn + new DLC + Autumn Sale</td><td><span class="owner">Matt</span></td></tr>
-        <tr><td class="pri-h">Dec 10</td><td>Winter Sale + Double 12 + gifting (biggest)</td><td><span class="owner">Matt</span></td></tr>
-        <tr><td class="pri-m">Jan 22</td><td>LNY + Spring Festival</td><td><span class="owner">Jeremy</span></td></tr>
-        <tr><td class="pri-m">Mar 5</td><td>Spring Sale + 3.8</td><td><span class="owner">Matt</span></td></tr>
-      </tbody>
-    </table>
-    <div class="flag">
-      ⚠ <b>Owners are placeholders.</b> Confirm who owns each window before this goes to Bandai. Dates assume the FY27 Steam calendar mirrors FY26 — verify against Steam's published 2026–27 sale dates when they're out.
-    </div>
+    <p class="src">Type any discount %, change baselines/prices/elasticity above, toggle the DLC. The Excel export contains the same formulas, so it recalculates in Excel/Sheets too.</p>
   </div>
 
   <footer>
@@ -434,103 +418,127 @@ const MY=[
   }).join("");
 })();
 
-/* ===== ACTIONS: month accordion ===== */
-const MONTHS=[
- {cal:"JUL 2026",ttl:"Close out the Summer tail",tag:"Med",
-  play:["Run the Steam Summer Sale tail (ends ~Jul 10) at Conservative depth — Std 20%, Deluxe 20%.","Don't over-discount: launch novelty is gone, this is a clean catalog sale, so protect margin."],
-  sku:"Nightreign Standard (volume); Deluxe at modest depth",
-  dead:"Keys already loaded from Jun pre-load",owner:"Matt"},
- {cal:"AUG 2026",ttl:"Switch 2 launch = free marketing",tag:"big",
-  play:["Aug 28 Tarnished Edition (Switch 2) launches — huge awareness spike for the franchise.","Convert that attention into PC catalog key demand in CN/HK/TW. Time a light promo + storefront refresh around launch week.","Gamescom (Aug 19–23) is marketing-only — no discount, expect little direct lift (FY26: $80k, flat)."],
-  sku:"Whole catalog visibility; Nightreign Std as the hero",
-  dead:"Pre-load by Aug 20",owner:"Jeremy"},
- {cal:"SEP 2026",
-  a:{ttl:"Launch the DLC — re-anchor the catalog",tag:"big",diff:true,
-     play:["★ NEW DLC DROPS this month — this is the Scenario A engine. Launch at full price; novelty carries it.","Stack Mid-Autumn (Sep 6–8, $104k FY26) promo on the base catalog alongside the DLC.","Run Steam Autumn Sale (Sep 29–Oct 6) to convert DLC attention into catalog key sales."],
-     sku:"New DLC (hero) + Deluxe + Std catalog",
-     dead:"DLC keys + pre-load by Sep 1",owner:"Matt"},
-  b:{ttl:"Re-anchor on festivals only",tag:"Med",diff:true,
-     play:["No new DLC — lean on what you've got. Mid-Autumn (Sep 6–8) targeted promo ($104k FY26).","Steam Autumn Sale (Sep 29–Oct 6) is historically underused ($21k) — push Deluxe harder to do better than last year.","Without a fresh drop, Sep is a maintenance month, not a growth one."],
-     sku:"Deluxe + Std (no DLC)",
-     dead:"Pre-load by Sep 1",owner:"Matt"}},
- {cal:"OCT 2026",
-  a:{ttl:"Ride the DLC tail",tag:"Med",diff:true,
-     play:["DLC post-launch demand continues — keep it visible, light promo to extend the tail.","Golden Week + Double 10 + Halloween are all small ($1–17k FY26), but the DLC gives them something fresh to attach to."],
-     sku:"New DLC tail + Std",
-     dead:"—",owner:"Matt"},
-  b:{ttl:"Quiet — hold fire",tag:"Low",diff:true,
-     play:["No DLC tail to ride. Golden Week + Double 10 + Halloween all ran tiny in FY26 ($1–17k each).","Don't burn discount budget here. Keep prices steady, let buyers anticipate Winter."],
-     sku:"No active push; baseline only",
-     dead:"—",owner:"Matt"}},
- {cal:"NOV 2026",ttl:"Fix Double 11",tag:"Med",
-  play:["Double 11 (Singles' Day) is the biggest CN shopping day but UNDERPERFORMED in FY26 ($126k vs the hype).","Design a Double-11-specific bundle/promo this year — this is the clearest 'do better than last year' lever.","Steam Black Friday (Nov 26–Dec 3) warms up Winter — moderate depth."],
-  sku:"Deluxe bundle for Double 11; Std on Black Friday",
-  dead:"Pre-load by Oct 28",owner:"Jeremy"},
- {cal:"DEC 2026",ttl:"The big one — go deep",tag:"big",
-  play:["Steam Winter Sale (Dec 18–Jan 5) is the deepest, longest sale + Double 12 + holiday gifting. FY26: $672k, the #2 driver of the whole year.","Go to Deep depth — Std up to 33%, Deluxe up to 50%. Deluxe spiked ~10× on discount in Dec FY26 — this is where elasticity pays.","This single window can outperform the Summer Sale ~2×. If forced to pick one bet for the year, it's this."],
-  sku:"Deluxe HARD (most elastic) + Std volume",
-  dead:"Pre-load by Dec 10 (hard deadline)",owner:"Matt"},
- {cal:"JAN 2027",ttl:"Winter tail + LNY pre-load",tag:"Med",
-  play:["Steam Winter tail runs into early Jan — keep it live.","Begin pre-loading for Lunar New Year (late Jan). Watch partner reconciliation timing so demand isn't mis-dated."],
-  sku:"Std on tail; prep Deluxe for LNY",
-  dead:"Pre-load LNY by Jan 22",owner:"Jeremy"},
- {cal:"FEB 2027",ttl:"LNY + anniversary, CN-side",tag:"Med",
-  play:["Steam Lunar New Year Sale (late Jan–early Feb): $85k FY26.","Spring Festival/CNY + ER anniversary (Feb 22–25) combined ~$124k — culturally strong, lean CN/HK/TW.","Anniversary is a marketing hook even without deep discount."],
-  sku:"Deluxe + Std; anniversary-framed bundle",
-  dead:"Covered by Jan 22 pre-load",owner:"Jeremy"},
- {cal:"MAR 2027",ttl:"Close the year strong",tag:"Med",
-  play:["Steam Spring Sale (Mar 12–19) + 3.8 Women's Day + White Day — combined ~$81k, and Mar was the #2 revenue MONTH in FY26.","Final discount push before FY27 closes. Med-to-deep depth to clear the year's number.","Capture Mar demand early — some invoices slip into Apr (next FY)."],
-  sku:"Std volume + Deluxe at depth",
-  dead:"Pre-load by Mar 5",owner:"Matt"}
+/* ===== ACTIONS: editable forecast model ===== */
+// each month: default Std/Deluxe discount % (editable), + the event label for context
+const MM=[
+ {m:"Jul 2026",ev:"Steam Summer tail",std:20,dx:20},
+ {m:"Aug 2026",ev:"Switch 2 launch / Gamescom (no discount)",std:0,dx:0},
+ {m:"Sep 2026",ev:"Mid-Autumn + Autumn Sale (+DLC if A)",std:15,dx:20},
+ {m:"Oct 2026",ev:"Quiet (Golden Week / Halloween)",std:0,dx:0},
+ {m:"Nov 2026",ev:"Double 11 + Black Friday",std:20,dx:25},
+ {m:"Dec 2026",ev:"Steam Winter + Double 12 (biggest)",std:33,dx:50},
+ {m:"Jan 2027",ev:"Winter tail + LNY pre-load",std:15,dx:15},
+ {m:"Feb 2027",ev:"Steam LNY + Spring Festival",std:20,dx:25},
+ {m:"Mar 2027",ev:"Steam Spring + 3.8",std:25,dx:30}
 ];
-const ATAG={big:"High priority",Med:"Medium",Low:"Low"};
-let branch="a";
-// resolve a month into the active branch's content (months without a/b are shared)
-function resolve(m){
-  if(m.a&&m.b){ const v=m[branch]; return {cal:m.cal,...v}; }
-  return m;
+const FLOOR_REV=4824356; // Scenario B FY26 actual floor for the delta card
+
+function readInputs(){
+  return {
+    stdBase:+document.getElementById("inStdBase").value||0,
+    dxBase:+document.getElementById("inDxBase").value||0,
+    stdElas:+document.getElementById("inStdElas").value||0,
+    dxElas:+document.getElementById("inDxElas").value||0,
+    stdPrice:+document.getElementById("inStdPrice").value||0,
+    dxPrice:+document.getElementById("inDxPrice").value||0,
+    dlcOn:document.getElementById("inDlcOn").checked,
+    dlcUnits:+document.getElementById("inDlcUnits").value||0,
+    dlcPrice:+document.getElementById("inDlcPrice").value||0,
+    dlcMonth:+document.getElementById("inDlcMonth").value||0
+  };
 }
-function renderMonths(){
-  document.getElementById("amonths").innerHTML=MONTHS.map((m,i)=>{
-    const r=resolve(m);
-    const differs=!!(m.a&&m.b);
-    return `<div class="amonth">
-      <div class="amh" onclick="ta(${i})">
-        <span class="cal">${r.cal}</span>
-        <span class="ttl">${r.ttl}</span>
-        ${differs?'<span class="dchip">DIFFERS</span>':''}
-        <span class="ptag ${r.tag==='big'?'big':''}">${ATAG[r.tag]||r.tag}</span>
-        <span class="acaret">▶</span>
-      </div>
-      <div class="amb" id="amb${i}">
-        <div class="lbl2">The play${differs?` <span style="color:${branch==='a'?'#5fe08a':'var(--muted)'}">(Scenario ${branch.toUpperCase()})</span>`:''}</div>
-        <ul>${r.play.map(p=>`<li>${p}</li>`).join("")}</ul>
-        <div class="lbl2">SKU to push</div><div>${r.sku}</div>
-        <div class="lbl2">Key pre-load</div><div>${r.dead} · owner <span class="owner">${r.owner}</span></div>
-      </div>
-    </div>`;
-  }).join("");
+const fmt0=v=>Math.round(v).toLocaleString();
+const fmtM=v=>"$"+(v/1e6).toFixed(2)+"M";
+
+function buildGrid(){
+  document.getElementById("inDlcMonth").innerHTML=MM.map((x,i)=>`<option value="${i}">${x.m}</option>`).join("");
+  document.getElementById("inDlcMonth").value=2; // Sep default
+  document.getElementById("gridBody").innerHTML=MM.map((x,i)=>`
+    <tr>
+      <td><b>${x.m}</b></td>
+      <td class="evcell">${x.ev}</td>
+      <td><input type="number" class="cin" id="sd${i}" value="${x.std}" oninput="recalc()">%</td>
+      <td><input type="number" class="cin" id="dd${i}" value="${x.dx}" oninput="recalc()">%</td>
+      <td id="su${i}">—</td><td id="du${i}">—</td><td id="rv${i}">—</td>
+    </tr>`).join("");
 }
-function ta(i){
-  document.getElementById("amb"+i).classList.toggle("show");
-  document.querySelectorAll("#amonths .amh")[i].classList.toggle("open");
+function recalc(){
+  const p=readInputs();
+  let tStdU=0,tDxU=0,tRev=0;
+  MM.forEach((x,i)=>{
+    const sd=(+document.getElementById("sd"+i).value||0)/100;
+    const dd=(+document.getElementById("dd"+i).value||0)/100;
+    let su=p.stdBase*(1+p.stdElas*sd);
+    let du=p.dxBase*(1+p.dxElas*dd);
+    if(su<0)su=0; if(du<0)du=0;
+    let rev=su*p.stdPrice*(1-sd)+du*p.dxPrice*(1-dd);
+    // DLC one-off lands in chosen month if toggled on
+    if(p.dlcOn && i===p.dlcMonth){ rev+=p.dlcUnits*p.dlcPrice; }
+    document.getElementById("su"+i).textContent=fmt0(su);
+    document.getElementById("du"+i).textContent=fmt0(du);
+    document.getElementById("rv"+i).textContent="$"+fmt0(rev);
+    tStdU+=su; tDxU+=du; tRev+=rev;
+  });
+  let totU=tStdU+tDxU+(p.dlcOn?p.dlcUnits:0);
+  document.getElementById("totStdU").textContent=fmt0(tStdU);
+  document.getElementById("totDxU").textContent=fmt0(tDxU);
+  document.getElementById("totRev").textContent="$"+fmt0(tRev);
+  document.getElementById("bigUnits").textContent=fmt0(totU);
+  document.getElementById("bigRev").textContent=fmtM(tRev);
+  const d=tRev-FLOOR_REV, pct=(d/FLOOR_REV*100);
+  document.getElementById("bigDelta").textContent=(d>=0?"+":"")+fmtM(d)+" ("+(d>=0?"+":"")+pct.toFixed(1)+"%)";
+  document.getElementById("bigDelta").style.color=d>=0?"var(--green)":"#ff8b8b";
 }
-function setBranch(b){
-  branch=b;
-  document.getElementById("brA").classList.toggle("on",b==="a");
-  document.getElementById("brB").classList.toggle("on",b==="b");
-  var sa=document.getElementById("scardA"), sb=document.getElementById("scardB");
-  if(sa) sa.classList.toggle("active",b==="a");
-  if(sb) sb.classList.toggle("active",b==="b");
-  renderMonths();
+
+// Export a real .xlsx with LIVE formulas (SheetJS)
+function exportXlsx(){
+  const p=readInputs();
+  function go(){
+    const wb=XLSX.utils.book_new();
+    const rows=[
+      ["Elden Ring CD Keys — Action Plan model (Jul 2026 → Mar 2027)"],
+      ["Model: units = baseline x (1 + elasticity x discount%). What-if planning, not a guaranteed forecast."],
+      [],
+      ["INPUTS (edit the yellow values; the table recalculates)"],
+      ["Std baseline",p.stdBase,"","Deluxe baseline",p.dxBase],   // B5 / E5
+      ["Std elasticity",p.stdElas,"","Deluxe elasticity",p.dxElas], // B6 / E6
+      ["Std list price",p.stdPrice,"","Deluxe list price",p.dxPrice], // B7 / E7
+      ["DLC on (1/0)",p.dlcOn?1:0,"DLC units",p.dlcUnits,"DLC price",p.dlcPrice,"DLC month #",p.dlcMonth+1], // B8 D8 F8 H8
+      [],
+      ["Month","Event","Std disc%","Dx disc%","Std units","Dx units","Revenue (USD)"]
+    ];
+    const first=rows.length+1; // excel row (1-based) of first month
+    MM.forEach(x=>rows.push([x.m,x.ev,x.std/100,x.dx/100,null,null,null]));
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    // fixed absolute input refs
+    const SB="$B$5",DB="$E$5",SE="$B$6",DE="$E$6",SP="$B$7",DP="$E$7",ON="$B$8",DU="$D$8",DP2="$F$8",DM="$H$8";
+    MM.forEach((x,i)=>{
+      const r=first+i;
+      ws["E"+r]={t:"n",f:`MAX(0,${SB}*(1+${SE}*C${r}))`};
+      ws["F"+r]={t:"n",f:`MAX(0,${DB}*(1+${DE}*D${r}))`};
+      ws["G"+r]={t:"n",f:`E${r}*${SP}*(1-C${r})+F${r}*${DP}*(1-D${r})+IF(AND(${ON}=1,${DM}=${i+1}),${DU}*${DP2},0)`};
+    });
+    const tot=first+MM.length;
+    ws["A"+tot]={t:"s",v:"YEAR TOTAL"};
+    ws["E"+tot]={t:"n",f:`SUM(E${first}:E${tot-1})`};
+    ws["F"+tot]={t:"n",f:`SUM(F${first}:F${tot-1})`};
+    ws["G"+tot]={t:"n",f:`SUM(G${first}:G${tot-1})`};
+    MM.forEach((x,i)=>{const r=first+i;if(ws["C"+r])ws["C"+r].z="0%";if(ws["D"+r])ws["D"+r].z="0%";});
+    ws["!cols"]=[{wch:10},{wch:36},{wch:9},{wch:9},{wch:11},{wch:11},{wch:15}];
+    ws["!ref"]=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:tot-1,c:7}});
+    XLSX.utils.book_append_sheet(wb,ws,"Action Plan Model");
+    XLSX.writeFile(wb,"Nightreign_Action_Plan_Model.xlsx");
+  }
+  if(window.XLSX){go();}
+  else{
+    const s=document.createElement("script");
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+    s.onload=go; s.onerror=()=>alert("Could not load the Excel library (offline?). Try again online.");
+    document.head.appendChild(s);
+  }
 }
-// click a scenario card -> set that branch and scroll to the month tree
-function pickScenario(b){
-  setBranch(b);
-  var anchor=document.getElementById("treeAnchor");
-  if(anchor) anchor.scrollIntoView({behavior:"smooth",block:"start"});
-}
-renderMonths();
+buildGrid();
+recalc();
 </script>
 </body>
 </html>
