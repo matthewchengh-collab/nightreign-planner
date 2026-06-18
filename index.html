@@ -250,9 +250,9 @@
 
     <h2>What we need from Bandai (the asks)</h2>
     <div class="lead" style="border-left-color:var(--cn)">
-      <b>Ask 1 — Approve a year-long discount ladder.</b> Standard up to ~33% on deep Steam sales (Winter, Summer), Deluxe up to ~50% (it's 10× more discount-elastic — proven in Dec data). One approval, not twelve.<br><br>
-      <b>Ask 2 — Land a new Nightreign DLC drop in this window.</b> Forsaken Hollows alone delivered ~12% of FY26 from a half-year run. A fresh drop around Sep would re-anchor the whole catalog.<br><br>
-      <b>Ask 3 — Co-market the Switch 2 launch into PC keys.</b> The Aug 28 Tarnished Edition is a giant awareness moment. We want assets/timing to convert that attention into discounted PC catalog keys in CN/HK/TW.
+      <b>Ask 1 — Approve a year-long discount ladder.</b> Standard up to ~33% on deep Steam sales (Winter, Spring), Deluxe up to ~50% (it's 10× more discount-elastic — proven in Dec data). One approval, not twelve. This is the foundation — it delivers the ~$4.82M floor (Scenario B) on its own.<br><br>
+      <b>Ask 2 — Lock in the planned Nightreign content drop (the Scenario A upside).</b> Kadokawa has already signalled another Nightreign drop before March 2027. Landing it in this window adds an estimated <b>+3–6% (~$150k–$300k)</b>, most of it in Sep. It's likely the last Nightreign expansion, so timing it to our calendar matters.<br><br>
+      <b>Ask 3 — Co-market the Switch 2 launch into PC keys.</b> The Aug 28 Tarnished Edition is a giant awareness moment. We want assets/timing to convert that attention into discounted PC catalog keys in CN/HK/TW. <i>(Note: August has historically been the year's weakest month, so this is a speculative bet, not a proven lever.)</i>
     </div>
 
     <h2>Team execution — key-allocation deadlines</h2>
@@ -425,7 +425,7 @@ const MONTHS=[
   play:["Aug 28 Tarnished Edition (Switch 2) launches — huge awareness spike for the franchise.","Convert that attention into PC catalog key demand in CN/HK/TW. Time a light promo + storefront refresh around launch week.","Gamescom (Aug 19–23) is marketing-only — no discount, expect little direct lift (FY26: $80k, flat)."],
   sku:"Whole catalog visibility; Nightreign Std as the hero",
   dead:"Pre-load by Aug 20",owner:"Jeremy"},
- {cal:"SEP 2026",ttl:"Re-anchor the catalog",tag:"big",
+ {cal:"SEP 2026",ttl:"Re-anchor the catalog",tag:"big",scenario:"This is the most likely landing month for a new DLC drop (Forsaken Hollows launched in autumn). If it ships → Scenario A; this month carries most of the +3–6% upside.",
   play:["Mid-Autumn (Sep 6–8): CN festival, ran $104k in FY26 — worth a targeted promo.","PUSH BANDAI for a new Nightreign DLC drop (~Sep). Forsaken Hollows did $300k from a half-year — a fresh drop resets demand.","Steam Autumn Sale (Sep 29–Oct 6) is historically underused ($21k) — opportunity to do better."],
   sku:"New DLC if landed; otherwise Deluxe + Std",
   dead:"Pre-load by Sep 1",owner:"Matt"},
@@ -460,10 +460,12 @@ document.getElementById("amonths").innerHTML=MONTHS.map((m,i)=>`
     <div class="amh" onclick="ta(${i})">
       <span class="cal">${m.cal}</span>
       <span class="ttl">${m.ttl}</span>
+      ${m.scenario?'<span class="ptag" style="background:rgba(34,197,94,.16);color:#5fe08a">★ CONTENT DROP</span>':''}
       <span class="ptag ${m.tag==='big'?'big':''}">${ATAG[m.tag]||m.tag}</span>
       <span class="acaret">▶</span>
     </div>
     <div class="amb" id="amb${i}">
+      ${m.scenario?`<div style="background:rgba(34,197,94,.1);border-left:3px solid var(--green);border-radius:8px;padding:9px 12px;font-size:13px;margin:4px 0 10px"><b style="color:#5fe08a">Scenario A trigger:</b> ${m.scenario}</div>`:''}
       <div class="lbl2">The play</div>
       <ul>${m.play.map(p=>`<li>${p}</li>`).join("")}</ul>
       <div class="lbl2">SKU to push</div><div>${m.sku}</div>
