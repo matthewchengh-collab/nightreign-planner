@@ -54,12 +54,12 @@
 <div class="wrap">
   <h1>Elden Ring China — full catalog sales timeline</h1>
   <p class="sub">FY26 = <b>Apr 2025 → Mar 2026</b> · all SKUs, all CN channels · monthly units redeemed · base game (discount-gated) shown in green inside each bar</p>
-  <p class="byline">Discounts only ever ran on Steam sales. There are <b>6 Steam sales/yr</b> (LNY, Spring, Summer, Halloween, Autumn, Winter). The base game rode <b>4</b> (Summer, Winter, Spring, LNY-Jan) and skipped <b>2</b>: <b>Steam Halloween (late Oct)</b> and <b>Steam Autumn (late Nov)</b> — both fall in the Oct/Nov stretch where base game = 0. Note: Forsaken Hollows DLC launched Dec 2025, stacking onto the Winter discount.</p>
+  <p class="byline">Discounts only ever ran on Steam sales. There are <b>6 Steam sales/yr</b> (LNY, Spring, Summer, Halloween, Autumn, Winter). The base game rode <b>3</b> (Summer, Winter, Spring) and skipped <b>3</b>: <b>Halloween (Oct)</b>, <b>Autumn (Nov)</b>, and <b>Lunar New Year (Feb)</b>. LNY is a real publisher-driven window — Bethesda (75% off) and SEGA ran their own LNY sales there; Elden Ring didn't. Note: Forsaken Hollows DLC launched Dec 2025, stacking onto the Winter discount.</p>
 
   <div class="kpis">
     <div class="kpi"><div class="l">FY26 catalog total</div><div class="v">482k</div><div class="dd">all SKUs, China</div></div>
-    <div class="kpi"><div class="l">Steam sales rode</div><div class="v" style="color:var(--total)">4 of 6</div><div class="dd">Summer · Winter · Spring · LNY</div></div>
-    <div class="kpi"><div class="l">Steam sales skipped</div><div class="v" style="color:var(--skip)">2</div><div class="dd">Halloween (Oct) · Autumn (Nov)</div></div>
+    <div class="kpi"><div class="l">Steam sales rode</div><div class="v" style="color:var(--total)">3 of 6</div><div class="dd">Summer · Winter · Spring</div></div>
+    <div class="kpi"><div class="l">Steam sales skipped</div><div class="v" style="color:var(--skip)">3</div><div class="dd">Halloween · Autumn · LNY (Feb)</div></div>
     <div class="kpi"><div class="l">Base game at full price</div><div class="v">0</div><div class="dd">discount-gated SKU</div></div>
   </div>
 
@@ -74,7 +74,7 @@
   <div class="scroll"><div class="chart" id="chart"></div></div>
 
   <div class="takeaway">
-    <b>The opening:</b> the catalog moves every month — full-price months still do 13k–24k on organic SotE + Nightreign demand. But the <b>base game</b> (green) is pure discount-gated: it floods on a Steam-sale discount and is flat 0 otherwise. Of 6 Steam sales a year, the base game rode <b>4</b> and skipped <b>2</b> — <b>Steam Halloween (Oct 28)</b> and <b>Steam Autumn (Nov 26)</b>, back-to-back in the Oct/Nov dead zone. Those are already-running Steam windows where the base game's pile could convert — and the catalog already shows full-price appetite those months (Oct 15k, Nov 13k), so the audience is present.
+    <b>The opening:</b> the catalog moves every month — full-price months still do 13k–24k on organic SotE + Nightreign demand. But the <b>base game</b> (green) is pure discount-gated: it floods on a Steam-sale discount and is flat 0 otherwise. Of 6 Steam sales a year, the base game rode <b>3</b> and skipped <b>3</b>: <b>Halloween (Oct 28)</b>, <b>Autumn (Nov 26)</b>, and <b>Lunar New Year (Feb 12)</b>. All three are real windows other major publishers worked — Bethesda ran 75% off in LNY, SEGA ran its own LNY sale — while Elden Ring sat at full price. The catalog already shows appetite those months (Oct 15k, Nov 13k, Feb 19k), so the audience is present.
   </div>
 
   <footer>Source: EPICSOFT royalty report (FY26 = Apr 2025–Mar 2026, all CN channels, SEA excluded). Steam 2025 exact dates (SteamDB): LNY (Jan 27–Feb 3) · Spring (Mar 13–27) · Summer (Jun 26–Jul 10) · Halloween (Oct 28–Nov 4) · Autumn (Nov 26–Dec 3) · Winter (Dec 18–Jan 2). · <a href="index.html">← Back to data view</a></footer>
@@ -91,8 +91,8 @@ const T=[
  {m:"Oct",y:"'25",total:15384,base:0,disc:false,sale:"Steam Halloween (Oct 28)",skip:true},
  {m:"Nov",y:"'25",total:13345,base:0,disc:false,sale:"Steam Autumn (Nov 26) + Double 11",skip:true},
  {m:"Dec",y:"'25",total:119664,base:29332,disc:35,sale:"Steam Winter (Dec 18) + FH DLC",fh:true},
- {m:"Jan",y:"'26",total:28286,base:399,disc:35,sale:"Winter tail + Steam LNY (Jan 27)"},
- {m:"Feb",y:"'26",total:19347,base:0,disc:false,sale:"CNY (no Steam sale)"},
+ {m:"Jan",y:"'26",total:28286,base:399,disc:35,sale:"Winter tail"},
+ {m:"Feb",y:"'26",total:19347,base:0,disc:false,sale:"Steam LNY + CNY (Bethesda/SEGA ran it, ER didn't)",skip:true},
  {m:"Mar",y:"'26",total:102754,base:49908,disc:35,sale:"Steam Spring (Mar 13–27)"}
 ];
 const maxT=Math.max(...T.map(d=>d.total));
