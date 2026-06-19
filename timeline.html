@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Base Game — Steam Sale Timeline (FY26)</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2; --line:#2a2e38;
+    --gold:#d4af37; --rode:#3fb07a; --skip:#e0902f; --dead:#4b5563;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;padding:28px 20px 70px}
+  .wrap{max-width:1040px;margin:0 auto}
+  h1{font-size:25px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 6px}
+  .byline{color:var(--muted);font-size:12.5px;margin:0 0 22px;font-style:italic}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:0 0 18px}
+  .legend .dot{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px}
+  .tl{position:relative;padding-left:4px}
+  .row{display:flex;align-items:stretch;gap:0;margin:0}
+  .mlab{width:60px;flex:0 0 60px;font-size:13px;color:var(--muted);padding:14px 0;text-align:right;padding-right:14px}
+  .mlab b{color:var(--ink);display:block;font-size:13px}
+  .track{flex:1;border-left:2px solid var(--line);padding:10px 0 10px 18px;position:relative}
+  .node{position:absolute;left:-9px;top:18px;width:16px;height:16px;border-radius:50%;border:3px solid var(--bg)}
+  .node.rode{background:var(--rode)}
+  .node.skip{background:var(--skip)}
+  .node.dead{background:var(--dead)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--card);display:flex;align-items:center;gap:16px}
+  .card.rode{border-left:3px solid var(--rode)}
+  .card.skip{border-left:3px solid var(--skip)}
+  .card.dead{border-left:3px solid var(--dead);opacity:.78}
+  .ev{flex:1}
+  .ev .t{font-weight:600;font-size:14.5px}
+  .ev .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .stat{text-align:right;white-space:nowrap}
+  .stat .u{font-size:20px;font-weight:700}
+  .stat .u.zero{color:var(--skip)}
+  .stat .u.dead{color:var(--muted);font-size:15px}
+  .stat .p{font-size:12px;color:var(--muted)}
+  .pill{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap;margin-left:8px}
+  .pill.rode{background:rgba(63,176,122,.2);color:#5fe0a8}
+  .pill.skip{background:rgba(224,144,47,.2);color:#f3b15a}
+  .takeaway{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:12px;padding:18px 20px;margin-top:26px;font-size:14.5px;line-height:1.6}
+  .takeaway b{color:var(--gold)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:0 0 22px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .kpi .l{font-size:12px;color:var(--muted)}
+  .kpi .v{font-size:22px;font-weight:700;margin-top:3px}
+  .kpi .dd{font-size:12px;color:var(--muted);margin-top:2px}
+  footer{color:var(--muted);font-size:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+  footer a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Base Game — the only SKU with sales, on Steam's calendar</h1>
+  <p class="sub">Elden Ring base game (China, Heybox) · FY26 · units redeemed only when discounted, tied to Steam sales</p>
+  <p class="byline">The base game has no full-price demand left — it redeems ONLY on a discount, and discounts only ran on Steam sales. It rode 3 of 5 Steam sales. The 2 it skipped are open windows.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="l">Steam sales a year</div><div class="v">5</div><div class="dd">Spring·Summer·Autumn·Winter·LNY</div></div>
+    <div class="kpi"><div class="l">Base game rode</div><div class="v" style="color:var(--rode)">3</div><div class="dd">Summer · Winter · Spring</div></div>
+    <div class="kpi"><div class="l">Skipped (open windows)</div><div class="v" style="color:var(--skip)">2</div><div class="dd">Autumn (Nov) · LNY (Feb)</div></div>
+    <div class="kpi"><div class="l">Full-price months</div><div class="v">0 units</div><div class="dd">no demand without a discount</div></div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--rode)"></span>Rode the Steam sale (discounted → redeemed)</span>
+    <span><span class="dot" style="background:var(--skip)"></span>Steam sale ran — base game SKIPPED it (open window)</span>
+    <span><span class="dot" style="background:var(--dead)"></span>No Steam sale (full price → 0 units)</span>
+  </div>
+
+  <div class="tl" id="tl"></div>
+
+  <div class="takeaway">
+    <b>The opening:</b> Steam runs ~5 sales a year, deliberately spaced months apart. The base game only rode <b>3</b> — Summer, Winter, Spring. It sat out <b>Steam Autumn (November)</b> and <b>Steam Lunar New Year (February)</b> at full price, redeeming <b>0</b> both times. Those two skipped sales are <b>already-existing, naturally-spaced redemption windows</b> — November sits between Summer and Winter, February between Winter and Spring. Turning them on means going from 3 draw-down events a year to 5, with no double-discount risk and no new mechanic to invent.
+  </div>
+
+  <footer>Source: EPICSOFT royalty report (FY26, China, Heybox). Steam 2025–26 sale calendar: Spring (Mar) · Summer (late Jun–Jul) · Autumn (Nov) · Winter (Dec 18–Jan 5) · Lunar New Year (Feb). · <a href="index.html">← Back to data view</a></footer>
+</div>
+
+<script>
+// base ER FY26 by month: discount %, units, steam sale present, status
+const T=[
+ {m:"Apr",sale:null,disc:0,units:0,status:"dead",note:"no Steam sale"},
+ {m:"May",sale:null,disc:0,units:0,status:"dead",note:"no Steam sale"},
+ {m:"Jun",sale:"Steam Summer Sale",disc:40,units:9120,status:"rode",note:"late Jun – early Jul"},
+ {m:"Jul",sale:"Steam Summer (tail)",disc:40,units:10668,status:"rode",note:"sale tail"},
+ {m:"Aug",sale:null,disc:0,units:0,status:"dead",note:"no Steam sale"},
+ {m:"Sep",sale:null,disc:0,units:0,status:"dead",note:"no Steam sale"},
+ {m:"Oct",sale:null,disc:0,units:0,status:"dead",note:"Halloween only (minor)"},
+ {m:"Nov",sale:"Steam Autumn Sale",disc:0,units:0,status:"skip",note:"+ Double 11 — SKIPPED at full price"},
+ {m:"Dec",sale:"Steam Winter Sale",disc:35,units:29332,status:"rode",note:"Dec 18 – Jan 5"},
+ {m:"Jan",sale:"Steam Winter (tail)",disc:35,units:399,status:"rode",note:"tail — pile already drained by Dec"},
+ {m:"Feb",sale:"Steam Lunar New Year",disc:0,units:947,status:"skip",note:"+ CNY — SKIPPED at full price"},
+ {m:"Mar",sale:"Steam Spring Sale",disc:35,units:49908,status:"rode",note:"after a gap → biggest month"}
+];
+document.getElementById("tl").innerHTML=T.map(r=>{
+  const isDead=r.status==="dead";
+  const evTitle = r.sale ? r.sale : "(no sale)";
+  let pill="";
+  if(r.status==="rode") pill=`<span class="pill rode">RODE · ${r.disc}% off</span>`;
+  if(r.status==="skip") pill=`<span class="pill skip">SKIPPED</span>`;
+  const u = isDead ? `<div class="u dead">—</div>`
+          : (r.units===0 ? `<div class="u zero">0</div>` : `<div class="u">${r.units.toLocaleString()}</div>`);
+  const psub = isDead ? "no discount" : (r.disc>0?`${r.disc}% off`:"full price");
+  return `<div class="row">
+    <div class="mlab"><b>${r.m}</b><span>26</span></div>
+    <div class="track">
+      <span class="node ${r.status}"></span>
+      <div class="card ${r.status}">
+        <div class="ev"><div class="t">${evTitle}${pill}</div><div class="d">${r.note}</div></div>
+        <div class="stat">${u}<div class="p">${psub} · units</div></div>
+      </div>
+    </div>
+  </div>`;
+}).join("");
+</script>
+</body>
+</html>
