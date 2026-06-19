@@ -61,7 +61,7 @@
 <body>
 <div class="wrap">
   <h1>Elden Ring China — full catalog sales timeline (FY26)</h1>
-  <p class="sub">All SKUs, all CN channels · monthly units redeemed · base game (discount-gated) marked inside each bar</p>
+  <p class="sub">FY26 = <b>Apr 2025 → Mar 2026</b> · all SKUs, all CN channels · monthly units redeemed · base game (discount-gated) marked inside each bar</p>
   <p class="byline">Blue bar = whole catalog that month. Green portion = base game (only redeems on a discount). The rest = SotE + Nightreign, which sell at full price too. Discounts only ever ran on Steam sales — and the catalog rode 3 of 5.</p>
 
   <div class="kpis">
@@ -119,8 +119,9 @@ document.getElementById("tl").innerHTML=T.map(d=>{
   const bn = d.base>0
     ? `<div class="barnote"><b>base ${d.base.toLocaleString()}</b> of ${d.total.toLocaleString()} total — base game floods on the discount</div>`
     : `<div class="barnote">base game <b>0</b> · all ${d.total.toLocaleString()} from SotE + Nightreign at full price</div>`;
+  const yr = ["Jan","Feb","Mar"].includes(d.m) ? "26" : "25";
   return `<div class="row">
-    <div class="mlab"><b>${d.m}</b><span>26</span></div>
+    <div class="mlab"><b>${d.m}</b><span>'${yr}</span></div>
     <div class="track">
       <span class="node ${status}"></span>
       <div class="card ${d.skip?'skip':(d.disc?'disc':'')}">
