@@ -7,131 +7,115 @@
 <style>
   :root{
     --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2; --line:#2a2e38;
-    --gold:#d4af37; --total:#3b82f6; --base:#3fb07a; --skip:#e0902f;
+    --gold:#d4af37; --total:#3b82f6; --base:#3fb07a; --skip:#e0902f; --dlc:#a855f7;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.5;padding:28px 20px 70px}
-  .wrap{max-width:1060px;margin:0 auto}
+  .wrap{max-width:1280px;margin:0 auto}
   h1{font-size:25px;margin:0 0 4px}
   .sub{color:var(--muted);font-size:14px;margin:0 0 6px}
-  .byline{color:var(--muted);font-size:12.5px;margin:0 0 22px;font-style:italic}
-  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:0 0 18px}
+  .sub b{color:var(--ink)}
+  .byline{color:var(--muted);font-size:12.5px;margin:0 0 20px;font-style:italic}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 16px}
   .legend .dot{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:0 0 22px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 22px}
   .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
   .kpi .l{font-size:12px;color:var(--muted)}
   .kpi .v{font-size:22px;font-weight:700;margin-top:3px}
   .kpi .dd{font-size:12px;color:var(--muted);margin-top:2px}
-  .row{display:flex;align-items:stretch}
-  .mlab{width:58px;flex:0 0 58px;font-size:13px;color:var(--muted);padding:14px 0;text-align:right;padding-right:14px}
-  .mlab b{color:var(--ink);display:block;font-size:13px}
-  .track{flex:1;border-left:2px solid var(--line);padding:9px 0 9px 18px;position:relative}
-  .node{position:absolute;left:-9px;top:20px;width:16px;height:16px;border-radius:50%;border:3px solid var(--bg)}
-  .node.disc{background:var(--total)}
-  .node.full{background:var(--muted)}
-  .node.skip{background:var(--skip)}
-  .card{border:1px solid var(--line);border-radius:12px;padding:11px 16px;background:var(--card)}
-  .card.skip{border-left:3px solid var(--skip)}
-  .card.disc{border-left:3px solid var(--total)}
-  .top{display:flex;align-items:center;gap:12px;margin-bottom:9px}
-  .ev{flex:1}
-  .ev .t{font-weight:600;font-size:14px}
-  .ev .d{font-size:12px;color:var(--muted);margin-top:1px}
-  .tot{text-align:right;white-space:nowrap}
-  .tot .u{font-size:20px;font-weight:700}
-  .tot .p{font-size:11.5px;color:var(--muted)}
-  .pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
-  .pill.disc{background:rgba(59,130,246,.2);color:#88b6f5}
-  .pill.skip{background:rgba(224,144,47,.2);color:#f3b15a}
-  /* stacked bar: total with base portion marked */
-  .bar{height:14px;background:#12141a;border-radius:4px;overflow:hidden;display:flex;position:relative}
-  .bar .seg-base{background:var(--base);height:100%}
-  .bar .seg-rest{background:var(--total);height:100%;opacity:.55}
-  .barnote{font-size:11px;color:var(--muted);margin-top:5px}
-  .barnote b{color:var(--base)}
+
+  /* horizontal timeline */
+  .scroll{overflow-x:auto;padding-bottom:8px}
+  .chart{display:flex;align-items:flex-end;gap:10px;min-width:1120px;height:380px;
+    border-bottom:2px solid var(--line);padding:0 4px}
+  .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+  .val{font-size:12px;font-weight:700;margin-bottom:5px;white-space:nowrap}
+  .stack{width:74%;max-width:64px;border-radius:5px 5px 0 0;overflow:hidden;display:flex;flex-direction:column-reverse;background:#12141a}
+  .seg-base{background:var(--base);width:100%}
+  .seg-rest{background:var(--total);opacity:.6;width:100%}
+  .mtick{margin-top:9px;font-size:12px;color:var(--ink);font-weight:600}
+  .myear{font-size:10.5px;color:var(--muted)}
+  .badges{position:absolute;bottom:100%;margin-bottom:22px;display:flex;flex-direction:column;gap:3px;align-items:center;width:120px}
+  .badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;white-space:nowrap;line-height:1.3}
+  .b-disc{background:rgba(59,130,246,.22);color:#88b6f5}
+  .b-skip{background:rgba(224,144,47,.22);color:#f3b15a}
+  .b-dlc{background:rgba(168,85,247,.22);color:#c98bff}
+  .evlabel{font-size:9.5px;color:var(--muted);text-align:center;margin-top:6px;height:26px;line-height:1.25;width:96px}
   .takeaway{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
     border-radius:12px;padding:18px 20px;margin-top:26px;font-size:14.5px;line-height:1.6}
   .takeaway b{color:var(--gold)}
-  footer{color:var(--muted);font-size:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+  footer{color:var(--muted);font-size:12px;margin-top:24px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Elden Ring China — full catalog sales timeline (FY26)</h1>
-  <p class="sub">FY26 = <b>Apr 2025 → Mar 2026</b> · all SKUs, all CN channels · monthly units redeemed · base game (discount-gated) marked inside each bar</p>
-  <p class="byline">Blue bar = whole catalog that month. Green portion = base game (only redeems on a discount). The rest = SotE + Nightreign, which sell at full price too. Discounts only ever ran on Steam sales — and the catalog rode 3 of 5.</p>
+  <h1>Elden Ring China — full catalog sales timeline</h1>
+  <p class="sub">FY26 = <b>Apr 2025 → Mar 2026</b> · all SKUs, all CN channels · monthly units redeemed · base game (discount-gated) shown in green inside each bar</p>
+  <p class="byline">Discounts only ever ran on Steam sales. There are <b>6 Steam sales/yr</b> (LNY, Spring, Summer, Halloween, Autumn, Winter). The base game rode <b>4</b> (Summer, Winter, Spring, LNY-Jan) and skipped <b>2</b>: <b>Steam Halloween (late Oct)</b> and <b>Steam Autumn (late Nov)</b> — both fall in the Oct/Nov stretch where base game = 0. Note: Forsaken Hollows DLC launched Dec 2025, stacking onto the Winter discount.</p>
 
   <div class="kpis">
     <div class="kpi"><div class="l">FY26 catalog total</div><div class="v">482k</div><div class="dd">all SKUs, China</div></div>
-    <div class="kpi"><div class="l">Steam sales rode</div><div class="v" style="color:var(--total)">3 of 5</div><div class="dd">Summer · Winter · Spring</div></div>
-    <div class="kpi"><div class="l">Steam sales skipped</div><div class="v" style="color:var(--skip)">2</div><div class="dd">Autumn (Nov) · LNY (Feb)</div></div>
-    <div class="kpi"><div class="l">Base game at full price</div><div class="v">0 units</div><div class="dd">discount-gated; rest sells organically</div></div>
+    <div class="kpi"><div class="l">Steam sales rode</div><div class="v" style="color:var(--total)">4 of 6</div><div class="dd">Summer · Winter · Spring · LNY</div></div>
+    <div class="kpi"><div class="l">Steam sales skipped</div><div class="v" style="color:var(--skip)">2</div><div class="dd">Halloween (Oct) · Autumn (Nov)</div></div>
+    <div class="kpi"><div class="l">Base game at full price</div><div class="v">0</div><div class="dd">discount-gated SKU</div></div>
   </div>
 
   <div class="legend">
     <span><span class="dot" style="background:var(--base)"></span>Base game (discount-gated)</span>
-    <span><span class="dot" style="background:var(--total);opacity:.55"></span>SotE + Nightreign (sells at full price too)</span>
-    <span><span class="dot" style="background:var(--skip)"></span>Steam sale skipped (open window)</span>
+    <span><span class="dot" style="background:var(--total);opacity:.6"></span>SotE + Nightreign (full price too)</span>
+    <span><span class="dot" style="background:var(--total)"></span>RODE a Steam sale</span>
+    <span><span class="dot" style="background:var(--skip)"></span>SKIPPED Steam sale</span>
+    <span><span class="dot" style="background:var(--dlc)"></span>DLC launch</span>
   </div>
 
-  <div id="tl"></div>
+  <div class="scroll"><div class="chart" id="chart"></div></div>
 
   <div class="takeaway">
-    <b>The full picture, honestly:</b> the catalog moves every month — full-price months still do 13k–24k on organic SotE + Nightreign demand. But the <b>base game</b> (green) is pure discount-gated: it floods on a Steam-sale discount and is flat 0 otherwise. The catalog rode <b>3</b> Steam sales (Summer, Winter, Spring) and skipped <b>2</b> — <b>Steam Autumn (Nov)</b> and <b>Steam Lunar New Year (Feb)</b>. Those two are already-running, naturally-spaced windows where the base game's pile could convert — and the rest of the catalog already shows full-price appetite those months (Nov 13k, Feb 19k), so the audience is present.
+    <b>The opening:</b> the catalog moves every month — full-price months still do 13k–24k on organic SotE + Nightreign demand. But the <b>base game</b> (green) is pure discount-gated: it floods on a Steam-sale discount and is flat 0 otherwise. Of 6 Steam sales a year, the base game rode <b>4</b> and skipped <b>2</b> — <b>Steam Halloween (Oct 28)</b> and <b>Steam Autumn (Nov 26)</b>, back-to-back in the Oct/Nov dead zone. Those are already-running Steam windows where the base game's pile could convert — and the catalog already shows full-price appetite those months (Oct 15k, Nov 13k), so the audience is present.
   </div>
 
-  <footer>Source: EPICSOFT royalty report (FY26, all CN channels, SEA excluded). Steam 2025–26: Spring (Mar) · Summer (late Jun–Jul) · Autumn (Nov) · Winter (Dec 18–Jan 5) · Lunar New Year (Feb). · <a href="index.html">← Back to data view</a></footer>
+  <footer>Source: EPICSOFT royalty report (FY26 = Apr 2025–Mar 2026, all CN channels, SEA excluded). Steam 2025 exact dates (SteamDB): LNY (Jan 27–Feb 3) · Spring (Mar 13–27) · Summer (Jun 26–Jul 10) · Halloween (Oct 28–Nov 4) · Autumn (Nov 26–Dec 3) · Winter (Dec 18–Jan 2). · <a href="index.html">← Back to data view</a></footer>
 </div>
 
 <script>
-// whole catalog total + base-game portion, per month
 const T=[
- {m:"Apr",total:3920,base:0,disc:false,sale:null,note:"no Steam sale"},
- {m:"May",total:59390,base:0,disc:false,sale:null,note:"Nightreign LAUNCH — full price, launch wave"},
- {m:"Jun",total:51838,base:9120,disc:40,sale:"Steam Summer Sale",note:"base game 40% off"},
- {m:"Jul",total:28665,base:10668,disc:40,sale:"Steam Summer (tail)",note:"base game 40% off"},
- {m:"Aug",total:23932,base:0,disc:false,sale:null,note:"no Steam sale — SotE/NR full price"},
- {m:"Sep",total:15258,base:0,disc:false,sale:null,note:"no Steam sale"},
- {m:"Oct",total:15384,base:0,disc:false,sale:null,note:"Halloween only (minor)"},
- {m:"Nov",total:13345,base:0,disc:false,sale:"Steam Autumn Sale",note:"+ Double 11 — SKIPPED (base game 0)",skip:true},
- {m:"Dec",total:119664,base:29332,disc:35,sale:"Steam Winter Sale",note:"base 35% + NR 25% + Deluxe 20%"},
- {m:"Jan",total:28286,base:399,disc:35,sale:"Steam Winter (tail)",note:"tail — base pile drained by Dec"},
- {m:"Feb",total:19347,base:0,disc:false,sale:"Steam Lunar New Year",note:"+ CNY — SKIPPED (base game 0)",skip:true},
- {m:"Mar",total:102754,base:49908,disc:35,sale:"Steam Spring Sale",note:"base 35% + NR 25% + Deluxe 20%"}
+ {m:"Apr",y:"'25",total:3920,base:0,disc:false,sale:"no Steam sale"},
+ {m:"May",y:"'25",total:59390,base:0,disc:false,sale:"Nightreign LAUNCH",launch:true},
+ {m:"Jun",y:"'25",total:51838,base:9120,disc:40,sale:"Steam Summer (Jun 26–Jul 10)"},
+ {m:"Jul",y:"'25",total:28665,base:10668,disc:40,sale:"Summer tail"},
+ {m:"Aug",y:"'25",total:23932,base:0,disc:false,sale:"no Steam sale"},
+ {m:"Sep",y:"'25",total:15258,base:0,disc:false,sale:"no Steam sale"},
+ {m:"Oct",y:"'25",total:15384,base:0,disc:false,sale:"Steam Halloween (Oct 28)",skip:true},
+ {m:"Nov",y:"'25",total:13345,base:0,disc:false,sale:"Steam Autumn (Nov 26) + Double 11",skip:true},
+ {m:"Dec",y:"'25",total:119664,base:29332,disc:35,sale:"Steam Winter (Dec 18) + FH DLC",fh:true},
+ {m:"Jan",y:"'26",total:28286,base:399,disc:35,sale:"Winter tail + Steam LNY (Jan 27)"},
+ {m:"Feb",y:"'26",total:19347,base:0,disc:false,sale:"CNY (no Steam sale)"},
+ {m:"Mar",y:"'26",total:102754,base:49908,disc:35,sale:"Steam Spring (Mar 13–27)"}
 ];
 const maxT=Math.max(...T.map(d=>d.total));
-document.getElementById("tl").innerHTML=T.map(d=>{
-  const status = d.skip?"skip":(d.disc?"disc":"full");
-  const evTitle = d.sale ? d.sale : "(no Steam sale)";
-  let pill="";
-  if(d.skip) pill=`<span class="pill skip">SKIPPED</span>`;
-  else if(d.disc) pill=`<span class="pill disc">RODE · base ${d.disc}% off</span>`;
-  const wTotal = d.total/maxT*100;
-  const basePct = d.total>0 ? d.base/d.total*100 : 0;
-  const restPct = 100-basePct;
-  const bar = `<div class="bar" style="width:${Math.max(wTotal,1)}%">
-      <div class="seg-base" style="width:${basePct}%"></div>
-      <div class="seg-rest" style="width:${restPct}%"></div>
-    </div>`;
-  const bn = d.base>0
-    ? `<div class="barnote"><b>base ${d.base.toLocaleString()}</b> of ${d.total.toLocaleString()} total — base game floods on the discount</div>`
-    : `<div class="barnote">base game <b>0</b> · all ${d.total.toLocaleString()} from SotE + Nightreign at full price</div>`;
-  const yr = ["Jan","Feb","Mar"].includes(d.m) ? "26" : "25";
-  return `<div class="row">
-    <div class="mlab"><b>${d.m}</b><span>'${yr}</span></div>
-    <div class="track">
-      <span class="node ${status}"></span>
-      <div class="card ${d.skip?'skip':(d.disc?'disc':'')}">
-        <div class="top">
-          <div class="ev"><div class="t">${evTitle} ${pill}</div><div class="d">${d.note}</div></div>
-          <div class="tot"><div class="u">${d.total.toLocaleString()}</div><div class="p">total units</div></div>
-        </div>
-        ${bar}${bn}
-      </div>
+const kk=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
+document.getElementById("chart").innerHTML=T.map(d=>{
+  const hTotal=Math.max(d.total/maxT*300,3); // px
+  const baseFrac=d.total>0?d.base/d.total:0;
+  const hBase=hTotal*baseFrac, hRest=hTotal*(1-baseFrac);
+  let badges="";
+  if(d.disc) badges+=`<span class="badge b-disc">RODE ${d.disc}%</span>`;
+  if(d.skip) badges+=`<span class="badge b-skip">SKIPPED</span>`;
+  if(d.fh) badges+=`<span class="badge b-dlc">★ DLC LAUNCH</span>`;
+  if(d.launch) badges+=`<span class="badge b-dlc">★ LAUNCH</span>`;
+  return `<div class="col">
+    ${badges?`<div class="badges">${badges}</div>`:''}
+    <div class="val">${kk(d.total)}</div>
+    <div class="stack" style="height:${hTotal}px">
+      <div class="seg-rest" style="height:${hRest}px"></div>
+      <div class="seg-base" style="height:${hBase}px"></div>
     </div>
+    <div class="mtick">${d.m}</div>
+    <div class="myear">${d.y}</div>
+    <div class="evlabel">${d.sale}</div>
   </div>`;
 }).join("");
 </script>
