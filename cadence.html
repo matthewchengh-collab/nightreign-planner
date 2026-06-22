@@ -50,6 +50,8 @@
   .mo .mn{font-size:12.5px;font-weight:700} .mo .yr{font-size:9.5px;color:var(--muted)}
   .mo .fest{font-size:9px;color:#e07ab0;margin-top:6px;line-height:1.2;min-height:22px;font-weight:600}
   .mo .fest.dash{color:#3a3e48} .mo .fest.nofest{color:#5a6172;font-style:italic}
+  .mo .cdate{font-size:11px;font-weight:700;color:var(--gold);margin-top:6px}
+  .mo .steam{font-size:8.5px;color:#6b7280;margin-top:4px;line-height:1.2;font-style:italic}
   .mo .wnum{font-size:14px;font-weight:700;color:var(--gold);margin-top:6px;font-family:Georgia,serif}
   .mo .tag{font-size:9px;font-weight:700;margin-top:7px;padding:3px 5px;border-radius:8px;line-height:1.25;display:inline-block}
   .tag.sale{background:rgba(212,175,55,.22);color:var(--gold)}
@@ -139,12 +141,12 @@
     </div>
     <p class="h2sub" style="margin-top:10px;font-style:italic">Note: Jun &amp; Jul 2024 are excluded — that was the game's launch surge (fresh demand, full pile), so even a back-to-back sale rode the launch wave. A one-time exception, not the steady-state pattern.</p>
 
-    <h2>The proposed calendar — China festivals × your windows</h2>
-    <p class="h2sub">FY27 lineup, SKU rotated so no pile gets hit twice in a row. <b style="color:#e07ab0">Pink = the China shopping festival each window pegs to</b> — the date to actually run the sale (the festival doesn't drive demand on its own; the discount does — it just tells us when buyers are already in-store). No Steam sales shown — this is the China-only calendar.</p>
+    <h2>The proposed calendar — 4 China windows, every one clear of Steam</h2>
+    <p class="h2sub">Each window's <b style="color:var(--gold)">exact China dates</b> are timed to end right before a Steam seasonal sale starts, or sit clear after one ends — <b style="color:#6b7280">grey italic = the Steam sale we're dodging</b>. <b style="color:#e07ab0">Pink = the China festival peg.</b> The ask to Bandai: pull ER out of all four major Steam sales in China so these windows have clear air.</p>
     <div class="legend">
-      <span><span class="dot" style="background:var(--gold)"></span>China-only discount window</span>
-      <span><span class="dot" style="background:#e07ab0"></span>China shopping festival</span>
-      <span><span class="dot" style="background:#5a6172"></span>Reload month (no window)</span>
+      <span><span class="dot" style="background:var(--gold)"></span>China-only discount window (+ exact dates)</span>
+      <span><span class="dot" style="background:#e07ab0"></span>China festival peg</span>
+      <span><span class="dot" style="background:#6b7280"></span>Steam sale (dodged)</span>
     </div>
     <div class="cal" id="cal"></div>
 
@@ -251,27 +253,29 @@ document.getElementById("good").innerHTML = STEADY.filter(e=>e[3]===2||e[3]===3)
 const fmt=v=>v.toLocaleString();
 // CAL: [month, yr, state, label, festival-peg]   state: sale / frost / rest
 const CAL=[
- ["Jun","26","rest","full price","618 (Jun 18)"],
- ["Jul","26","frost","Nightreign (global)","—"],
- ["Aug","26","rest","reload","Qixi (Aug 19)"],
- ["Sep","26","rest","reload","—"],
- ["Oct","26","sale","BASE GAME","Golden Week (Oct 1–7)"],
- ["Nov","26","rest","reload","Double 11 (Nov 11)"],
- ["Dec","26","sale","BASE + DLCs","Double 12 (Dec 12)"],
- ["Jan","27","rest","reload","—"],
- ["Feb","27","sale","NIGHTREIGN","CNY (Feb 6)"],
- ["Mar","27","rest","reload","—"],
- ["Apr","27","sale","BASE + DLCs","no festival"],
- ["May","27","rest","reload","520 (May 20)"]
+ // [month, yr, state, SKU, festival, china-dates, steam-status]
+ ["Jun","26","rest","—","618 (Jun 18)","","Steam Summer Jun 25"],
+ ["Jul","26","frost","Nightreign","—","(BNE global)","Steam Summer"],
+ ["Aug","26","rest","—","Qixi (Aug 19)","",""],
+ ["Sep","26","rest","—","—","",""],
+ ["Oct","26","sale","BASE","Golden Week","Oct 10–24","after Autumn (ends Oct 8)"],
+ ["Nov","26","rest","—","Double 11","",""],
+ ["Dec","26","sale","BASE + DLC","Double 12","Dec 5–16","before Winter (Dec 17)"],
+ ["Jan","27","rest","—","—","","Steam Winter"],
+ ["Feb","27","sale","NIGHTREIGN","CNY (Feb 6)","Feb 5–19","no Steam sale"],
+ ["Mar","27","rest","—","—","","Steam Spring Mar 19"],
+ ["Apr","27","sale","BASE + DLC","—","Apr 1–15","after Spring (ends Mar 26)"],
+ ["May","27","rest","—","520 (May 20)","",""]
 ];
 document.getElementById("cal").innerHTML=CAL.map(m=>{
   const cls=m[2]==="sale"?"mo win":"mo";
-  const fest=m[4]&&m[4]!=="—"?`<div class="fest${m[4]==='no festival'?' nofest':''}">${m[4]}</div>`:`<div class="fest dash">·</div>`;
-  const num='';
+  const fest=m[4]&&m[4]!=="—"?`<div class="fest">${m[4]}</div>`:`<div class="fest dash">·</div>`;
+  const dates=m[5]?`<div class="cdate">${m[5]}</div>`:'';
+  const steam=m[6]?`<div class="steam">${m[6]}</div>`:'';
   const tag=m[2]==="sale"?`<span class="tag sale">${m[3]}</span>`
           :m[2]==="frost"?`<span class="tag frost">${m[3]}</span>`
-          :`<span class="tag rest">${m[3]}</span>`;
-  return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${fest}${tag}${num}</div>`;
+          :`<span class="tag rest">reload</span>`;
+  return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${fest}${tag}${dates}${steam}</div>`;
 }).join("");
 
 // ---------- TAB 2 (your lineup) ----------
