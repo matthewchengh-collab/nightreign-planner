@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elden Ring China — The Every-2-Month Sales Cadence</title>
+<title>Elden Ring China — China-Exclusive Sale Cadence & Forecast</title>
 <style>
   :root{
     --bg:#0f1115; --card:#1a1d24; --ink:#f2f4f8; --muted:#9aa3b2; --line:#2a2e38;
@@ -15,17 +15,24 @@
     line-height:1.5;padding:30px 22px 80px}
   .wrap{max-width:1180px;margin:0 auto}
   h1{font-size:27px;margin:0 0 4px;letter-spacing:-.3px}
-  .sub{color:var(--muted);font-size:14.5px;margin:0 0 24px}
+  .sub{color:var(--muted);font-size:14.5px;margin:0 0 18px}
   .sub b{color:var(--ink)}
-  h2{font-size:18px;margin:38px 0 4px;color:var(--gold);border-left:3px solid var(--gold);padding-left:11px}
+  h2{font-size:18px;margin:34px 0 4px;color:var(--gold);border-left:3px solid var(--gold);padding-left:11px}
   .h2sub{color:var(--muted);font-size:13.5px;margin:0 0 18px;padding-left:14px}
 
-  /* the law: gap vs result */
+  /* tabs */
+  .tabs{display:flex;gap:6px;margin:6px 0 26px;border-bottom:1px solid var(--line)}
+  .tab{padding:11px 20px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;
+    border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+  .view{display:none}
+  .view.on{display:block}
+
+  /* spacing law */
   .law{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
   @media(max-width:780px){.law{grid-template-columns:1fr}}
   .lawcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-  .lawcard.bad{border-color:rgba(217,83,79,.5)}
-  .lawcard.good{border-color:rgba(63,176,122,.5)}
+  .lawcard.bad{border-color:rgba(217,83,79,.5)} .lawcard.good{border-color:rgba(63,176,122,.5)}
   .lawcard h3{margin:0 0 3px;font-size:15px}
   .lawcard.bad h3{color:var(--red)} .lawcard.good h3{color:var(--green)}
   .lawcard .note{color:var(--muted);font-size:12.5px;margin:0 0 14px}
@@ -35,13 +42,12 @@
   .bar{height:20px;border-radius:4px;min-width:3px}
   .ev .v{font-size:12.5px;font-weight:700;white-space:nowrap}
 
-  /* calendar strip */
+  /* calendar */
   .cal{display:flex;gap:5px;overflow-x:auto;padding:6px 2px 4px;margin-top:6px}
   .mo{flex:1;min-width:74px;background:var(--card);border:1px solid var(--line);border-radius:10px;
-    padding:11px 6px 10px;text-align:center;position:relative}
+    padding:11px 6px 10px;text-align:center}
   .mo.win{border-color:var(--gold);background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(212,175,55,.04))}
-  .mo .mn{font-size:12.5px;font-weight:700}
-  .mo .yr{font-size:9.5px;color:var(--muted)}
+  .mo .mn{font-size:12.5px;font-weight:700} .mo .yr{font-size:9.5px;color:var(--muted)}
   .mo .tag{font-size:9px;font-weight:700;margin-top:7px;padding:3px 5px;border-radius:8px;line-height:1.25;display:inline-block}
   .tag.sale{background:rgba(212,175,55,.22);color:var(--gold)}
   .tag.rest{background:rgba(154,163,178,.16);color:var(--muted)}
@@ -50,74 +56,173 @@
   .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:14px 0 4px}
   .legend .dot{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:middle;margin-right:5px}
 
+  /* forecast */
+  .panel{display:grid;grid-template-columns:300px 1fr;gap:18px}
+  @media(max-width:820px){.panel{grid-template-columns:1fr}}
+  .controls{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;height:fit-content}
+  .controls h3{margin:0 0 14px;font-size:14px;color:var(--gold)}
+  .ctl{margin-bottom:16px}
+  .ctl label{display:block;font-size:12.5px;color:var(--ink);margin-bottom:5px}
+  .ctl .val{color:var(--gold);font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--gold);height:4px}
+  .preset{display:flex;gap:6px;margin-top:6px}
+  .preset button{flex:1;background:#23262e;border:1px solid var(--line);color:var(--muted);
+    font-size:11px;padding:6px 4px;border-radius:7px;cursor:pointer;font-weight:600}
+  .preset button:hover{border-color:var(--gold);color:var(--gold)}
+  .pile-info{margin-top:8px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+  .pile-info b{color:var(--ink)}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .kpi .l{font-size:11.5px;color:var(--muted)}
+  .kpi .v{font-size:25px;font-weight:700;margin-top:3px;font-family:Georgia,serif}
+  .kpi .dd{font-size:11px;color:var(--muted);margin-top:2px}
+  .kpi.net{border-color:rgba(63,176,122,.4)} .kpi.net .v{color:var(--green)}
+  .kpi.drain .v{color:var(--amber)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:4px}
+  th,td{padding:10px 12px;text-align:right;font-size:13px;border-bottom:1px solid var(--line)}
+  th{background:#23262e;color:var(--gold);font-size:11.5px;letter-spacing:.3px;text-transform:uppercase}
+  td:first-child,th:first-child{text-align:left;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .frozen{color:var(--blue);font-style:italic;font-size:11.5px}
+  .drainwrap{margin-top:8px}
+  .drainrow{display:flex;align-items:center;gap:11px;margin:8px 0}
+  .drainrow .lbl{width:62px;font-size:12.5px;font-weight:600;flex:none}
+  .track{flex:1;height:22px;background:#12141a;border-radius:6px;overflow:hidden;display:flex}
+  .seg-red{background:var(--gold);height:100%} .seg-rem{background:#2a2e38;height:100%}
+  .drainrow .rem{font-size:11.5px;color:var(--muted);width:96px;text-align:right;flex:none}
+
   .take{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
     border-radius:12px;padding:17px 20px;margin-top:22px;font-size:14px;line-height:1.6}
+  .take.amber{border-left-color:var(--amber)} .take.amber b{color:var(--amber)}
   .take b{color:var(--gold)}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
   @media(max-width:780px){.grid2{grid-template-columns:1fr}}
   .flag{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px}
   .flag h4{margin:0 0 6px;font-size:13.5px;color:var(--amber)}
   .flag p{margin:0;font-size:12.8px;color:var(--muted);line-height:1.55}
+  .note{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.55}
   footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
   footer a{color:var(--gold)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>The every-2-month China-exclusive sales cadence</h1>
-  <p class="sub">The idea: <b>pull Elden Ring out of the global Steam sales</b> and run <b>China-only discount windows on our own ~2-month cadence</b> — dates we control, walled off from global pricing and the Switch 2 freeze. October is window #1, not a one-off.</p>
+  <h1>Elden Ring China — the China-exclusive sale cadence</h1>
+  <p class="sub">The idea: <b>pull Elden Ring out of the global Steam sales</b> and run <b>China-only discount windows on our own ~2-month cadence</b>. Tab 1 proves the spacing rule and lays out the calendar. Tab 2 forecasts what it returns, capped at real inventory.</p>
 
-  <h2>The spacing law — proven by every discount we ran</h2>
-  <p class="h2sub">Each bar is a base-game discount event (launch months Jun–Jul 2024 excluded — see note). The pattern is blunt: run two sales too close and the second one flops.</p>
+  <div class="tabs">
+    <div class="tab on" onclick="tab(0)">① The cadence logic</div>
+    <div class="tab" onclick="tab(1)">② The forecast</div>
+  </div>
 
-  <div class="law">
-    <div class="lawcard bad">
-      <h3>✗ 1 month apart → flops</h3>
-      <p class="note">A sale right after another barely sells. The pile was just drained — nothing left to convert.</p>
-      <div id="bad"></div>
+  <!-- ============ TAB 1: CADENCE ============ -->
+  <div class="view on" id="v0">
+    <h2>The spacing law — proven by every discount we ran</h2>
+    <p class="h2sub">Each bar is a base-game discount event (launch months Jun–Jul 2024 excluded — see note). The pattern is blunt: run two sales too close and the second one flops.</p>
+    <div class="law">
+      <div class="lawcard bad">
+        <h3>✗ 1 month apart → flops</h3>
+        <p class="note">A sale right after another barely sells. The pile was just drained — nothing left to convert.</p>
+        <div id="bad"></div>
+      </div>
+      <div class="lawcard good">
+        <h3>✓ 2–3 months apart → works</h3>
+        <p class="note">Give the pile time to refill and the sale fires properly. This is the safe cadence.</p>
+        <div id="good"></div>
+      </div>
     </div>
-    <div class="lawcard good">
-      <h3>✓ 2–3 months apart → works</h3>
-      <p class="note">Give the pile time to refill and the sale fires properly. This is the safe cadence.</p>
-      <div id="good"></div>
+    <div class="take" style="margin-top:14px">
+      <b>The takeaway:</b> 2 months is the <b>floor, never tighter</b>. Every quick back-to-back sale flopped (880, then ~11k). Every well-spaced one worked or boomed (18k, 50k, 90k, 100k). "Every 2 months" sits right on the edge — it works, but you cannot compress it further.
     </div>
-  </div>
-  <div class="take" style="margin-top:14px">
-    <b>The takeaway:</b> 2 months is the <b>floor, never tighter</b>. Every quick back-to-back sale flopped (880, then ~11k). Every well-spaced one worked or boomed (18k, 50k, 90k, 100k). "Every 2 months" sits right on the edge — it works, but you cannot compress it further.
-  </div>
-  <p class="h2sub" style="margin-top:10px;font-style:italic">Note: Jun &amp; Jul 2024 are excluded — that was the game's launch surge (fresh demand, full pile), so even a back-to-back sale rode the launch wave. Those are a one-time exception, not the steady-state pattern, so we leave them out of the cadence comparison.</p>
+    <p class="h2sub" style="margin-top:10px;font-style:italic">Note: Jun &amp; Jul 2024 are excluded — that was the game's launch surge (fresh demand, full pile), so even a back-to-back sale rode the launch wave. A one-time exception, not the steady-state pattern.</p>
 
-  <h2>The proposed calendar — 6 China-only windows a year</h2>
-  <p class="h2sub">Illustrative FY27 layout. Windows ~2 months apart, base game frozen out of the global Steam sales entirely. Tighten or shift with BNE — the rule is the 2-month floor.</p>
-
-  <div class="legend">
-    <span><span class="dot" style="background:var(--gold)"></span>China-only discount window</span>
-    <span><span class="dot" style="background:#3b82f6"></span>Frozen (Switch 2 protection / global sale we sit out)</span>
-    <span><span class="dot" style="background:#5a6172"></span>Full price, no window</span>
-  </div>
-  <div class="cal" id="cal"></div>
-
-  <h2>Two things we tell BNE straight</h2>
-  <div class="grid2">
-    <div class="flag">
-      <h4>We trade global reach for control</h4>
-      <p>Some past spikes rode the global Steam sale's discovery and front-page featuring. A China-only window won't get that push — it leans entirely on the China channel's own reach. Whether the channel replaces that traffic is the real open question. The data can't answer it; we flag it, we don't hide it.</p>
+    <h2>The proposed calendar — China-only windows, ~2 months apart</h2>
+    <p class="h2sub">Illustrative FY27 layout. Base game frozen out of the global Steam sales entirely. Tighten or shift with BNE — the rule is the 2-month floor.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--gold)"></span>China-only discount window</span>
+      <span><span class="dot" style="background:#3b82f6"></span>Frozen (Switch 2 / global sale we sit out)</span>
+      <span><span class="dot" style="background:#5a6172"></span>Full price, no window</span>
     </div>
-    <div class="flag">
-      <h4>The year becomes fully promo-paced</h4>
-      <p>Six windows a year risks training buyers to only ever wait for a discount. But the data shows they already behave exactly that way — the base game sells nothing at full price regardless. So there's no full-price business to lose. The risk is largely already priced in.</p>
+    <div class="cal" id="cal"></div>
+
+    <h2>Two things we tell BNE straight</h2>
+    <div class="grid2">
+      <div class="flag">
+        <h4>We trade global reach for control</h4>
+        <p>Some past spikes rode the global Steam sale's discovery and front-page featuring. A China-only window won't get that push — it leans entirely on the China channel's own reach. Whether the channel replaces that traffic is the real open question. We flag it, we don't hide it.</p>
+      </div>
+      <div class="flag">
+        <h4>The year becomes fully promo-paced</h4>
+        <p>Several windows a year risks training buyers to only ever wait for a discount. But the data shows they already behave that way — the base game sells nothing at full price regardless. So there's no full-price business to lose. The risk is largely already priced in.</p>
+      </div>
     </div>
   </div>
 
-  <div class="take">
-    <b>Why this beats waiting for the global calendar:</b> we pick the dates, we wall the discount off from global + Switch 2 pricing permanently, and we convert a pile that's otherwise stranded — on our schedule, six times a year, instead of whenever Steam's global sales happen to land.
+  <!-- ============ TAB 2: FORECAST ============ -->
+  <div class="view" id="v1">
+    <h2>Pile-capped forecast — FY27</h2>
+    <p class="h2sub">Drag the conversion rates and watch it run. Every window only redeems from the <b style="color:var(--ink)">real remaining pile</b> in the channel — the forecast can never sell more codes than exist. Base game frozen until December (Switch 2). Net is vs a no-China-promo baseline.</p>
+    <div class="panel">
+      <div class="controls">
+        <h3>ASSUMPTIONS</h3>
+        <div class="ctl">
+          <label>Base game — % of pile each window pulls: <span class="val" id="cbVal">50%</span></label>
+          <input type="range" id="cb" min="20" max="80" value="50">
+        </div>
+        <div class="ctl">
+          <label>Other SKUs — % of pile each window pulls: <span class="val" id="cnVal">30%</span></label>
+          <input type="range" id="cn" min="10" max="60" value="30">
+        </div>
+        <div class="ctl">
+          <label>No-promo baseline (units/yr): <span class="val" id="blVal">38,000</span></label>
+          <input type="range" id="bl" min="20000" max="55000" step="1000" value="38000">
+        </div>
+        <div class="preset">
+          <button onclick="setP(35,20,30000)">Low</button>
+          <button onclick="setP(50,30,38000)">Likely</button>
+          <button onclick="setP(65,40,45000)">High</button>
+        </div>
+        <div class="pile-info">
+          Starting pile (Stock tab, remaining):<br>
+          Base game <b>25,943</b> · Other SKUs <b>84,768</b><br>
+          Catalog total <b>110,711</b>
+        </div>
+      </div>
+      <div>
+        <div class="kpis">
+          <div class="kpi"><div class="l">Units redeemed (yr)</div><div class="v" id="kTot">—</div><div class="dd">4 windows</div></div>
+          <div class="kpi net"><div class="l">Net extra vs baseline</div><div class="v" id="kNet">—</div><div class="dd">the number that counts</div></div>
+          <div class="kpi drain"><div class="l">Pile drained</div><div class="v" id="kDrain">—</div><div class="dd" id="kDrainU">of 110,711</div></div>
+        </div>
+        <table>
+          <thead><tr><th>Window</th><th>Base</th><th>Other SKUs</th><th>Total</th><th>Base left</th><th>Other left</th></tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2>Watch the pile drain</h2>
+    <p class="h2sub">Gold = redeemed by the cadence. Grey = inventory still sitting in the channel after the year.</p>
+    <div class="drainwrap" id="drain"></div>
+
+    <div class="take amber">
+      <b>The real finding:</b> this cadence is <b>pile-limited, not demand-limited</b>. Even the "likely" case drains most of the channel's entire inventory in one year. The question stops being "will the sale sell?" and becomes <b>"is there enough inventory to feed the cadence?"</b> Answer: for about a year, yes. After that, <b>BNE has to re-allocate fresh codes</b> or the windows run dry. That's the ask hiding under the sale.
+    </div>
+    <p class="note"><b style="color:var(--ink)">Why this is a floor, not a ceiling:</b> we can't yet model the pile <i>refilling</i> — the channel reorders codes during quiet months (the loading pattern), but we don't have the intake rate. This model assumes a fixed pile that only drains, so real numbers are likely higher. Conservative on purpose.<br><br>
+    <b style="color:var(--ink)">Solid vs assumed:</b> the 110,711 pile and per-SKU split are straight from the Stock tab. The conversion % per window is the estimate — anchored to how hard past windows drained, firm it up against real intake data later.</p>
   </div>
 
-  <footer>Source: EPICSOFT order data (base-game discount events, Jun 2024 – Mar 2026). Logic chain in book.md. · <a href="index.html">← Back to data view</a> · <a href="timeline.html">FY26 timeline →</a></footer>
+  <footer>Source: EPICSOFT order data + Stock tab (remaining pile per SKU). Method: Jeremy's (size windows, net vs baseline), capped at real inventory. · <a href="index.html">← Data view</a> · <a href="timeline.html">FY26 timeline →</a></footer>
 </div>
 
 <script>
-// discount events: [month, depth%, base units, gap-since-last]
+// ---------- tabs ----------
+function tab(i){
+  document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('on',k===i));
+  document.querySelectorAll('.view').forEach((v,k)=>v.classList.toggle('on',k===i));
+}
+
+// ---------- TAB 1 ----------
 const EV=[
  ["Jun 24",30,41268,null],["Jul 24",30,38909,1],["Sep 24",30,17515,2],
  ["Dec 24",40,90389,3],["Jan 25",40,880,1],["Mar 25",40,100000,2],
@@ -127,34 +232,22 @@ const maxU=Math.max(...EV.map(e=>e[2]));
 const kk=v=>v>=1000?(v/1000).toFixed(0)+"k":v;
 function row(e,color){
   const w=Math.max(e[2]/maxU*100,1.5);
-  return `<div class="ev">
-    <span class="m">${e[0]}</span>
-    <span class="g">+${e[3]}mo</span>
+  return `<div class="ev"><span class="m">${e[0]}</span><span class="g">+${e[3]}mo</span>
     <div class="bar" style="width:${w}%;background:${color}"></div>
-    <span class="v" style="color:${color}">${kk(e[2])}</span>
-  </div>`;
+    <span class="v" style="color:${color}">${kk(e[2])}</span></div>`;
 }
-// exclude launch months Jun24 & Jul24 (launch surge, not steady state)
 const LAUNCH=["Jun 24","Jul 24"];
 const STEADY=EV.filter(e=>!LAUNCH.includes(e[0]));
-// bad = gap 1 ; good = gap 2 or 3
 document.getElementById("bad").innerHTML  = STEADY.filter(e=>e[3]===1).sort((a,b)=>b[2]-a[2]).map(e=>row(e,"#d9534f")).join("");
 document.getElementById("good").innerHTML = STEADY.filter(e=>e[3]===2||e[3]===3).sort((a,b)=>b[2]-a[2]).map(e=>row(e,"#3fb07a")).join("");
 
-// calendar: FY27 illustrative, 6 windows ~2mo apart
 const CAL=[
- ["Jun","26","rest","full price"],
- ["Jul","26","frost","global sale — sit out"],
- ["Aug","26","frost","Switch 2 launch — frozen"],
- ["Sep","26","rest","reload"],
- ["Oct","26","sale","WINDOW 1"],
- ["Nov","26","rest","reload"],
- ["Dec","26","sale","WINDOW 2"],
- ["Jan","27","rest","reload"],
- ["Feb","27","sale","WINDOW 3"],
- ["Mar","27","rest","reload"],
- ["Apr","27","sale","WINDOW 4"],
- ["May","27","rest","reload"]
+ ["Jun","26","rest","full price"],["Jul","26","frost","global sale — sit out"],
+ ["Aug","26","frost","Switch 2 — frozen"],["Sep","26","rest","reload"],
+ ["Oct","26","sale","WINDOW 1"],["Nov","26","rest","reload"],
+ ["Dec","26","sale","WINDOW 2"],["Jan","27","rest","reload"],
+ ["Feb","27","sale","WINDOW 3"],["Mar","27","rest","reload"],
+ ["Apr","27","sale","WINDOW 4"],["May","27","rest","reload"]
 ];
 document.getElementById("cal").innerHTML=CAL.map(m=>{
   const cls=m[2]==="sale"?"mo win":"mo";
@@ -163,6 +256,37 @@ document.getElementById("cal").innerHTML=CAL.map(m=>{
           :`<span class="tag rest">${m[3]}</span>`;
   return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${tag}</div>`;
 }).join("");
+
+// ---------- TAB 2 ----------
+const BASE0=25943, NON0=84768, CAT0=BASE0+NON0;
+const WINDOWS=['Oct 26','Dec 26','Feb 27','Apr 27'], FROZEN_UNTIL=1;
+const cb=document.getElementById('cb'), cn=document.getElementById('cn'), bl=document.getElementById('bl');
+function setP(b,n,base){cb.value=b;cn.value=n;bl.value=base;runF();}
+function runF(){
+  const convB=+cb.value/100, convN=+cn.value/100, baseline=+bl.value;
+  cbVal.textContent=cb.value+'%'; cnVal.textContent=cn.value+'%'; blVal.textContent=(+bl.value).toLocaleString();
+  let base=BASE0, non=NON0, total=0, rows='';
+  WINDOWS.forEach((w,i)=>{
+    const b = i<FROZEN_UNTIL ? 0 : Math.round(base*convB);
+    const n = Math.round(non*convN);
+    base-=b; non-=n; total+=b+n;
+    const bcell = i<FROZEN_UNTIL ? '<span class="frozen">frozen</span>' : b.toLocaleString();
+    rows+=`<tr><td>${w}</td><td>${bcell}</td><td>${n.toLocaleString()}</td><td><b>${(b+n).toLocaleString()}</b></td><td>${base.toLocaleString()}</td><td>${non.toLocaleString()}</td></tr>`;
+  });
+  tb.innerHTML=rows;
+  const drained=CAT0-base-non;
+  kTot.textContent=total.toLocaleString();
+  kNet.textContent='+'+(total-baseline).toLocaleString();
+  kDrain.textContent=Math.round(drained/CAT0*100)+'%';
+  kDrainU.textContent=drained.toLocaleString()+' of 110,711';
+  const draw=(lbl,start,left)=>{const pct=(start-left)/start*100;
+    return `<div class="drainrow"><span class="lbl">${lbl}</span>
+      <div class="track"><div class="seg-red" style="width:${pct}%"></div><div class="seg-rem" style="width:${100-pct}%"></div></div>
+      <span class="rem">${left.toLocaleString()} left</span></div>`;};
+  drain.innerHTML = draw('Base',BASE0,base)+draw('Other',NON0,non)+draw('Catalog',CAT0,base+non);
+}
+[cb,cn,bl].forEach(el=>el.addEventListener('input',runF));
+runF();
 </script>
 </body>
 </html>
