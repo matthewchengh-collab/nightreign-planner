@@ -48,6 +48,8 @@
     padding:11px 6px 10px;text-align:center}
   .mo.win{border-color:var(--gold);background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(212,175,55,.04))}
   .mo .mn{font-size:12.5px;font-weight:700} .mo .yr{font-size:9.5px;color:var(--muted)}
+  .mo .fest{font-size:9px;color:#e07ab0;margin-top:6px;line-height:1.2;min-height:22px;font-weight:600}
+  .mo .fest.dash{color:#3a3e48} .mo .fest.nofest{color:#5a6172;font-style:italic}
   .mo .wnum{font-size:14px;font-weight:700;color:var(--gold);margin-top:6px;font-family:Georgia,serif}
   .mo .tag{font-size:9px;font-weight:700;margin-top:7px;padding:3px 5px;border-radius:8px;line-height:1.25;display:inline-block}
   .tag.sale{background:rgba(212,175,55,.22);color:var(--gold)}
@@ -137,12 +139,12 @@
     </div>
     <p class="h2sub" style="margin-top:10px;font-style:italic">Note: Jun &amp; Jul 2024 are excluded — that was the game's launch surge (fresh demand, full pile), so even a back-to-back sale rode the launch wave. A one-time exception, not the steady-state pattern.</p>
 
-    <h2>The proposed calendar — China-only windows, ~2 months apart</h2>
-    <p class="h2sub">Illustrative FY27 layout. Numbers are the <b style="color:var(--gold)">likely-scenario units</b> each window redeems (50% base / 30% other, capped at pile — see tab 2). Base game frozen out of the global Steam sales entirely. Tighten or shift with BNE — the rule is the 2-month floor.</p>
+    <h2>The proposed calendar — China festivals × your windows</h2>
+    <p class="h2sub">FY27 lineup, SKU rotated so no pile gets hit twice in a row. <b style="color:#e07ab0">Pink = the China shopping festival each window pegs to</b> — the date to actually run the sale (the festival doesn't drive demand on its own; the discount does — it just tells us when buyers are already in-store). No Steam sales shown — this is the China-only calendar.</p>
     <div class="legend">
       <span><span class="dot" style="background:var(--gold)"></span>China-only discount window</span>
-      <span><span class="dot" style="background:#3b82f6"></span>Frozen (Switch 2 / global sale we sit out)</span>
-      <span><span class="dot" style="background:#5a6172"></span>Full price, no window</span>
+      <span><span class="dot" style="background:#e07ab0"></span>China shopping festival</span>
+      <span><span class="dot" style="background:#5a6172"></span>Reload month (no window)</span>
     </div>
     <div class="cal" id="cal"></div>
 
@@ -242,30 +244,30 @@ const STEADY=EV.filter(e=>!LAUNCH.includes(e[0]));
 document.getElementById("bad").innerHTML  = STEADY.filter(e=>e[3]===1).sort((a,b)=>b[2]-a[2]).map(e=>row(e,"#d9534f")).join("");
 document.getElementById("good").innerHTML = STEADY.filter(e=>e[3]===2||e[3]===3).sort((a,b)=>b[2]-a[2]).map(e=>row(e,"#3fb07a")).join("");
 
-// likely-scenario window totals (50% base / 30% other), capped at pile — matches the forecast tab
-const _B0=25943,_N0=84768; let _b=_B0,_n=_N0; const _winTot=[];
-['Oct','Dec','Feb','Apr'].forEach((w,i)=>{
-  const bb = i<1 ? 0 : Math.round(_b*0.50);   // base frozen on Oct (window 0)
-  const nn = Math.round(_n*0.30);
-  _b-=bb; _n-=nn; _winTot.push(bb+nn);
-});
-// _winTot = [25430, 30773, 18947, 11966]
 const fmt=v=>v.toLocaleString();
+// CAL: [month, yr, state, label, festival-peg]   state: sale / frost / rest
 const CAL=[
- ["Jun","26","rest","full price"],["Jul","26","frost","global sale — sit out"],
- ["Aug","26","frost","Switch 2 — frozen"],["Sep","26","rest","reload"],
- ["Oct","26","sale","W1 · base frozen",_winTot[0]],["Nov","26","rest","reload"],
- ["Dec","26","sale","WINDOW 2",_winTot[1]],["Jan","27","rest","reload"],
- ["Feb","27","sale","WINDOW 3",_winTot[2]],["Mar","27","rest","reload"],
- ["Apr","27","sale","WINDOW 4",_winTot[3]],["May","27","rest","reload"]
+ ["Jun","26","rest","full price","618 (Jun 18)"],
+ ["Jul","26","frost","Nightreign (global)","—"],
+ ["Aug","26","rest","reload","Qixi (Aug 19)"],
+ ["Sep","26","rest","reload","—"],
+ ["Oct","26","sale","BASE GAME","Golden Week (Oct 1–7)"],
+ ["Nov","26","rest","reload","Double 11 (Nov 11)"],
+ ["Dec","26","sale","BASE + DLCs","Double 12 (Dec 12)"],
+ ["Jan","27","rest","reload","—"],
+ ["Feb","27","sale","NIGHTREIGN","CNY (Feb 6)"],
+ ["Mar","27","rest","reload","—"],
+ ["Apr","27","sale","BASE + DLCs","no festival"],
+ ["May","27","rest","reload","520 (May 20)"]
 ];
 document.getElementById("cal").innerHTML=CAL.map(m=>{
   const cls=m[2]==="sale"?"mo win":"mo";
-  const num=m[2]==="sale"?`<div class="wnum">~${fmt(m[4])}</div>`:'';
+  const fest=m[4]&&m[4]!=="—"?`<div class="fest${m[4]==='no festival'?' nofest':''}">${m[4]}</div>`:`<div class="fest dash">·</div>`;
+  const num='';
   const tag=m[2]==="sale"?`<span class="tag sale">${m[3]}</span>`
           :m[2]==="frost"?`<span class="tag frost">${m[3]}</span>`
           :`<span class="tag rest">${m[3]}</span>`;
-  return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${tag}${num}</div>`;
+  return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${fest}${tag}${num}</div>`;
 }).join("");
 
 // ---------- TAB 2 ----------
