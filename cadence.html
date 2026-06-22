@@ -165,60 +165,31 @@
 
   <!-- ============ TAB 2: FORECAST ============ -->
   <div class="view" id="v1">
-    <h2>Pile-capped forecast — FY27 (your lineup)</h2>
-    <p class="h2sub">Each window discounts the SKU you assigned it: <b style="color:var(--ink)">Oct base · Dec base+DLC · Feb Nightreign · Apr base+DLC</b>. Every window only redeems from the <b style="color:var(--ink)">real remaining pile</b> — it can never sell codes that don't exist. Watch the base pile drain across Oct → Dec → Apr.</p>
-    <div class="panel">
-      <div class="controls">
-        <h3>ASSUMPTIONS</h3>
-        <div class="ctl">
-          <label>Base discount — % of remaining base pile each hit: <span class="val" id="cbVal">45%</span></label>
-          <input type="range" id="cb" min="20" max="80" value="45">
-        </div>
-        <div class="ctl">
-          <label>DLC 10% — % of remaining DLC pile each hit: <span class="val" id="cnVal">15%</span></label>
-          <input type="range" id="cn" min="5" max="40" value="15">
-        </div>
-        <div class="ctl">
-          <label>Nightreign (Feb) units — sized separately: <span class="val" id="nrVal">15,000</span></label>
-          <input type="range" id="nr" min="0" max="40000" step="1000" value="15000">
-        </div>
-        <div class="ctl">
-          <label>No-promo baseline (units/yr): <span class="val" id="blVal">38,000</span></label>
-          <input type="range" id="bl" min="20000" max="55000" step="1000" value="38000">
-        </div>
-        <div class="preset">
-          <button onclick="setP(35,10,10000,30000)">Low</button>
-          <button onclick="setP(45,15,15000,38000)">Likely</button>
-          <button onclick="setP(60,20,25000,45000)">High</button>
-        </div>
-        <div class="pile-info">
-          Starting pile (Stock tab, remaining):<br>
-          Base game <b>25,943</b> · DLC+SOTE <b>84,768</b><br>
-          Nightreign — <i>not in this file, sized by slider</i>
-        </div>
-      </div>
-      <div>
-        <div class="kpis">
-          <div class="kpi"><div class="l">Units redeemed (yr)</div><div class="v" id="kTot">—</div><div class="dd">4 windows</div></div>
-          <div class="kpi net"><div class="l">Net extra vs baseline</div><div class="v" id="kNet">—</div><div class="dd">the number that counts</div></div>
-          <div class="kpi drain"><div class="l">December base</div><div class="v" id="kDec">—</div><div class="dd">your big month</div></div>
-        </div>
-        <table>
-          <thead><tr><th>Window</th><th>SKU</th><th>Units</th><th>Base left</th><th>DLC left</th></tr></thead>
-          <tbody id="tb"></tbody>
-        </table>
-      </div>
+    <h2>The forecast for Bandai — net-new redemptions</h2>
+    <p class="h2sub">Supply is <b style="color:var(--ink)">unlimited</b> (Bandai mints codes on demand — no inventory cap). The driver is <b style="color:var(--ink)">demand per window</b>. These numbers are deliberately conservative: anchored to recent 35%-off events, then haircut twice — once for losing global Steam traffic (China-only), and again because <b style="color:var(--ink)">Elden Ring is a 5-year-old game</b> and discount volumes decay every year (Dec 2024 = 90k → Dec 2025 = 29k, same sale, one year later). Base sells <b style="color:var(--ink)">~0 at full price</b>, so nearly all of this is <b style="color:var(--green)">net-new revenue Bandai would otherwise never get</b>.</p>
+
+    <div class="kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+      <div class="kpi"><div class="l">Year total — LOW</div><div class="v">36,000</div><div class="dd">conservative</div></div>
+      <div class="kpi net"><div class="l">Year total — LIKELY</div><div class="v">60,000</div><div class="dd">net-new units to Bandai</div></div>
+      <div class="kpi"><div class="l">Year total — HIGH</div><div class="v">97,000</div><div class="dd">if it holds up better than aging suggests</div></div>
     </div>
 
-    <h2>Watch the pile drain</h2>
-    <p class="h2sub">Gold = redeemed by the cadence. Grey = inventory still sitting in the channel after the year.</p>
-    <div class="drainwrap" id="drain"></div>
+    <table>
+      <thead><tr><th>Window</th><th>SKU @ depth</th><th>Low</th><th>Likely</th><th>High</th></tr></thead>
+      <tbody>
+        <tr><td>Oct 10–24</td><td>Base 35%</td><td>8,000</td><td><b style="color:var(--gold)">14,000</b></td><td>23,000</td></tr>
+        <tr><td>Dec 5–16</td><td>Base 35% + DLC 10%</td><td>11,000</td><td><b style="color:var(--gold)">18,000</b></td><td>28,000</td></tr>
+        <tr><td>Feb 5–19</td><td>Nightreign *</td><td>8,000</td><td><b style="color:var(--gold)">13,000</b></td><td>22,000</td></tr>
+        <tr><td>Apr 1–15</td><td>Base 35% + DLC 10%</td><td>9,000</td><td><b style="color:var(--gold)">15,000</b></td><td>24,000</td></tr>
+        <tr style="background:#24200f"><td><b>YEAR</b></td><td></td><td><b>36,000</b></td><td><b style="color:var(--green)">60,000</b></td><td><b>97,000</b></td></tr>
+      </tbody>
+    </table>
 
-    <div class="take amber">
-      <b>The thing to watch — October starves December.</b> Base game runs three windows (Oct, Dec, Apr) off one fixed 26k pile, no reorder. October fires first into the full pile, so it pulls the most — which means <b>December, your big month, gets what October left behind.</b> The pile doesn't know December is special; it gives codes to whoever discounts first. If December is the month you want biggest, October base is working against you — either run Oct lighter, or move base off October entirely (it has 85k of DLC pile sitting idle). Drag the base slider and watch December shrink as October grows.
+    <div class="take">
+      <b>The pitch to Bandai, in one line:</b> across four China-only windows, ~<b>60,000 net-new redemptions a year</b> (range 36k–97k) from a 5-year-old title that currently earns almost nothing between sales — and it's nearly all incremental, because the base game sells ~0 at full price. Bandai keeps full global pricing everywhere else.
     </div>
-    <p class="note"><b style="color:var(--ink)">Why this is a floor, not a ceiling:</b> we can't yet model the pile <i>refilling</i> — the channel reorders codes during quiet months (the loading pattern), but we don't have the intake rate. This model assumes a fixed pile that only drains, so real numbers are likely higher. Conservative on purpose.<br><br>
-    <b style="color:var(--ink)">Solid vs assumed:</b> the 110,711 pile and per-SKU split are straight from the Stock tab. The conversion % per window is the estimate — anchored to how hard past windows drained, firm it up against real intake data later.</p>
+    <p class="note"><b style="color:var(--ink)">Why conservative is right here:</b> ER is ~5 years old (launched Feb 2022). The pool of un-bought Chinese buyers shrinks every sale cycle, and the data shows it — the same Winter discount pulled 90k in 2024 and 29k in 2025. We anchored to the <i>recent, declined</i> events and haircut again for FY27 aging + China-only. Better to under-promise and beat it. <b style="color:var(--amber)">* Feb Nightreign is an EPICSOFT estimate</b> (not in our royalty data) — Bandai validates that one.<br><br>
+    <b style="color:var(--ink)">The strategic flip:</b> a 5-year-old game earning ~0 between sales is the <i>argument FOR</i> the cadence, not against. There's no healthy full-price business to cannibalize — targeted China discounts are how you keep monetizing a mature title.</p>
   </div>
 
   <footer>Source: EPICSOFT order data + Stock tab (remaining pile per SKU). Method: Jeremy's (size windows, net vs baseline), capped at real inventory. · <a href="index.html">← Data view</a> · <a href="timeline.html">FY26 timeline →</a></footer>
@@ -278,48 +249,7 @@ document.getElementById("cal").innerHTML=CAL.map(m=>{
   return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${fest}${tag}${dates}${steam}</div>`;
 }).join("");
 
-// ---------- TAB 2 (your lineup) ----------
-const BASE0=25943, DLC0=84768;
-// lineup: each window names what it discounts
-// Oct = base only | Dec = base + DLC | Feb = Nightreign (separate) | Apr = base + DLC
-const cb=document.getElementById('cb'), cn=document.getElementById('cn'),
-      nr=document.getElementById('nr'), bl=document.getElementById('bl');
-function setP(b,d,n,base){cb.value=b;cn.value=d;nr.value=n;bl.value=base;runF();}
-function runF(){
-  const convB=+cb.value/100, convD=+cn.value/100, nrUnits=+nr.value, baseline=+bl.value;
-  cbVal.textContent=cb.value+'%'; cnVal.textContent=cn.value+'%';
-  nrVal.textContent=(+nr.value).toLocaleString(); blVal.textContent=(+bl.value).toLocaleString();
-
-  let base=BASE0, dlc=DLC0, total=0, rows='', decBase=0;
-  const W=[
-    {m:'Oct 26', sku:'Base game',      base:true,  dlc:false},
-    {m:'Dec 26', sku:'Base + DLCs',    base:true,  dlc:true },
-    {m:'Feb 27', sku:'Nightreign',     base:false, dlc:false, nr:true},
-    {m:'Apr 27', sku:'Base + DLCs',    base:true,  dlc:true }
-  ];
-  W.forEach(win=>{
-    let b=0,d=0,n=0;
-    if(win.base){ b=Math.round(base*convB); base-=b; }
-    if(win.dlc){  d=Math.round(dlc*convD); dlc-=d; }
-    if(win.nr){   n=nrUnits; }
-    const u=b+d+n; total+=u;
-    if(win.m.startsWith('Dec')) decBase=b;
-    rows+=`<tr><td>${win.m}</td><td>${win.sku}</td><td><b>${u.toLocaleString()}</b></td>`+
-          `<td>${base.toLocaleString()}</td><td>${dlc.toLocaleString()}</td></tr>`;
-  });
-  tb.innerHTML=rows;
-  kTot.textContent=total.toLocaleString();
-  kNet.textContent='+'+(total-baseline).toLocaleString();
-  kDec.textContent=decBase.toLocaleString();
-
-  const draw=(lbl,start,left)=>{const pct=(start-left)/start*100;
-    return `<div class="drainrow"><span class="lbl">${lbl}</span>
-      <div class="track"><div class="seg-red" style="width:${pct}%"></div><div class="seg-rem" style="width:${100-pct}%"></div></div>
-      <span class="rem">${left.toLocaleString()} left</span></div>`;};
-  drain.innerHTML = draw('Base',BASE0,base)+draw('DLC',DLC0,dlc);
-}
-[cb,cn,nr,bl].forEach(el=>el.addEventListener('input',runF));
-runF();
+// TAB 2 forecast is now static HTML (demand-driven, no pile model) — no JS needed.
 </script>
 </body>
 </html>
