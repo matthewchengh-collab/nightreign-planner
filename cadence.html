@@ -163,42 +163,46 @@
 
   <!-- ============ TAB 2: FORECAST ============ -->
   <div class="view" id="v1">
-    <h2>Pile-capped forecast — FY27</h2>
-    <p class="h2sub">Drag the conversion rates and watch it run. Every window only redeems from the <b style="color:var(--ink)">real remaining pile</b> in the channel — the forecast can never sell more codes than exist. Base game frozen until December (Switch 2). Net is vs a no-China-promo baseline.</p>
+    <h2>Pile-capped forecast — FY27 (your lineup)</h2>
+    <p class="h2sub">Each window discounts the SKU you assigned it: <b style="color:var(--ink)">Oct base · Dec base+DLC · Feb Nightreign · Apr base+DLC</b>. Every window only redeems from the <b style="color:var(--ink)">real remaining pile</b> — it can never sell codes that don't exist. Watch the base pile drain across Oct → Dec → Apr.</p>
     <div class="panel">
       <div class="controls">
         <h3>ASSUMPTIONS</h3>
         <div class="ctl">
-          <label>Base game — % of pile each window pulls: <span class="val" id="cbVal">50%</span></label>
-          <input type="range" id="cb" min="20" max="80" value="50">
+          <label>Base discount — % of remaining base pile each hit: <span class="val" id="cbVal">45%</span></label>
+          <input type="range" id="cb" min="20" max="80" value="45">
         </div>
         <div class="ctl">
-          <label>Other SKUs — % of pile each window pulls: <span class="val" id="cnVal">30%</span></label>
-          <input type="range" id="cn" min="10" max="60" value="30">
+          <label>DLC 10% — % of remaining DLC pile each hit: <span class="val" id="cnVal">15%</span></label>
+          <input type="range" id="cn" min="5" max="40" value="15">
+        </div>
+        <div class="ctl">
+          <label>Nightreign (Feb) units — sized separately: <span class="val" id="nrVal">15,000</span></label>
+          <input type="range" id="nr" min="0" max="40000" step="1000" value="15000">
         </div>
         <div class="ctl">
           <label>No-promo baseline (units/yr): <span class="val" id="blVal">38,000</span></label>
           <input type="range" id="bl" min="20000" max="55000" step="1000" value="38000">
         </div>
         <div class="preset">
-          <button onclick="setP(35,20,30000)">Low</button>
-          <button onclick="setP(50,30,38000)">Likely</button>
-          <button onclick="setP(65,40,45000)">High</button>
+          <button onclick="setP(35,10,10000,30000)">Low</button>
+          <button onclick="setP(45,15,15000,38000)">Likely</button>
+          <button onclick="setP(60,20,25000,45000)">High</button>
         </div>
         <div class="pile-info">
           Starting pile (Stock tab, remaining):<br>
-          Base game <b>25,943</b> · Other SKUs <b>84,768</b><br>
-          Catalog total <b>110,711</b>
+          Base game <b>25,943</b> · DLC+SOTE <b>84,768</b><br>
+          Nightreign — <i>not in this file, sized by slider</i>
         </div>
       </div>
       <div>
         <div class="kpis">
           <div class="kpi"><div class="l">Units redeemed (yr)</div><div class="v" id="kTot">—</div><div class="dd">4 windows</div></div>
           <div class="kpi net"><div class="l">Net extra vs baseline</div><div class="v" id="kNet">—</div><div class="dd">the number that counts</div></div>
-          <div class="kpi drain"><div class="l">Pile drained</div><div class="v" id="kDrain">—</div><div class="dd" id="kDrainU">of 110,711</div></div>
+          <div class="kpi drain"><div class="l">December base</div><div class="v" id="kDec">—</div><div class="dd">your big month</div></div>
         </div>
         <table>
-          <thead><tr><th>Window</th><th>Base</th><th>Other SKUs</th><th>Total</th><th>Base left</th><th>Other left</th></tr></thead>
+          <thead><tr><th>Window</th><th>SKU</th><th>Units</th><th>Base left</th><th>DLC left</th></tr></thead>
           <tbody id="tb"></tbody>
         </table>
       </div>
@@ -209,7 +213,7 @@
     <div class="drainwrap" id="drain"></div>
 
     <div class="take amber">
-      <b>The real finding:</b> this cadence is <b>pile-limited, not demand-limited</b>. Even the "likely" case drains most of the channel's entire inventory in one year. The question stops being "will the sale sell?" and becomes <b>"is there enough inventory to feed the cadence?"</b> Answer: for about a year, yes. After that, <b>BNE has to re-allocate fresh codes</b> or the windows run dry. That's the ask hiding under the sale.
+      <b>The thing to watch — October starves December.</b> Base game runs three windows (Oct, Dec, Apr) off one fixed 26k pile, no reorder. October fires first into the full pile, so it pulls the most — which means <b>December, your big month, gets what October left behind.</b> The pile doesn't know December is special; it gives codes to whoever discounts first. If December is the month you want biggest, October base is working against you — either run Oct lighter, or move base off October entirely (it has 85k of DLC pile sitting idle). Drag the base slider and watch December shrink as October grows.
     </div>
     <p class="note"><b style="color:var(--ink)">Why this is a floor, not a ceiling:</b> we can't yet model the pile <i>refilling</i> — the channel reorders codes during quiet months (the loading pattern), but we don't have the intake rate. This model assumes a fixed pile that only drains, so real numbers are likely higher. Conservative on purpose.<br><br>
     <b style="color:var(--ink)">Solid vs assumed:</b> the 110,711 pile and per-SKU split are straight from the Stock tab. The conversion % per window is the estimate — anchored to how hard past windows drained, firm it up against real intake data later.</p>
@@ -270,35 +274,47 @@ document.getElementById("cal").innerHTML=CAL.map(m=>{
   return `<div class="${cls}"><div class="mn">${m[0]}</div><div class="yr">'${m[1]}</div>${fest}${tag}${num}</div>`;
 }).join("");
 
-// ---------- TAB 2 ----------
-const BASE0=25943, NON0=84768, CAT0=BASE0+NON0;
-const WINDOWS=['Oct 26','Dec 26','Feb 27','Apr 27'], FROZEN_UNTIL=1;
-const cb=document.getElementById('cb'), cn=document.getElementById('cn'), bl=document.getElementById('bl');
-function setP(b,n,base){cb.value=b;cn.value=n;bl.value=base;runF();}
+// ---------- TAB 2 (your lineup) ----------
+const BASE0=25943, DLC0=84768;
+// lineup: each window names what it discounts
+// Oct = base only | Dec = base + DLC | Feb = Nightreign (separate) | Apr = base + DLC
+const cb=document.getElementById('cb'), cn=document.getElementById('cn'),
+      nr=document.getElementById('nr'), bl=document.getElementById('bl');
+function setP(b,d,n,base){cb.value=b;cn.value=d;nr.value=n;bl.value=base;runF();}
 function runF(){
-  const convB=+cb.value/100, convN=+cn.value/100, baseline=+bl.value;
-  cbVal.textContent=cb.value+'%'; cnVal.textContent=cn.value+'%'; blVal.textContent=(+bl.value).toLocaleString();
-  let base=BASE0, non=NON0, total=0, rows='';
-  WINDOWS.forEach((w,i)=>{
-    const b = i<FROZEN_UNTIL ? 0 : Math.round(base*convB);
-    const n = Math.round(non*convN);
-    base-=b; non-=n; total+=b+n;
-    const bcell = i<FROZEN_UNTIL ? '<span class="frozen">frozen</span>' : b.toLocaleString();
-    rows+=`<tr><td>${w}</td><td>${bcell}</td><td>${n.toLocaleString()}</td><td><b>${(b+n).toLocaleString()}</b></td><td>${base.toLocaleString()}</td><td>${non.toLocaleString()}</td></tr>`;
+  const convB=+cb.value/100, convD=+cn.value/100, nrUnits=+nr.value, baseline=+bl.value;
+  cbVal.textContent=cb.value+'%'; cnVal.textContent=cn.value+'%';
+  nrVal.textContent=(+nr.value).toLocaleString(); blVal.textContent=(+bl.value).toLocaleString();
+
+  let base=BASE0, dlc=DLC0, total=0, rows='', decBase=0;
+  const W=[
+    {m:'Oct 26', sku:'Base game',      base:true,  dlc:false},
+    {m:'Dec 26', sku:'Base + DLCs',    base:true,  dlc:true },
+    {m:'Feb 27', sku:'Nightreign',     base:false, dlc:false, nr:true},
+    {m:'Apr 27', sku:'Base + DLCs',    base:true,  dlc:true }
+  ];
+  W.forEach(win=>{
+    let b=0,d=0,n=0;
+    if(win.base){ b=Math.round(base*convB); base-=b; }
+    if(win.dlc){  d=Math.round(dlc*convD); dlc-=d; }
+    if(win.nr){   n=nrUnits; }
+    const u=b+d+n; total+=u;
+    if(win.m.startsWith('Dec')) decBase=b;
+    rows+=`<tr><td>${win.m}</td><td>${win.sku}</td><td><b>${u.toLocaleString()}</b></td>`+
+          `<td>${base.toLocaleString()}</td><td>${dlc.toLocaleString()}</td></tr>`;
   });
   tb.innerHTML=rows;
-  const drained=CAT0-base-non;
   kTot.textContent=total.toLocaleString();
   kNet.textContent='+'+(total-baseline).toLocaleString();
-  kDrain.textContent=Math.round(drained/CAT0*100)+'%';
-  kDrainU.textContent=drained.toLocaleString()+' of 110,711';
+  kDec.textContent=decBase.toLocaleString();
+
   const draw=(lbl,start,left)=>{const pct=(start-left)/start*100;
     return `<div class="drainrow"><span class="lbl">${lbl}</span>
       <div class="track"><div class="seg-red" style="width:${pct}%"></div><div class="seg-rem" style="width:${100-pct}%"></div></div>
       <span class="rem">${left.toLocaleString()} left</span></div>`;};
-  drain.innerHTML = draw('Base',BASE0,base)+draw('Other',NON0,non)+draw('Catalog',CAT0,base+non);
+  drain.innerHTML = draw('Base',BASE0,base)+draw('DLC',DLC0,dlc);
 }
-[cb,cn,bl].forEach(el=>el.addEventListener('input',runF));
+[cb,cn,nr,bl].forEach(el=>el.addEventListener('input',runF));
 runF();
 </script>
 </body>
